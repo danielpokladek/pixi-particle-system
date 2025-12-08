@@ -1,52 +1,60 @@
 import js from "@eslint/js";
 import jsdoc from "eslint-plugin-jsdoc";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig } from "eslint/config";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import tseslint, { parser } from "typescript-eslint";
 
 export default defineConfig({
-    files: ["src/**/*.ts"],
-    extends: [
-        js.configs.recommended,
-        tseslint.configs.recommended,
-        reactHooks.configs["recommended-latest"],
-        reactRefresh.configs.vite,
-        jsdoc.configs["flat/recommended-typescript"],
+  files: ["src/**/*.ts"],
+  extends: [
+    js.configs.recommended,
+    tseslint.configs.recommended,
+    jsdoc.configs["flat/recommended-typescript"],
+  ],
+  languageOptions: {
+    parser: parser,
+    parserOptions: {
+      project: "./tsconfig.json",
+    },
+    ecmaVersion: 2020,
+  },
+  rules: {
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/prefer-readonly": "error",
+    "no-console": "warn",
+    "jsdoc/require-param": [
+      "warn",
+      {
+        enableFixer: true,
+      },
     ],
-    languageOptions: {
-        ecmaVersion: 2020,
-        globals: globals.browser,
-    },
-    rules: {
-        "@typescript-eslint/explicit-function-return-type": "error",
-        "@typescript-eslint/member-ordering": "error",
-        "jsdoc/require-param": [
-            "warn",
-            {
-                checkDestructured: false,
-                enableFixer: true,
-            },
-        ],
-        "jsdoc/check-param-names": [
-            "warn",
-            {
-                checkDestructured: false,
-            },
-        ],
-        "jsdoc/require-jsdoc": [
-            "warn",
-            {
-                contexts: ["TSInterfaceDeclaration", "TSTypeAliasDeclaration"],
-                require: {
-                    FunctionDeclaration: true,
-                    MethodDefinition: true,
-                    ClassDeclaration: true,
-                    ArrowFunctionExpression: true,
-                    FunctionExpression: false,
-                },
-            },
-        ],
-    },
+    "jsdoc/check-param-names": [
+      "warn",
+      {
+        checkDestructured: false,
+      },
+    ],
+    "jsdoc/require-jsdoc": [
+      "warn",
+      {
+        contexts: ["TSInterfaceDeclaration", "TSTypeAliasDeclaration"],
+        require: {
+          FunctionDeclaration: true,
+          MethodDefinition: true,
+          ClassDeclaration: true,
+          ArrowFunctionExpression: false,
+          FunctionExpression: false,
+        },
+        exemptEmptyConstructors: true,
+      },
+    ],
+    "no-restricted-globals": [
+      "error",
+      {
+        name: "gsap",
+        message:
+          "Import gsap from 'gsap' instead of using the global variable.",
+      },
+    ],
+  },
 });
