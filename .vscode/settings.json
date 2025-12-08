@@ -10,5 +10,10 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "cSpell.words": []
+    "cSpell.words": [
+        "AARRGGBB",
+        "lerp",
+        "RRGGBB",
+        "Tweenable"
+    ]
 }
