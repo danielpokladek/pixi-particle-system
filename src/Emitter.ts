@@ -1,50 +1,86 @@
 import { ParticleContainer, Ticker } from "pixi.js";
+import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
+import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
 import { EmitterParticle } from "./particle/EmitterParticle";
 
+/**
+ * Emitter class which handles particle spawning and updating.
+ */
 export class Emitter {
-  private _parent: ParticleContainer;
+  private readonly _parent: ParticleContainer;
 
-  private _minLifetime: number = 1;
-  private _maxLifetime: number = 3;
+  private readonly _particles: EmitterParticle[] = [];
+  private readonly _pooledParticles: EmitterParticle[] = [];
 
-  private _spawnInterval: number = 0.5;
-  private _spawnChance: number = 1.0;
+  private readonly _minLifetime: number = 1;
+  private readonly _maxLifetime: number = 3;
 
-  private _maxParticles: number = 50;
+  private readonly _spawnInterval: number = 0.01;
+  private readonly _spawnChance: number = 1.0;
+
+  private readonly _maxParticles: number = 500;
+  private readonly _addAtBack: boolean = true;
+
+  private readonly _particlesPerWave: number = 1;
+
+  private readonly _initBehaviors: InitBehavior<unknown>[] = [];
+  private readonly _updateBehaviors: UpdateBehavior<unknown>[] = [];
+
+  // *** Built-In Behaviors *** //
+  private readonly _spawnBehavior: SpawnBehavior;
+  // *** ---            --- *** //
+
   private _particleCount: number = 0;
-
-  private _addAtBack: boolean = true;
 
   private _emit: boolean = false;
 
   private _spawnTimer: number = 0;
   private _emitterLife: number = -1;
-  private _particlesPerWave: number = 1;
-
-  private _particles: EmitterParticle[] = [];
-  private _pooledParticles: EmitterParticle[] = [];
 
   private _onComplete: (() => void) | null = null;
 
+  /**
+   * Creates a new Emitter instance.
+   * @param parent Parent ParticleContainer for the emitter.
+   */
   constructor(parent: ParticleContainer) {
-    console.debug("New Emitter instance created.");
-
     this._parent = parent;
+
+    this._spawnBehavior = new SpawnBehavior();
+    this._spawnBehavior.applyConfig({
+      shape: "rectangle",
+      width: 300,
+      height: 300,
+    });
+    this._initBehaviors.push(this._spawnBehavior);
   }
 
+  /**
+   * Current number of active particles in the emitter.
+   */
   public get particleCount(): number {
     return this._particleCount;
   }
 
+  /**
+   * Maximum number of particles allowed in the emitter.
+   */
   public get maxParticles(): number {
     return this._maxParticles;
   }
 
+  /**
+   * Starts the emitter.
+   */
   public play(): void {
     this._emit = true;
     Ticker.shared.add(this.update, this);
   }
 
+  /**
+   * Updates the emitter.
+   * @param ticker Ticker instance.
+   */
   private update(ticker: Ticker): void {
     const deltaTime = ticker.elapsedMS * 0.001;
 
@@ -97,7 +133,7 @@ export class Emitter {
           continue;
         }
 
-        let newParticles: EmitterParticle[] = [];
+        const newParticles: EmitterParticle[] = [];
 
         for (let i = 0; i < this._particlesPerWave; i++) {
           if (Math.random() > this._spawnChance) continue;
@@ -149,6 +185,12 @@ export class Emitter {
         // TODO DP: Loop through initialize behaviors and initialize newParticles.
         // TODO DP: Loop through update behaviors and update newParticles for first frame.
 
+        for (const particle of newParticles) {
+          for (const behavior of this._initBehaviors) {
+            behavior.init(particle);
+          }
+        }
+
         this._particles.push(...newParticles);
         this._spawnTimer += this._spawnInterval;
       }
@@ -164,6 +206,10 @@ export class Emitter {
     }
   }
 
+  /**
+   * Recycles a particle back into the pool.
+   * @param particle Particle to recycle.
+   */
   private recycleParticle(particle: EmitterParticle): void {
     particle.reset();
     particle.alpha = 0;

@@ -22,6 +22,12 @@ export default defineConfig({
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/prefer-readonly": "error",
     "no-console": "warn",
+    "jsdoc/require-returns": [
+      "error",
+      {
+        checkGetters: false,
+      },
+    ],
     "jsdoc/require-param": [
       "warn",
       {
@@ -46,14 +52,6 @@ export default defineConfig({
           FunctionExpression: false,
         },
         exemptEmptyConstructors: true,
-      },
-    ],
-    "no-restricted-globals": [
-      "error",
-      {
-        name: "gsap",
-        message:
-          "Import gsap from 'gsap' instead of using the global variable.",
       },
     ],
   },
