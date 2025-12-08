@@ -1,0 +1,172 @@
+import { ParticleContainer, Ticker } from "pixi.js";
+import { EmitterParticle } from "./particle/EmitterParticle";
+
+export class Emitter {
+  private _parent: ParticleContainer;
+
+  private _minLifetime: number = 1;
+  private _maxLifetime: number = 3;
+
+  private _spawnInterval: number = 0.5;
+  private _spawnChance: number = 1.0;
+
+  private _maxParticles: number = 50;
+  private _particleCount: number = 0;
+
+  private _addAtBack: boolean = true;
+
+  private _emit: boolean = false;
+
+  private _spawnTimer: number = 0;
+  private _emitterLife: number = -1;
+  private _particlesPerWave: number = 1;
+
+  private _particles: EmitterParticle[] = [];
+  private _pooledParticles: EmitterParticle[] = [];
+
+  private _onComplete: (() => void) | null = null;
+
+  constructor(parent: ParticleContainer) {
+    console.debug("New Emitter instance created.");
+
+    this._parent = parent;
+  }
+
+  public get particleCount(): number {
+    return this._particleCount;
+  }
+
+  public get maxParticles(): number {
+    return this._maxParticles;
+  }
+
+  public play(): void {
+    this._emit = true;
+    Ticker.shared.add(this.update, this);
+  }
+
+  private update(ticker: Ticker): void {
+    const deltaTime = ticker.elapsedMS * 0.001;
+
+    // *** Update Existing Particles First *** //
+
+    for (let i = this._particles.length - 1; i >= 0; i--) {
+      const particle = this._particles[i];
+      const particleData = particle.data;
+
+      particleData.age += deltaTime;
+      particleData.agePercent = particleData.age / particleData.maxLifetime;
+
+      if (particleData.age > particleData.maxLifetime || particleData.age < 0) {
+        this._particles[i] = this._particles[this._particles.length - 1];
+        this._particles.pop();
+        this._particleCount--;
+
+        this.recycleParticle(particle);
+      } else {
+        const lerp = particleData.age * particleData.maxLifetime;
+
+        // TODO DP: Custom ease implementation.
+
+        particleData.agePercent = lerp;
+
+        // TODO DP: Loop through update behaviors and update particle.
+      }
+    }
+
+    if (this._emit) {
+      this._spawnTimer -= deltaTime < 0 ? 0 : deltaTime;
+
+      while (this._spawnTimer <= 0) {
+        if (this._emitterLife >= 0) {
+          this._emitterLife -= this._spawnInterval;
+
+          if (this._emitterLife <= 0) {
+            this._spawnTimer = 0;
+            this._emitterLife = 0;
+            this._emit = false;
+
+            console.debug("Emitter lifetime ended.");
+            break;
+          }
+        }
+
+        // Particles are maxed out, continue to next frame.
+        if (this._particleCount >= this._maxParticles) {
+          this._spawnTimer += this._spawnInterval;
+          continue;
+        }
+
+        let newParticles: EmitterParticle[] = [];
+
+        for (let i = 0; i < this._particlesPerWave; i++) {
+          if (Math.random() > this._spawnChance) continue;
+
+          let lifetime;
+
+          if (this._minLifetime === this._maxLifetime) {
+            lifetime = this._maxLifetime;
+          } else {
+            lifetime =
+              Math.random() * (this._maxLifetime - this._minLifetime) +
+              this._minLifetime;
+          }
+
+          // Skip spawning if particle was to die instantly.
+          if (-this._spawnTimer >= lifetime) {
+            continue;
+          }
+
+          let particle: EmitterParticle;
+
+          if (this._pooledParticles.length > 0) {
+            particle = this._pooledParticles.pop()!;
+            particle.reset();
+          } else {
+            particle = new EmitterParticle();
+          }
+
+          const particleData = particle.data;
+          particleData.maxLifetime = lifetime;
+          particleData.oneOverLifetime = 1 / lifetime;
+
+          // TODO DP: Debug, remove when behaviors are added.
+          particle.scaleX = 10;
+          particle.scaleY = 10;
+          particle.alpha = 1;
+
+          if (this._addAtBack) {
+            this._parent.addParticle(particle);
+          } else {
+            this._parent.addParticleAt(particle, 0);
+          }
+
+          // this._particles.push(particle);
+          newParticles.push(particle);
+          ++this._particleCount;
+        }
+
+        // TODO DP: Loop through initialize behaviors and initialize newParticles.
+        // TODO DP: Loop through update behaviors and update newParticles for first frame.
+
+        this._particles.push(...newParticles);
+        this._spawnTimer += this._spawnInterval;
+      }
+    }
+
+    if (!this._emit && this._particleCount === 0) {
+      this._onComplete?.();
+      this._onComplete = null;
+
+      Ticker.shared.remove(this.update, this);
+
+      console.debug("Emitter has completed emitting.");
+    }
+  }
+
+  private recycleParticle(particle: EmitterParticle): void {
+    particle.reset();
+    particle.alpha = 0;
+    this._pooledParticles.push(particle);
+  }
+}
