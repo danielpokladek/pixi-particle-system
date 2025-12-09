@@ -8,9 +8,9 @@ import {
 } from "../EmitterBehavior";
 
 /**
- * Type defining the configuration for AlphaBehavior.
+ * Type defining the configuration for ScaleBehavior.
  */
-type AlphaBehaviorConfig =
+type ScaleBehaviorConfig =
   | {
       value: number;
       mode?: "static";
@@ -21,21 +21,21 @@ type AlphaBehaviorConfig =
     };
 
 /**
- * Behavior which manages particle alpha over their lifetime.
+ * Behavior which scales particles over their lifetime.
  */
-export class AlphaBehavior
-  extends EmitterBehavior<AlphaBehaviorConfig>
+export class ScaleBehavior
+  extends EmitterBehavior<ScaleBehaviorConfig>
   implements
-    InitBehavior<AlphaBehaviorConfig>,
-    UpdateBehavior<AlphaBehaviorConfig>
+    InitBehavior<ScaleBehaviorConfig>,
+    UpdateBehavior<ScaleBehaviorConfig>
 {
   private readonly _list: PropertyList<number>;
 
-  private _staticValue: number = 1.0;
   private _mode: "static" | "list" | "random" = "static";
+  private _staticValue: number = 1;
 
   /**
-   * Creates new instance of AlphaBehavior.
+   * Creates a new ScaleBehavior.
    * @param emitter Emitter instance this behavior belongs to.
    */
   constructor(emitter: Emitter) {
@@ -47,14 +47,14 @@ export class AlphaBehavior
   /**
    * @inheritdoc
    */
-  public applyConfig(config: AlphaBehaviorConfig): void {
+  public applyConfig(config: ScaleBehaviorConfig): void {
     super.applyConfig(config);
 
     this._emitter.addToActiveInitBehaviors(this);
 
     if ("value" in config) {
-      this._staticValue = config.value;
       this._mode = "static";
+      this._staticValue = config.value;
       return;
     }
 
@@ -69,16 +69,10 @@ export class AlphaBehavior
   /**
    * @inheritdoc
    */
-  public getConfig(): AlphaBehaviorConfig {
-    if (this._mode === "static") {
-      return {
-        value: this._staticValue,
-      };
-    }
-
-    // TODO DP: Update this to return list.
+  public getConfig(): ScaleBehaviorConfig {
     return {
-      value: this._staticValue,
+      value: 1,
+      mode: "static",
     };
   }
 
@@ -87,31 +81,34 @@ export class AlphaBehavior
    */
   public init(particle: EmitterParticle): void {
     if (this._mode === "static") {
-      particle.alpha = this._staticValue;
+      particle.scaleX = this._staticValue;
+      particle.scaleY = this._staticValue;
       return;
     }
 
-    if (this._mode === "random") {
-      particle.alpha = this._list.interpolate(Math.random());
-      return;
-    }
+    const i = this._mode === "random" ? Math.random() : 0;
+    const scale = this._list.interpolate(i);
 
-    particle.alpha = this._list.interpolate(0);
+    particle.scaleX = scale;
+    particle.scaleY = scale;
   }
 
   /**
    * @inheritdoc
    */
   public update(particle: EmitterParticle): void {
-    particle.alpha = this._list.interpolate(particle.data.agePercent);
+    const scale = this._list.interpolate(particle.data.agePercent);
+
+    particle.scaleX = scale;
+    particle.scaleY = scale;
   }
 
   /**
    * @inheritdoc
    */
   protected reset(): void {
-    this._staticValue = 1.0;
     this._mode = "static";
+    this._staticValue = 1;
 
     this._emitter.removeFromActiveInitBehaviors(this);
     this._emitter.removeFromActiveUpdateBehaviors(this);

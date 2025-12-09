@@ -1,6 +1,7 @@
 import { ParticleContainer, Ticker } from "pixi.js";
 import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
+import { ScaleBehavior } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
 import { EmitterParticle } from "./particle/EmitterParticle";
@@ -32,6 +33,7 @@ export class Emitter {
   private readonly _spawnBehavior: SpawnBehavior;
   private readonly _colorBehavior: ColorBehavior;
   private readonly _alphaBehavior: AlphaBehavior;
+  private readonly _scaleBehavior: ScaleBehavior;
   // *** ---            --- *** //
 
   private _particleCount: number = 0;
@@ -75,6 +77,18 @@ export class Emitter {
         list: [
           { value: 0.0, time: 0 },
           { value: 1.0, time: 0.5 },
+          { value: 0.0, time: 1 },
+        ],
+      },
+      mode: "list",
+    });
+
+    this._scaleBehavior = new ScaleBehavior(this);
+    this._scaleBehavior.applyConfig({
+      listData: {
+        list: [
+          { value: 0.5, time: 0 },
+          { value: 10.0, time: 0.5 },
           { value: 0.0, time: 1 },
         ],
       },

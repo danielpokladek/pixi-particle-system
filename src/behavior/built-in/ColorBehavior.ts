@@ -14,7 +14,7 @@ import {
  */
 type ColorBehaviorConfig =
   | {
-      staticColor: ColorSource;
+      value: ColorSource;
       mode?: "static";
     }
   | {
@@ -54,8 +54,8 @@ export class ColorBehavior
 
     this._emitter.addToActiveInitBehaviors(this);
 
-    if ("staticColor" in config) {
-      this._staticValue = config.staticColor;
+    if ("value" in config) {
+      this._staticValue = config.value;
       this._behaviorMode = "static";
 
       return;
@@ -75,13 +75,13 @@ export class ColorBehavior
   public getConfig(): ColorBehaviorConfig {
     if (this._behaviorMode === "static") {
       return {
-        staticColor: this._staticValue,
+        value: this._staticValue,
       };
     }
 
     // TODO DP: Update this to return list.
     return {
-      staticColor: this._staticValue,
+      value: this._staticValue,
       mode: "static",
     };
   }
