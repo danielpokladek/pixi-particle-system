@@ -50,14 +50,14 @@ export class Emitter {
   constructor(parent: ParticleContainer) {
     this._parent = parent;
 
-    this._spawnBehavior = new SpawnBehavior();
+    this._spawnBehavior = new SpawnBehavior(this);
     this._spawnBehavior.applyConfig({
       shape: "rectangle",
       width: 300,
       height: 300,
     });
 
-    this._colorBehavior = new ColorBehavior();
+    this._colorBehavior = new ColorBehavior(this);
     this._colorBehavior.applyConfig({
       listData: {
         list: [
@@ -69,7 +69,7 @@ export class Emitter {
       mode: "random",
     });
 
-    this._alphaBehavior = new AlphaBehavior();
+    this._alphaBehavior = new AlphaBehavior(this);
     this._alphaBehavior.applyConfig({
       listData: {
         list: [
@@ -78,17 +78,11 @@ export class Emitter {
           { value: 0.0, time: 1 },
         ],
       },
+      mode: "list",
     });
-    // this._alphaBehavior.applyConfig({
-    //   staticAlpha: 1.0,
-    // });
 
-    this._initBehaviors.push(
-      this._spawnBehavior,
-      this._colorBehavior,
-      this._alphaBehavior,
-    );
-    this._updateBehaviors.push(this._colorBehavior, this._alphaBehavior);
+    // Spawn behavior is always active.
+    this._initBehaviors.push(this._spawnBehavior);
   }
 
   /**
@@ -111,6 +105,46 @@ export class Emitter {
   public play(): void {
     this._emit = true;
     Ticker.shared.add(this.update, this);
+  }
+
+  /**
+   * Adds a behavior to the active init behaviors.
+   * @param behavior Behavior to add.
+   */
+  public addToActiveInitBehaviors(behavior: InitBehavior<unknown>): void {
+    this._initBehaviors.push(behavior);
+  }
+
+  /**
+   * Adds a behavior to the active update behaviors.
+   * @param behavior Behavior to add.
+   */
+  public addToActiveUpdateBehaviors(behavior: UpdateBehavior<unknown>): void {
+    this._updateBehaviors.push(behavior);
+  }
+
+  /**
+   * Removes a behavior from the active init behaviors.
+   * @param behavior Behavior to remove.
+   */
+  public removeFromActiveInitBehaviors(behavior: InitBehavior<unknown>): void {
+    const index = this._initBehaviors.indexOf(behavior);
+    if (index !== -1) {
+      this._initBehaviors.splice(index, 1);
+    }
+  }
+
+  /**
+   * Removes a behavior from the active update behaviors.
+   * @param behavior Behavior to remove.
+   */
+  public removeFromActiveUpdateBehaviors(
+    behavior: UpdateBehavior<unknown>,
+  ): void {
+    const index = this._updateBehaviors.indexOf(behavior);
+    if (index !== -1) {
+      this._updateBehaviors.splice(index, 1);
+    }
   }
 
   /**

@@ -1,4 +1,5 @@
 import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import {
   EmitterBehavior,
@@ -12,9 +13,11 @@ import {
 type AlphaBehaviorConfig =
   | {
       staticAlpha: number;
+      mode?: "static";
     }
   | {
       listData: ValueList<number>;
+      mode: "list" | "random";
     };
 
 /**
@@ -29,10 +32,14 @@ export class AlphaBehavior
   private readonly _list: PropertyList<number>;
 
   private _staticValue: number = 1.0;
-  private _useStaticValue: boolean = true;
+  private _mode: "static" | "list" | "random" = "static";
 
-  constructor() {
-    super();
+  /**
+   * Creates new instance of AlphaBehavior.
+   * @param emitter Emitter instance this behavior belongs to.
+   */
+  constructor(emitter: Emitter) {
+    super(emitter);
 
     this._list = new PropertyList<number>();
   }
@@ -43,21 +50,27 @@ export class AlphaBehavior
   public applyConfig(config: AlphaBehaviorConfig): void {
     super.applyConfig(config);
 
+    this._emitter.addToActiveInitBehaviors(this);
+
     if ("staticAlpha" in config) {
       this._staticValue = config.staticAlpha;
-      this._useStaticValue = true;
+      this._mode = "static";
       return;
     }
 
-    this._useStaticValue = false;
+    this._mode = config.mode;
     this._list.reset(PropertyNode.createList(config.listData));
+
+    if (this._mode === "list") {
+      this._emitter.addToActiveUpdateBehaviors(this);
+    }
   }
 
   /**
    * @inheritdoc
    */
   public getConfig(): AlphaBehaviorConfig {
-    if (this._useStaticValue) {
+    if (this._mode === "static") {
       return {
         staticAlpha: this._staticValue,
       };
@@ -73,8 +86,13 @@ export class AlphaBehavior
    * @inheritdoc
    */
   public init(particle: EmitterParticle): void {
-    if (this._useStaticValue) {
+    if (this._mode === "static") {
       particle.alpha = this._staticValue;
+      return;
+    }
+
+    if (this._mode === "random") {
+      particle.alpha = this._list.interpolate(Math.random());
       return;
     }
 
@@ -85,11 +103,6 @@ export class AlphaBehavior
    * @inheritdoc
    */
   public update(particle: EmitterParticle): void {
-    if (this._useStaticValue) {
-      particle.alpha = this._staticValue;
-      return;
-    }
-
     particle.alpha = this._list.interpolate(particle.data.agePercent);
   }
 
@@ -98,6 +111,9 @@ export class AlphaBehavior
    */
   protected reset(): void {
     this._staticValue = 1.0;
-    this._useStaticValue = true;
+    this._mode = "static";
+
+    this._emitter.removeFromActiveInitBehaviors(this);
+    this._emitter.removeFromActiveUpdateBehaviors(this);
   }
 }

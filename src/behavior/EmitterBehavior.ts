@@ -1,9 +1,20 @@
+import { Emitter } from "../Emitter";
 import { EmitterParticle } from "../particle/EmitterParticle";
 
 /**
  * Abstract behavior class which all behaviors inherit from.
  */
 export abstract class EmitterBehavior<Config> {
+  protected readonly _emitter: Emitter;
+
+  /**
+   * Creates a new EmitterBehavior.
+   * @param emitter Emitter instance this behavior belongs to.
+   */
+  constructor(emitter: Emitter) {
+    this._emitter = emitter;
+  }
+
   /**
    * Applies the config to behavior.
    * @param config Config to apply.

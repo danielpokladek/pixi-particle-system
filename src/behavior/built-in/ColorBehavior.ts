@@ -1,5 +1,6 @@
 import { ColorSource } from "pixi.js";
 import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { RGBAColor } from "../../util/Type";
 import {
@@ -35,8 +36,12 @@ export class ColorBehavior
   private _staticValue: ColorSource = "#FFFFFF";
   private _behaviorMode: "static" | "list" | "random" = "static";
 
-  constructor() {
-    super();
+  /**
+   * Creates new instance of ColorBehavior.
+   * @param emitter Emitter instance this behavior belongs to.
+   */
+  constructor(emitter: Emitter) {
+    super(emitter);
 
     this._list = new PropertyList<RGBAColor>(true);
   }
@@ -47,14 +52,21 @@ export class ColorBehavior
   public applyConfig(config: ColorBehaviorConfig): void {
     super.applyConfig(config);
 
+    this._emitter.addToActiveInitBehaviors(this);
+
     if ("staticColor" in config) {
       this._staticValue = config.staticColor;
       this._behaviorMode = "static";
+
       return;
     }
 
     this._behaviorMode = config.mode;
     this._list.reset(PropertyNode.createList(config.listData));
+
+    if (this._behaviorMode === "list") {
+      this._emitter.addToActiveUpdateBehaviors(this);
+    }
   }
 
   /**
@@ -95,9 +107,6 @@ export class ColorBehavior
    * @inheritdoc
    */
   public update(particle: EmitterParticle): void {
-    if (this._behaviorMode === "static" || this._behaviorMode === "random")
-      return;
-
     particle.tint = this._list.interpolate(particle.data.agePercent);
   }
 
@@ -107,5 +116,8 @@ export class ColorBehavior
   protected reset(): void {
     this._staticValue = "#FFFFFF";
     this._behaviorMode = "static";
+
+    this._emitter.removeFromActiveInitBehaviors(this);
+    this._emitter.removeFromActiveUpdateBehaviors(this);
   }
 }
