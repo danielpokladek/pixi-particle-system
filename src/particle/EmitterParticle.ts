@@ -8,6 +8,13 @@ export type BaseParticleData = {
   age: number;
   agePercent: number;
   oneOverLifetime: number;
+  textureConfig: {
+    textures: Texture[];
+    duration: number;
+    elapsed: number;
+    framerate: number;
+    loop: boolean;
+  };
 };
 
 /**
@@ -29,9 +36,10 @@ export class EmitterParticle extends Particle implements IEmitterParticle {
   public data: BaseParticleData;
 
   constructor() {
-    super(Texture.WHITE);
+    super(Texture.EMPTY);
 
     this.data = {} as BaseParticleData;
+    this.data.textureConfig = {} as BaseParticleData["textureConfig"];
     this.reset();
   }
 
@@ -39,6 +47,8 @@ export class EmitterParticle extends Particle implements IEmitterParticle {
    * @inheritdoc
    */
   public reset(): void {
+    this.texture = Texture.EMPTY;
+
     this.anchorX = 0.5;
     this.anchorY = 0.5;
 
@@ -53,5 +63,11 @@ export class EmitterParticle extends Particle implements IEmitterParticle {
     this.data.agePercent = 0;
     this.data.maxLifetime = 0;
     this.data.oneOverLifetime = 0;
+
+    this.data.textureConfig.textures = [];
+    this.data.textureConfig.duration = 0;
+    this.data.textureConfig.elapsed = 0;
+    this.data.textureConfig.framerate = 0;
+    this.data.textureConfig.loop = false;
   }
 }

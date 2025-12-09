@@ -3,6 +3,7 @@ import { ColorBehaviorConfig } from "./behavior/built-in/ColorBehavior";
 import { RotationBehaviorConfig } from "./behavior/built-in/RotationBehavior";
 import { ScaleBehaviorConfig } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehaviorConfig } from "./behavior/built-in/SpawnBehavior";
+import { TextureBehaviorConfig } from "./behavior/built-in/TextureBehavior";
 
 /**
  * Type defining the configuration for an Emitter.
@@ -72,4 +73,9 @@ export type EmitterConfig = {
    * Configuration for the SpawnBehavior.
    */
   spawnBehavior?: SpawnBehaviorConfig;
+
+  /**
+   * Configuration for the TextureBehavior.
+   */
+  textureBehavior?: TextureBehaviorConfig;
 };

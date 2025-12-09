@@ -1,9 +1,10 @@
-import { ParticleContainer, Ticker } from "pixi.js";
+import { ParticleContainer, Rectangle, Ticker } from "pixi.js";
 import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
 import { RotationBehavior } from "./behavior/built-in/RotationBehavior";
 import { ScaleBehavior } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
+import { TextureBehavior } from "./behavior/built-in/TextureBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
 import { EmitterConfig } from "./EmitterConfig";
 import { EmitterParticle } from "./particle/EmitterParticle";
@@ -28,6 +29,8 @@ export class Emitter {
   private readonly _alphaBehavior: AlphaBehavior;
   private readonly _scaleBehavior: ScaleBehavior;
   private readonly _rotationBehavior: RotationBehavior;
+  private readonly _textureBehavior: TextureBehavior;
+  // *** ---            --- *** //
 
   private _minLifetime: number = 1;
   private _maxLifetime: number = 3;
@@ -39,8 +42,6 @@ export class Emitter {
   private _addAtBack: boolean = true;
 
   private _particlesPerWave: number = 1;
-
-  // *** ---            --- *** //
 
   private _particleCount: number = 0;
 
@@ -60,19 +61,16 @@ export class Emitter {
     this._parent = parent;
 
     this._spawnBehavior = new SpawnBehavior(this);
-    this._spawnBehavior.applyConfig({
-      shape: "rectangle",
-      width: 300,
-      height: 300,
-    });
-
     this._alphaBehavior = new AlphaBehavior(this);
     this._colorBehavior = new ColorBehavior(this);
     this._scaleBehavior = new ScaleBehavior(this);
     this._rotationBehavior = new RotationBehavior(this);
+    this._textureBehavior = new TextureBehavior(this);
+
+    parent.boundsArea = new Rectangle(0, 0, 0, 0);
 
     // Spawn behavior is always active.
-    this._initBehaviors.push(this._spawnBehavior);
+    this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
 
     if (initialConfig) {
       this.applyConfig(initialConfig);
@@ -91,6 +89,20 @@ export class Emitter {
    */
   public get maxParticles(): number {
     return this._maxParticles;
+  }
+
+  /**
+   * Texture behavior of the emitter.
+   */
+  public get textureBehavior(): TextureBehavior {
+    return this._textureBehavior;
+  }
+
+  /**
+   * Parent ParticleContainer of the emitter.
+   */
+  public get parent(): ParticleContainer {
+    return this._parent;
   }
 
   /**
@@ -132,6 +144,10 @@ export class Emitter {
 
     if (config.spawnBehavior) {
       this._spawnBehavior.applyConfig(config.spawnBehavior);
+    }
+
+    if (config.textureBehavior) {
+      this._textureBehavior.applyConfig(config.textureBehavior);
     }
   }
 
