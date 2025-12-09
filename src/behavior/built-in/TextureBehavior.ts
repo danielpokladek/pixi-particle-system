@@ -1,10 +1,19 @@
 import { Texture } from "pixi.js";
 import { EmitterParticle } from "../../particle/EmitterParticle";
+import { BehaviorMode, BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
     UpdateBehavior,
 } from "../EmitterBehavior";
+
+/**
+ * Type describing the texture behavior modes.
+ */
+type TextureBehaviorMode = Extract<
+    BehaviorMode,
+    "static" | "random" | "animated"
+>;
 
 /**
  * Type defining the configuration for TextureBehavior.
@@ -21,7 +30,7 @@ export type TextureConfig = {
  */
 export type TextureBehaviorConfig = {
     textureConfigs: TextureConfig[];
-    mode: "animated" | "static";
+    mode: TextureBehaviorMode;
 };
 
 /**
@@ -34,7 +43,14 @@ export class TextureBehavior
         UpdateBehavior<TextureBehaviorConfig>
 {
     private _textureConfigs: TextureConfig[] = [];
-    private _mode: "animated" | "static" = "static";
+    private _mode: TextureBehaviorMode = "static";
+
+    /**
+     * @inheritdoc
+     */
+    public get behaviorOrder(): BehaviorOrder {
+        return "initial";
+    }
 
     /**
      * @inheritdoc
@@ -42,7 +58,6 @@ export class TextureBehavior
     public applyConfig(config: TextureBehaviorConfig): void {
         super.applyConfig(config);
 
-        // this._emitter.parent.texture = config.textureConfigs[0].textures[0];
         this._textureConfigs = config.textureConfigs;
         this._mode = config.mode;
 
@@ -72,6 +87,20 @@ export class TextureBehavior
             this._textureConfigs[
                 Math.floor(Math.random() * this._textureConfigs.length)
             ];
+
+        if (this._mode === "static") {
+            particle.texture = config.textures[0];
+            return;
+        }
+
+        if (this._mode === "random") {
+            particle.texture =
+                config.textures[
+                    Math.floor(Math.random() * config.textures.length)
+                ];
+
+            return;
+        }
 
         const particleData = particle.data;
 

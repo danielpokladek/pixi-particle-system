@@ -1,4 +1,4 @@
-import { RGBAColor } from "./Type";
+import { RGBAColor } from "./Types";
 
 /**
  * Combines separate color components (0-255) into a single uint color.

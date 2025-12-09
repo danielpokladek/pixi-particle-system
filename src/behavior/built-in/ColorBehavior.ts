@@ -2,7 +2,7 @@ import { ColorSource } from "pixi.js";
 import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { RGBAColor } from "../../util/Type";
+import { BehaviorOrder, RGBAColor } from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -44,6 +44,13 @@ export class ColorBehavior
         super(emitter);
 
         this._list = new PropertyList<RGBAColor>(true);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public get behaviorOrder(): BehaviorOrder {
+        return "normal";
     }
 
     /**

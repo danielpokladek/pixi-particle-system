@@ -1,5 +1,6 @@
 import { Emitter } from "../Emitter";
 import { EmitterParticle } from "../particle/EmitterParticle";
+import { BehaviorOrder } from "../util/Types";
 
 /**
  * Abstract behavior class which all behaviors inherit from.
@@ -14,6 +15,11 @@ export abstract class EmitterBehavior<Config> {
     constructor(emitter: Emitter) {
         this._emitter = emitter;
     }
+
+    /**
+     * Returns the order in which this behavior is applied.
+     */
+    public abstract get behaviorOrder(): BehaviorOrder;
 
     /**
      * Applies the config to behavior.

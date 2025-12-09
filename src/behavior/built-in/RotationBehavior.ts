@@ -1,6 +1,7 @@
 import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
+import { BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -47,6 +48,13 @@ export class RotationBehavior
         super(emitter);
 
         this._list = new PropertyList<number>();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public get behaviorOrder(): BehaviorOrder {
+        return "normal";
     }
 
     /**

@@ -163,6 +163,19 @@ export class Emitter {
      */
     public addToActiveInitBehaviors(behavior: InitBehavior<unknown>): void {
         this._initBehaviors.push(behavior);
+
+        this._initBehaviors.sort((a, b) => {
+            const orderA = a.behaviorOrder;
+            const orderB = b.behaviorOrder;
+
+            if (orderA === orderB) return 0;
+            if (orderA === "initial") return -1;
+            if (orderB === "initial") return 1;
+            if (orderA === "normal" && orderB === "late") return -1;
+            if (orderA === "late" && orderB === "normal") return 1;
+
+            return 0;
+        });
     }
 
     /**
@@ -171,6 +184,19 @@ export class Emitter {
      */
     public addToActiveUpdateBehaviors(behavior: UpdateBehavior<unknown>): void {
         this._updateBehaviors.push(behavior);
+
+        this._updateBehaviors.sort((a, b) => {
+            const orderA = a.behaviorOrder;
+            const orderB = b.behaviorOrder;
+
+            if (orderA === orderB) return 0;
+            if (orderA === "initial") return -1;
+            if (orderB === "initial") return 1;
+            if (orderA === "normal" && orderB === "late") return -1;
+            if (orderA === "late" && orderB === "normal") return 1;
+
+            return 0;
+        });
     }
 
     /**

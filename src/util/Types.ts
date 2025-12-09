@@ -1,4 +1,14 @@
 /**
+ * Type describing all possible behavior modes.
+ */
+export type BehaviorMode = "static" | "list" | "random" | "animated";
+
+/**
+ * Type defining the order in which behaviors are applied.
+ */
+export type BehaviorOrder = "initial" | "normal" | "late";
+
+/**
  * Color type representing RGBA values.
  */
 export type RGBAColor = {

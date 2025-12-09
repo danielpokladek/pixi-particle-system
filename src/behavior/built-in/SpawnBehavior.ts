@@ -1,4 +1,5 @@
 import { EmitterParticle } from "../../particle/EmitterParticle";
+import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
 /**
@@ -37,6 +38,13 @@ export class SpawnBehavior
 
     private _innerRadius: number = 0;
     private _outerRadius: number = 0;
+
+    /**
+     * @inheritdoc
+     */
+    public get behaviorOrder(): BehaviorOrder {
+        return "initial";
+    }
 
     /**
      * @inheritdoc

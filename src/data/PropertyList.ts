@@ -6,7 +6,7 @@ import {
     generateEase,
     RGBAColor,
     SimpleEase,
-} from "../util/Type";
+} from "../util/Types";
 
 // TODO DP: Split out value and color lists into separate files?
 
