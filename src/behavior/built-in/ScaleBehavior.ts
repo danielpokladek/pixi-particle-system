@@ -2,115 +2,115 @@ import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import {
-  EmitterBehavior,
-  InitBehavior,
-  UpdateBehavior,
+    EmitterBehavior,
+    InitBehavior,
+    UpdateBehavior,
 } from "../EmitterBehavior";
 
 /**
  * Type defining the configuration for ScaleBehavior.
  */
 export type ScaleBehaviorConfig =
-  | {
-      value: number;
-      mode?: "static";
-    }
-  | {
-      listData: ValueList<number>;
-      mode: "list" | "random";
-    };
+    | {
+          value: number;
+          mode?: "static";
+      }
+    | {
+          listData: ValueList<number>;
+          mode: "list" | "random";
+      };
 
 /**
  * Behavior which scales particles over their lifetime.
  */
 export class ScaleBehavior
-  extends EmitterBehavior<ScaleBehaviorConfig>
-  implements
-    InitBehavior<ScaleBehaviorConfig>,
-    UpdateBehavior<ScaleBehaviorConfig>
+    extends EmitterBehavior<ScaleBehaviorConfig>
+    implements
+        InitBehavior<ScaleBehaviorConfig>,
+        UpdateBehavior<ScaleBehaviorConfig>
 {
-  private readonly _list: PropertyList<number>;
+    private readonly _list: PropertyList<number>;
 
-  private _mode: "static" | "list" | "random" = "static";
-  private _staticValue: number = 1;
+    private _mode: "static" | "list" | "random" = "static";
+    private _staticValue: number = 1;
 
-  /**
-   * Creates a new ScaleBehavior.
-   * @param emitter Emitter instance this behavior belongs to.
-   */
-  constructor(emitter: Emitter) {
-    super(emitter);
+    /**
+     * Creates a new ScaleBehavior.
+     * @param emitter Emitter instance this behavior belongs to.
+     */
+    constructor(emitter: Emitter) {
+        super(emitter);
 
-    this._list = new PropertyList<number>();
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public applyConfig(config: ScaleBehaviorConfig): void {
-    super.applyConfig(config);
-
-    this._emitter.addToActiveInitBehaviors(this);
-
-    if ("value" in config) {
-      this._mode = "static";
-      this._staticValue = config.value;
-      return;
+        this._list = new PropertyList<number>();
     }
 
-    this._mode = config.mode;
-    this._list.reset(PropertyNode.createList(config.listData));
+    /**
+     * @inheritdoc
+     */
+    public applyConfig(config: ScaleBehaviorConfig): void {
+        super.applyConfig(config);
 
-    if (this._mode === "list") {
-      this._emitter.addToActiveUpdateBehaviors(this);
-    }
-  }
+        this._emitter.addToActiveInitBehaviors(this);
 
-  /**
-   * @inheritdoc
-   */
-  public getConfig(): ScaleBehaviorConfig {
-    return {
-      value: 1,
-      mode: "static",
-    };
-  }
+        if ("value" in config) {
+            this._mode = "static";
+            this._staticValue = config.value;
+            return;
+        }
 
-  /**
-   * @inheritdoc
-   */
-  public init(particle: EmitterParticle): void {
-    if (this._mode === "static") {
-      particle.scaleX = this._staticValue;
-      particle.scaleY = this._staticValue;
-      return;
+        this._mode = config.mode;
+        this._list.reset(PropertyNode.createList(config.listData));
+
+        if (this._mode === "list") {
+            this._emitter.addToActiveUpdateBehaviors(this);
+        }
     }
 
-    const i = this._mode === "random" ? Math.random() : 0;
-    const scale = this._list.interpolate(i);
+    /**
+     * @inheritdoc
+     */
+    public getConfig(): ScaleBehaviorConfig {
+        return {
+            value: 1,
+            mode: "static",
+        };
+    }
 
-    particle.scaleX = scale;
-    particle.scaleY = scale;
-  }
+    /**
+     * @inheritdoc
+     */
+    public init(particle: EmitterParticle): void {
+        if (this._mode === "static") {
+            particle.scaleX = this._staticValue;
+            particle.scaleY = this._staticValue;
+            return;
+        }
 
-  /**
-   * @inheritdoc
-   */
-  public update(particle: EmitterParticle): void {
-    const scale = this._list.interpolate(particle.data.agePercent);
+        const i = this._mode === "random" ? Math.random() : 0;
+        const scale = this._list.interpolate(i);
 
-    particle.scaleX = scale;
-    particle.scaleY = scale;
-  }
+        particle.scaleX = scale;
+        particle.scaleY = scale;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  protected reset(): void {
-    this._mode = "static";
-    this._staticValue = 1;
+    /**
+     * @inheritdoc
+     */
+    public update(particle: EmitterParticle): void {
+        const scale = this._list.interpolate(particle.data.agePercent);
 
-    this._emitter.removeFromActiveInitBehaviors(this);
-    this._emitter.removeFromActiveUpdateBehaviors(this);
-  }
+        particle.scaleX = scale;
+        particle.scaleY = scale;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected reset(): void {
+        this._mode = "static";
+        this._staticValue = 1;
+
+        this._emitter.removeFromActiveInitBehaviors(this);
+        this._emitter.removeFromActiveUpdateBehaviors(this);
+    }
 }

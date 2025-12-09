@@ -2,45 +2,45 @@
  * Color type representing RGBA values.
  */
 export type RGBAColor = {
-  /**
-   * Red component (0-255).
-   */
-  r: number;
+    /**
+     * Red component (0-255).
+     */
+    r: number;
 
-  /**
-   * Green component (0-255).
-   */
-  g: number;
+    /**
+     * Green component (0-255).
+     */
+    g: number;
 
-  /**
-   * Blue component (0-255).
-   */
-  b: number;
+    /**
+     * Blue component (0-255).
+     */
+    b: number;
 
-  /**
-   * Alpha component (0-255).
-   */
-  a?: number;
+    /**
+     * Alpha component (0-255).
+     */
+    a?: number;
 };
 
 /**
  * Type defining an ease segment.
  */
 export type EaseSegment = {
-  /**
-   * Control point for the ease segment.
-   */
-  cp: number;
+    /**
+     * Control point for the ease segment.
+     */
+    cp: number;
 
-  /**
-   * Start value of the ease segment.
-   */
-  s: number;
+    /**
+     * Start value of the ease segment.
+     */
+    s: number;
 
-  /**
-   * End value of the ease segment.
-   */
-  e: number;
+    /**
+     * End value of the ease segment.
+     */
+    e: number;
 };
 
 /**
@@ -55,29 +55,29 @@ export type SimpleEase = (time: number) => number;
  * @returns A function that calculates the percentage of change at a given point in time (0-1 inclusive).
  */
 export function generateEase(segments: EaseSegment[]): SimpleEase {
-  const qty = segments.length;
-  const oneOverQty = 1 / qty;
+    const qty = segments.length;
+    const oneOverQty = 1 / qty;
 
-  /**
-   * Calculates the percentage of change at a given point in time (0-1 inclusive).
-   * @param time The time of the ease, 0-1 inclusive.
-   * @returns The percentage of the change, 0-1 inclusive (unless your ease goes outside those bounds).
-   */
-  return function (time: number): number {
-    // Quick floor operation.
-    const i = (qty * time) | 0;
+    /**
+     * Calculates the percentage of change at a given point in time (0-1 inclusive).
+     * @param time The time of the ease, 0-1 inclusive.
+     * @returns The percentage of the change, 0-1 inclusive (unless your ease goes outside those bounds).
+     */
+    return function (time: number): number {
+        // Quick floor operation.
+        const i = (qty * time) | 0;
 
-    const t = (time - i * oneOverQty) * qty;
-    const s = segments[i] || segments[qty - 1];
+        const t = (time - i * oneOverQty) * qty;
+        const s = segments[i] || segments[qty - 1];
 
-    return s.s + t * (2 * (1 - t) * (s.cp - s.s) + t * (s.e - s.s));
-  };
+        return s.s + t * (2 * (1 - t) * (s.cp - s.s) + t * (s.e - s.s));
+    };
 }
 
 /**
  * Type describing a basic tweenable object.
  */
 export type BasicTweenable<T> = {
-  start: T;
-  end: T;
+    start: T;
+    end: T;
 };

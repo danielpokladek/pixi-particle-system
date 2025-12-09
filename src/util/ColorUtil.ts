@@ -8,7 +8,7 @@ import { RGBAColor } from "./Type";
  * @returns The color in the form of `0xRRGGBB`
  */
 export function convertRgbToUint(r: number, g: number, b: number): number {
-  return (r << 16) | (g << 8) | b;
+    return (r << 16) | (g << 8) | b;
 }
 
 /**
@@ -20,30 +20,30 @@ export function convertRgbToUint(r: number, g: number, b: number): number {
  * @returns The object with r, g, and b properties, possibly with an a property.
  */
 export function convertHexToRGB(color: string, output?: RGBAColor): RGBAColor {
-  if (!output) {
-    output = {} as RGBAColor;
-  }
+    if (!output) {
+        output = {} as RGBAColor;
+    }
 
-  if (color.charAt(0) === "#") {
-    color = color.substr(1);
-  } else if (color.indexOf("0x") === 0) {
-    color = color.substr(2);
-  }
+    if (color.charAt(0) === "#") {
+        color = color.substr(1);
+    } else if (color.indexOf("0x") === 0) {
+        color = color.substr(2);
+    }
 
-  let alpha;
+    let alpha;
 
-  if (color.length === 8) {
-    alpha = color.substr(0, 2);
-    color = color.substr(2);
-  }
+    if (color.length === 8) {
+        alpha = color.substr(0, 2);
+        color = color.substr(2);
+    }
 
-  output.r = parseInt(color.substr(0, 2), 16); // Red
-  output.g = parseInt(color.substr(2, 2), 16); // Green
-  output.b = parseInt(color.substr(4, 2), 16); // Blue
+    output.r = parseInt(color.substr(0, 2), 16); // Red
+    output.g = parseInt(color.substr(2, 2), 16); // Green
+    output.b = parseInt(color.substr(4, 2), 16); // Blue
 
-  if (alpha) {
-    output.a = parseInt(alpha, 16);
-  }
+    if (alpha) {
+        output.a = parseInt(alpha, 16);
+    }
 
-  return output;
+    return output;
 }
