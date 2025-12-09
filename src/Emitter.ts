@@ -240,7 +240,6 @@ export class Emitter {
             this._emitterLife = 0;
             this._emit = false;
 
-            console.debug("Emitter lifetime ended.");
             break;
           }
         }
@@ -290,7 +289,6 @@ export class Emitter {
             this._parent.addParticleAt(particle, 0);
           }
 
-          // this._particles.push(particle);
           newParticles.push(particle);
           ++this._particleCount;
         }
@@ -315,8 +313,6 @@ export class Emitter {
       this._onComplete = null;
 
       Ticker.shared.remove(this.update, this);
-
-      console.debug("Emitter has completed emitting.");
     }
   }
 
