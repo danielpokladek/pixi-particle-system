@@ -6,6 +6,9 @@ import {
   UpdateBehavior,
 } from "../EmitterBehavior";
 
+/**
+ * Type defining the configuration for TextureBehavior.
+ */
 export type TextureConfig = {
   textures: Texture[];
   framerate?: number;
@@ -13,11 +16,17 @@ export type TextureConfig = {
   loop?: boolean;
 };
 
+/**
+ * Type defining the configuration for TextureBehavior.
+ */
 export type TextureBehaviorConfig = {
   textureConfigs: TextureConfig[];
   mode: "animated" | "static";
 };
 
+/**
+ * Behavior which handles particle textures.
+ */
 export class TextureBehavior
   extends EmitterBehavior<TextureBehaviorConfig>
   implements
@@ -37,16 +46,22 @@ export class TextureBehavior
     this._textureConfigs = config.textureConfigs;
     this._mode = config.mode;
 
-    if (config.mode === "animated") {
+    if (this._mode === "animated") {
       this._emitter.addToActiveUpdateBehaviors(this);
     }
   }
 
+  /**
+   * @inheritdoc
+   */
   public getConfig(): TextureBehaviorConfig {
     // TODO DP: Handle this properly.
     return null as unknown as TextureBehaviorConfig;
   }
 
+  /**
+   * @inheritdoc
+   */
   public init(particle: EmitterParticle): void {
     if (this._textureConfigs.length === 0) {
       particle.texture = Texture.WHITE;
@@ -73,13 +88,12 @@ export class TextureBehavior
     }
 
     const texture = config.textures[0];
-
-    // this._emitter.parent.texture = texture;
     particle.texture = texture;
-
-    // particle.texture = Texture.WHITE;
   }
 
+  /**
+   * @inheritdoc
+   */
   public update(particle: EmitterParticle, deltaTime: number): void {
     const config = particle.data.textureConfig;
     config.elapsed += deltaTime;
@@ -102,6 +116,9 @@ export class TextureBehavior
     }
   }
 
+  /**
+   * @inheritdoc
+   */
   protected reset(): void {
     this._textureConfigs.length = 0;
     this._mode = "static";
