@@ -1,4 +1,4 @@
-import { ParticleContainer, Rectangle, Ticker } from "pixi.js";
+import { ParticleContainer, Ticker } from "pixi.js";
 import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
 import { RotationBehavior } from "./behavior/built-in/RotationBehavior";
@@ -66,8 +66,6 @@ export class Emitter {
     this._scaleBehavior = new ScaleBehavior(this);
     this._rotationBehavior = new RotationBehavior(this);
     this._textureBehavior = new TextureBehavior(this);
-
-    parent.boundsArea = new Rectangle(0, 0, 0, 0);
 
     // Spawn behavior is always active.
     this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
@@ -285,11 +283,6 @@ export class Emitter {
           const particleData = particle.data;
           particleData.maxLifetime = lifetime;
           particleData.oneOverLifetime = 1 / lifetime;
-
-          // TODO DP: Debug, remove when behaviors are added.
-          particle.scaleX = 10;
-          particle.scaleY = 10;
-          particle.alpha = 1;
 
           if (this._addAtBack) {
             this._parent.addParticle(particle);
