@@ -10,7 +10,7 @@ import {
 /**
  * Type defining the configuration for AlphaBehavior.
  */
-type AlphaBehaviorConfig =
+export type AlphaBehaviorConfig =
   | {
       value: number;
       mode?: "static";

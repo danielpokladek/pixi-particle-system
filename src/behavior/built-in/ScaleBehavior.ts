@@ -10,7 +10,7 @@ import {
 /**
  * Type defining the configuration for ScaleBehavior.
  */
-type ScaleBehaviorConfig =
+export type ScaleBehaviorConfig =
   | {
       value: number;
       mode?: "static";

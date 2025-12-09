@@ -12,7 +12,7 @@ import {
 /**
  * Type defining the configuration for ColorBehavior.
  */
-type ColorBehaviorConfig =
+export type ColorBehaviorConfig =
   | {
       value: ColorSource;
       mode?: "static";

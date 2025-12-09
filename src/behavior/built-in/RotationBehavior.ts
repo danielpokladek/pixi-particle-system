@@ -10,7 +10,7 @@ import {
 /**
  * Type defining the configuration for RotationBehavior.
  */
-type RotationBehaviorConfig =
+export type RotationBehaviorConfig =
   | {
       value: number;
       mode: "static";
