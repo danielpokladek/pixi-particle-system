@@ -14,9 +14,11 @@ import {
 type ColorBehaviorConfig =
   | {
       staticColor: ColorSource;
+      mode?: "static";
     }
   | {
       listData: ValueList<string>;
+      mode: "list" | "random";
     };
 
 /**
@@ -30,8 +32,8 @@ export class ColorBehavior
 {
   private readonly _list: PropertyList<RGBAColor>;
 
-  private _staticColor: ColorSource = "#FFFFFF";
-  private _useStaticColor: boolean = true;
+  private _staticValue: ColorSource = "#FFFFFF";
+  private _behaviorMode: "static" | "list" | "random" = "static";
 
   constructor() {
     super();
@@ -46,12 +48,12 @@ export class ColorBehavior
     super.applyConfig(config);
 
     if ("staticColor" in config) {
-      this._staticColor = config.staticColor;
-      this._useStaticColor = true;
+      this._staticValue = config.staticColor;
+      this._behaviorMode = "static";
       return;
     }
 
-    this._useStaticColor = false;
+    this._behaviorMode = config.mode;
     this._list.reset(PropertyNode.createList(config.listData));
   }
 
@@ -59,15 +61,16 @@ export class ColorBehavior
    * @inheritdoc
    */
   public getConfig(): ColorBehaviorConfig {
-    if (this._useStaticColor) {
+    if (this._behaviorMode === "static") {
       return {
-        staticColor: this._staticColor,
+        staticColor: this._staticValue,
       };
     }
 
     // TODO DP: Update this to return list.
     return {
-      staticColor: this._staticColor,
+      staticColor: this._staticValue,
+      mode: "static",
     };
   }
 
@@ -75,10 +78,16 @@ export class ColorBehavior
    * @inheritdoc
    */
   public init(particle: EmitterParticle): void {
-    if (this._useStaticColor) {
-      particle.tint = this._staticColor;
+    if (this._behaviorMode === "static") {
+      particle.tint = this._staticValue;
       return;
     }
+
+    if (this._behaviorMode === "random") {
+      particle.tint = this._list.interpolate(Math.random());
+      return;
+    }
+
     particle.tint = this._list.interpolate(0);
   }
 
@@ -86,7 +95,8 @@ export class ColorBehavior
    * @inheritdoc
    */
   public update(particle: EmitterParticle): void {
-    if (this._useStaticColor) return;
+    if (this._behaviorMode === "static" || this._behaviorMode === "random")
+      return;
 
     particle.tint = this._list.interpolate(particle.data.agePercent);
   }
@@ -95,7 +105,7 @@ export class ColorBehavior
    * @inheritdoc
    */
   protected reset(): void {
-    this._staticColor = "#FFFFFF";
-    this._useStaticColor = true;
+    this._staticValue = "#FFFFFF";
+    this._behaviorMode = "static";
   }
 }

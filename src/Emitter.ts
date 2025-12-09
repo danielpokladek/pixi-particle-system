@@ -1,4 +1,5 @@
 import { ParticleContainer, Ticker } from "pixi.js";
+import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
@@ -30,6 +31,7 @@ export class Emitter {
   // *** Built-In Behaviors *** //
   private readonly _spawnBehavior: SpawnBehavior;
   private readonly _colorBehavior: ColorBehavior;
+  private readonly _alphaBehavior: AlphaBehavior;
   // *** ---            --- *** //
 
   private _particleCount: number = 0;
@@ -64,10 +66,29 @@ export class Emitter {
           { value: "#0000ff", time: 1 },
         ],
       },
+      mode: "random",
     });
 
-    this._initBehaviors.push(this._spawnBehavior, this._colorBehavior);
-    this._updateBehaviors.push(this._colorBehavior);
+    this._alphaBehavior = new AlphaBehavior();
+    this._alphaBehavior.applyConfig({
+      listData: {
+        list: [
+          { value: 0.0, time: 0 },
+          { value: 1.0, time: 0.5 },
+          { value: 0.0, time: 1 },
+        ],
+      },
+    });
+    // this._alphaBehavior.applyConfig({
+    //   staticAlpha: 1.0,
+    // });
+
+    this._initBehaviors.push(
+      this._spawnBehavior,
+      this._colorBehavior,
+      this._alphaBehavior,
+    );
+    this._updateBehaviors.push(this._colorBehavior, this._alphaBehavior);
   }
 
   /**
