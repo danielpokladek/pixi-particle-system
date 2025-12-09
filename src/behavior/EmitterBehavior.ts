@@ -3,7 +3,7 @@ import { EmitterParticle } from "../particle/EmitterParticle";
 /**
  * Abstract behavior class which all behaviors inherit from.
  */
-abstract class EmitterBehavior<Config> {
+export abstract class EmitterBehavior<Config> {
   /**
    * Applies the config to behavior.
    * @param config Config to apply.
@@ -26,24 +26,24 @@ abstract class EmitterBehavior<Config> {
 }
 
 /**
- * Abstract behavior class for behaviors which initialize particles.
+ * Interface for behaviors which initialize particles.
  */
-export abstract class InitBehavior<Config> extends EmitterBehavior<Config> {
+export interface InitBehavior<Config> extends EmitterBehavior<Config> {
   /**
    * Initializes the particle.
    * @param particle Particle to initialize.
    */
-  public abstract init(particle: EmitterParticle): void;
+  init(particle: EmitterParticle): void;
 }
 
 /**
- * Abstract behavior class for behaviors which update particles.
+ * Interface for behaviors which update particles.
  */
-export abstract class UpdateBehavior<Config> extends EmitterBehavior<Config> {
+export interface UpdateBehavior<Config> extends EmitterBehavior<Config> {
   /**
    * Updates the particle.
    * @param particle Particle to update.
    * @param deltaTime Time elapsed since last update (in seconds).
    */
-  public abstract update(particle: EmitterParticle, deltaTime: number): void;
+  update(particle: EmitterParticle, deltaTime: number): void;
 }

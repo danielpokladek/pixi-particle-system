@@ -105,10 +105,7 @@ function intColorComplex(this: PropertyList<RGBAColor>, lerp: number): number {
 
   let next = current.next;
 
-  while (next) {
-    if (lerp > next.time) break;
-    if (!next.next) break;
-
+  while (next.next && lerp > next.time) {
     current = next;
     next = next.next;
   }

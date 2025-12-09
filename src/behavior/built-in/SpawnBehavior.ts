@@ -1,5 +1,5 @@
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { InitBehavior } from "../EmitterBehavior";
+import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
 /**
  * Type defining the configuration for SpawnBehavior.
@@ -26,7 +26,10 @@ export type SpawnBehaviorConfig =
 /**
  * Behavior which spawns particles within a defined shape.
  */
-export class SpawnBehavior extends InitBehavior<SpawnBehaviorConfig> {
+export class SpawnBehavior
+  extends EmitterBehavior<SpawnBehaviorConfig>
+  implements InitBehavior<SpawnBehaviorConfig>
+{
   private _shape: "point" | "line" | "rectangle" | "circle" = "point";
 
   private _width: number = 0;

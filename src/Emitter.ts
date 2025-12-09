@@ -1,4 +1,5 @@
 import { ParticleContainer, Ticker } from "pixi.js";
+import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
 import { EmitterParticle } from "./particle/EmitterParticle";
@@ -28,6 +29,7 @@ export class Emitter {
 
   // *** Built-In Behaviors *** //
   private readonly _spawnBehavior: SpawnBehavior;
+  private readonly _colorBehavior: ColorBehavior;
   // *** ---            --- *** //
 
   private _particleCount: number = 0;
@@ -52,7 +54,20 @@ export class Emitter {
       width: 300,
       height: 300,
     });
-    this._initBehaviors.push(this._spawnBehavior);
+
+    this._colorBehavior = new ColorBehavior();
+    this._colorBehavior.applyConfig({
+      listData: {
+        list: [
+          { value: "#ff0000", time: 0 },
+          { value: "#00ff00", time: 0.5 },
+          { value: "#0000ff", time: 1 },
+        ],
+      },
+    });
+
+    this._initBehaviors.push(this._spawnBehavior, this._colorBehavior);
+    this._updateBehaviors.push(this._colorBehavior);
   }
 
   /**
@@ -100,13 +115,11 @@ export class Emitter {
 
         this.recycleParticle(particle);
       } else {
-        const lerp = particleData.age * particleData.maxLifetime;
-
         // TODO DP: Custom ease implementation.
 
-        particleData.agePercent = lerp;
-
-        // TODO DP: Loop through update behaviors and update particle.
+        for (const behavior of this._updateBehaviors) {
+          behavior.update(particle, deltaTime);
+        }
       }
     }
 
@@ -182,12 +195,13 @@ export class Emitter {
           ++this._particleCount;
         }
 
-        // TODO DP: Loop through initialize behaviors and initialize newParticles.
-        // TODO DP: Loop through update behaviors and update newParticles for first frame.
-
         for (const particle of newParticles) {
           for (const behavior of this._initBehaviors) {
             behavior.init(particle);
+          }
+
+          for (const behavior of this._updateBehaviors) {
+            behavior.update(particle, -this._spawnTimer);
           }
         }
 
