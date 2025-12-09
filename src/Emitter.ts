@@ -158,6 +158,92 @@ export class Emitter {
     }
 
     /**
+     * Stops the emitter.
+     * @param instant Whether to stop instantly or let existing particles die out.
+     */
+    public stop(instant: boolean = false): void {
+        this._emit = false;
+
+        if (instant) {
+            Ticker.shared.remove(this.update, this);
+
+            for (const particle of this._particles) {
+                this.recycleParticle(particle);
+            }
+
+            this._particles.length = 0;
+            this._particleCount = 0;
+
+            this._onComplete?.();
+            this._onComplete = null;
+
+            return;
+        }
+    }
+
+    /**
+     * Prewarms the emitter by simulating particle spawning and updating for a given time.
+     * @param time Time in seconds to prewarm the emitter.
+     */
+    public prewarm(time: number): void {
+        if (time <= 0 || this._emit === true) return;
+
+        const spawnCycles = Math.floor(time / this._spawnInterval);
+        const maxCycles = Math.min(spawnCycles, this._maxParticles);
+
+        for (let cycle = 0; cycle < maxCycles; cycle++) {
+            const particleAge = cycle * this._spawnInterval;
+
+            if (particleAge > this._maxLifetime) continue;
+
+            if (Math.random() > this._spawnChance) continue;
+
+            const lifetime =
+                this._minLifetime === this._maxLifetime
+                    ? this._maxLifetime
+                    : Math.random() * (this._maxLifetime - this._minLifetime);
+
+            if (particleAge >= lifetime) continue;
+
+            let particle: EmitterParticle;
+
+            if (this._pooledParticles.length > 0) {
+                particle = this._pooledParticles.pop()!;
+                particle.reset();
+            } else {
+                particle = new EmitterParticle();
+            }
+
+            const particleData = particle.data;
+            particleData.maxLifetime = lifetime;
+            particleData.oneOverLifetime = 1 / lifetime;
+            particleData.age = particleAge;
+            particleData.agePercent = particleAge / lifetime;
+
+            if (this._addAtBack) {
+                this._parent.addParticle(particle);
+            } else {
+                this._parent.addParticleAt(particle, 0);
+            }
+
+            for (const behavior of this._initBehaviors) {
+                behavior.init(particle);
+            }
+
+            for (const behavior of this._updateBehaviors) {
+                behavior.update(particle, 0);
+            }
+
+            this._particles.push(particle);
+            ++this._particleCount;
+
+            if (this._particleCount >= this._maxParticles) break;
+        }
+
+        this.play();
+    }
+
+    /**
      * Adds a behavior to the active init behaviors.
      * @param behavior Behavior to add.
      */
@@ -231,8 +317,6 @@ export class Emitter {
      */
     private update(ticker: Ticker): void {
         const deltaTime = ticker.elapsedMS * 0.001;
-
-        // *** Update Existing Particles First *** //
 
         for (let i = this._particles.length - 1; i >= 0; i--) {
             const particle = this._particles[i];
@@ -356,7 +440,7 @@ export class Emitter {
      */
     private recycleParticle(particle: EmitterParticle): void {
         particle.reset();
-        particle.alpha = 0;
+
         this._pooledParticles.push(particle);
     }
 }
