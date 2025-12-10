@@ -14,9 +14,9 @@ Creates a new Emitter instance.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `parent` | `ParticleContainer` | Parent ParticleContainer for the emitter. |
+| Parameter        | Type                                                | Description                                     |
+| ---------------- | --------------------------------------------------- | ----------------------------------------------- |
+| `parent`         | `ParticleContainer`                                 | Parent ParticleContainer for the emitter.       |
 | `initialConfig?` | [`EmitterConfig`](../type-aliases/EmitterConfig.md) | Optional initial configuration for the emitter. |
 
 #### Returns
@@ -39,7 +39,7 @@ Maximum number of particles allowed in the emitter.
 
 `number`
 
-***
+---
 
 ### parent
 
@@ -55,7 +55,7 @@ Parent ParticleContainer of the emitter.
 
 `ParticleContainer`
 
-***
+---
 
 ### particleCount
 
@@ -71,7 +71,7 @@ Current number of active particles in the emitter.
 
 `number`
 
-***
+---
 
 ### textureBehavior
 
@@ -99,15 +99,15 @@ Adds a behavior to the active init behaviors.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                                         | Description      |
+| ---------- | ------------------------------------------------------------ | ---------------- |
 | `behavior` | [`InitBehavior`](../interfaces/InitBehavior.md)\<`unknown`\> | Behavior to add. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### addToActiveUpdateBehaviors()
 
@@ -119,15 +119,15 @@ Adds a behavior to the active update behaviors.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                                             | Description      |
+| ---------- | ---------------------------------------------------------------- | ---------------- |
 | `behavior` | [`UpdateBehavior`](../interfaces/UpdateBehavior.md)\<`unknown`\> | Behavior to add. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### applyConfig()
 
@@ -139,15 +139,15 @@ Applies a configuration to the emitter.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | [`EmitterConfig`](../type-aliases/EmitterConfig.md) | Configuration to apply. |
+| Parameter | Type                                                | Description             |
+| --------- | --------------------------------------------------- | ----------------------- |
+| `config`  | [`EmitterConfig`](../type-aliases/EmitterConfig.md) | Configuration to apply. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### play()
 
@@ -161,7 +161,7 @@ Starts the emitter.
 
 `void`
 
-***
+---
 
 ### prewarm()
 
@@ -173,15 +173,15 @@ Prewarms the emitter by simulating particle spawning and updating for a given ti
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `time` | `number` | Time in seconds to prewarm the emitter. |
+| Parameter | Type     | Description                             |
+| --------- | -------- | --------------------------------------- |
+| `time`    | `number` | Time in seconds to prewarm the emitter. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### removeFromActiveInitBehaviors()
 
@@ -193,15 +193,15 @@ Removes a behavior from the active init behaviors.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                                         | Description         |
+| ---------- | ------------------------------------------------------------ | ------------------- |
 | `behavior` | [`InitBehavior`](../interfaces/InitBehavior.md)\<`unknown`\> | Behavior to remove. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### removeFromActiveUpdateBehaviors()
 
@@ -213,15 +213,15 @@ Removes a behavior from the active update behaviors.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                                             | Description         |
+| ---------- | ---------------------------------------------------------------- | ------------------- |
 | `behavior` | [`UpdateBehavior`](../interfaces/UpdateBehavior.md)\<`unknown`\> | Behavior to remove. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### stop()
 
@@ -233,9 +233,9 @@ Stops the emitter.
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `instant` | `boolean` | `false` | Whether to stop instantly or let existing particles die out. |
+| Parameter | Type      | Default value | Description                                                  |
+| --------- | --------- | ------------- | ------------------------------------------------------------ |
+| `instant` | `boolean` | `false`       | Whether to stop instantly or let existing particles die out. |
 
 #### Returns
 

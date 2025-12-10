@@ -42,7 +42,7 @@ export class SpawnBehavior
     /**
      * @inheritdoc
      */
-    public get behaviorOrder(): BehaviorOrder {
+    public get updateOrder(): BehaviorOrder {
         return "initial";
     }
 

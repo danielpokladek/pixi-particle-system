@@ -25,7 +25,7 @@ new EmitterParticle(): EmitterParticle;
 #### Overrides
 
 ```ts
-Particle.constructor
+Particle.constructor;
 ```
 
 ## Properties
@@ -48,22 +48,22 @@ particle.anchorX = 0.5; // Center horizontally
 #### Default
 
 ```ts
-0
+0;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.anchorX
+IEmitterParticle.anchorX;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.anchorX
+Particle.anchorX;
 ```
 
-***
+---
 
 ### anchorY
 
@@ -83,22 +83,22 @@ particle.anchorY = 0.5; // Center vertically
 #### Default
 
 ```ts
-0
+0;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.anchorY
+IEmitterParticle.anchorY;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.anchorY
+Particle.anchorY;
 ```
 
-***
+---
 
 ### color
 
@@ -121,22 +121,22 @@ console.log(particle.color); // Combined RGBA value
 #### Default
 
 ```ts
-0xffffffff
+0xffffffff;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.color
+IEmitterParticle.color;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.color
+Particle.color;
 ```
 
-***
+---
 
 ### data
 
@@ -147,10 +147,10 @@ data: BaseParticleData;
 #### Implementation of
 
 ```ts
-IEmitterParticle.data
+IEmitterParticle.data;
 ```
 
-***
+---
 
 ### rotation
 
@@ -171,22 +171,22 @@ particle.rotation += 0.1; // Rotate slowly clockwise
 #### Default
 
 ```ts
-0
+0;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.rotation
+IEmitterParticle.rotation;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.rotation
+Particle.rotation;
 ```
 
-***
+---
 
 ### scaleX
 
@@ -207,22 +207,22 @@ particle.scaleX *= 0.9; // Shrink over time
 #### Default
 
 ```ts
-1
+1;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.scaleX
+IEmitterParticle.scaleX;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.scaleX
+Particle.scaleX;
 ```
 
-***
+---
 
 ### scaleY
 
@@ -243,22 +243,22 @@ particle.scaleY *= 0.9; // Shrink over time
 #### Default
 
 ```ts
-1
+1;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.scaleY
+IEmitterParticle.scaleY;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.scaleY
+Particle.scaleY;
 ```
 
-***
+---
 
 ### texture
 
@@ -272,22 +272,22 @@ All particles in a container should share the same base texture.
 #### Example
 
 ```ts
-particle.texture = Texture.from('particle.png');
+particle.texture = Texture.from("particle.png");
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.texture
+IEmitterParticle.texture;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.texture
+Particle.texture;
 ```
 
-***
+---
 
 ### x
 
@@ -307,22 +307,22 @@ particle.x += Math.sin(time) * 10; // Oscillate horizontally
 #### Default
 
 ```ts
-0
+0;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.x
+IEmitterParticle.x;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.x
+Particle.x;
 ```
 
-***
+---
 
 ### y
 
@@ -342,22 +342,22 @@ particle.y += Math.cos(time) * 10; // Oscillate vertically
 #### Default
 
 ```ts
-0
+0;
 ```
 
 #### Implementation of
 
 ```ts
-IEmitterParticle.y
+IEmitterParticle.y;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.y
+Particle.y;
 ```
 
-***
+---
 
 ### defaultOptions
 
@@ -373,10 +373,10 @@ options aren't provided in the constructor.
 ```ts
 // Override defaults globally
 Particle.defaultOptions = {
-    ...Particle.defaultOptions,
-    anchorX: 0.5,
-    anchorY: 0.5,
-    alpha: 0.8
+  ...Particle.defaultOptions,
+  anchorX: 0.5,
+  anchorY: 0.5,
+  alpha: 0.8,
 };
 
 // New particles use modified defaults
@@ -387,13 +387,13 @@ console.log(centeredParticle.alpha); // 0.8
 
 #### See
 
- - ParticleOptions For all available options
- - Particle For the particle implementation
+- ParticleOptions For all available options
+- Particle For the particle implementation
 
 #### Inherited from
 
 ```ts
-Particle.defaultOptions
+Particle.defaultOptions;
 ```
 
 ## Accessors
@@ -414,8 +414,8 @@ to 1 (fully opaque). Values outside this range are clamped.
 ```ts
 // Create a semi-transparent particle
 const particle = new Particle({
-    texture: Texture.from('particle.png'),
-    alpha: 0.5
+  texture: Texture.from("particle.png"),
+  alpha: 0.5,
 });
 
 // Fade out
@@ -430,21 +430,21 @@ particle.alpha = -0.5; // Becomes 0.0
 
 // Animate transparency
 app.ticker.add((delta) => {
-    const time = performance.now() / 1000;
-    particle.alpha = 0.5 + Math.sin(time) * 0.5; // Pulse between 0-1
+  const time = performance.now() / 1000;
+  particle.alpha = 0.5 + Math.sin(time) * 0.5; // Pulse between 0-1
 });
 ```
 
 ##### Default
 
 ```ts
-1
+1;
 ```
 
 ##### See
 
- - Particle#tint For controlling particle color
- - [Particle#color](#color) For the combined color and alpha value
+- Particle#tint For controlling particle color
+- [Particle#color](#color) For the combined color and alpha value
 
 ##### Returns
 
@@ -458,9 +458,9 @@ set alpha(value): void;
 
 ##### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `value` | `number` |
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
 
 ##### Returns
 
@@ -469,16 +469,16 @@ set alpha(value): void;
 #### Implementation of
 
 ```ts
-IEmitterParticle.alpha
+IEmitterParticle.alpha;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.alpha
+Particle.alpha;
 ```
 
-***
+---
 
 ### tint
 
@@ -496,21 +496,21 @@ The tint is multiplied with the texture color to create the final particle color
 ```ts
 // Create a red particle
 const particle = new Particle({
-    texture: Texture.from('particle.png'),
-    tint: 0xff0000
+  texture: Texture.from("particle.png"),
+  tint: 0xff0000,
 });
 
 // Use CSS color strings
-particle.tint = '#00ff00';  // Green
-particle.tint = 'blue';     // Blue
+particle.tint = "#00ff00"; // Green
+particle.tint = "blue"; // Blue
 
 // Animate tint color
 app.ticker.add(() => {
-    const time = performance.now() / 1000;
+  const time = performance.now() / 1000;
 
-    // Cycle through hues
-    const hue = (time * 50) % 360;
-    particle.tint = `hsl(${hue}, 100%, 50%)`;
+  // Cycle through hues
+  const hue = (time * 50) % 360;
+  particle.tint = `hsl(${hue}, 100%, 50%)`;
 });
 
 // Reset to white (no tint)
@@ -520,14 +520,14 @@ particle.tint = 0xffffff;
 ##### Default
 
 ```ts
-0xffffff
+0xffffff;
 ```
 
 ##### See
 
- - Particle#alpha For controlling transparency
- - [Particle#color](#color) For the combined color and alpha value
- - Color For supported color formats
+- Particle#alpha For controlling transparency
+- [Particle#color](#color) For the combined color and alpha value
+- Color For supported color formats
 
 ##### Returns
 
@@ -541,9 +541,9 @@ set tint(value): void;
 
 ##### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `value` | `ColorSource` |
+| Parameter | Type          |
+| --------- | ------------- |
+| `value`   | `ColorSource` |
 
 ##### Returns
 
@@ -552,13 +552,13 @@ set tint(value): void;
 #### Implementation of
 
 ```ts
-IEmitterParticle.tint
+IEmitterParticle.tint;
 ```
 
 #### Inherited from
 
 ```ts
-Particle.tint
+Particle.tint;
 ```
 
 ## Methods
@@ -578,5 +578,5 @@ reset(): void;
 #### Implementation of
 
 ```ts
-IEmitterParticle.reset
+IEmitterParticle.reset;
 ```

@@ -1,15 +1,15 @@
 # ScaleBehaviorConfig
 
 ```ts
-type ScaleBehaviorConfig = 
+type ScaleBehaviorConfig =
   | {
-  mode?: "static";
-  value: number;
-}
+      mode?: "static";
+      value: number;
+    }
   | {
-  listData: ValueList<number>;
-  mode: "list" | "random";
-};
+      listData: ValueList<number>;
+      mode: "list" | "random";
+    };
 ```
 
 Type defining the configuration for ScaleBehavior.

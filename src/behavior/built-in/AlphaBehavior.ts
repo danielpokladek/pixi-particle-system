@@ -22,7 +22,20 @@ export type AlphaBehaviorConfig =
       };
 
 /**
- * Behavior which manages particle alpha over their lifetime.
+ * Behavior used to control the opacity of particles over their lifetime.
+ * Behavior can be configured using a static value, a list of values to interpolate over time, or a random value from a list.
+ * @example
+ * ```typescript
+ * // Interpolate alpha from 0 to 1 and back to 0 over the particle's lifetime.
+ * alphaBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: 0.0 },
+ *         { time: 0.5, value: 1.0 },
+ *         { time: 1.0, value: 0.0 }
+ *    ],
+ *   mode: "list"
+ * });
+ * ```
  */
 export class AlphaBehavior
     extends EmitterBehavior<AlphaBehaviorConfig>
@@ -48,7 +61,7 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public get behaviorOrder(): BehaviorOrder {
+    public get updateOrder(): BehaviorOrder {
         return "normal";
     }
 

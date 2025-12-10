@@ -14,12 +14,18 @@ export default {
                 items: typedocSidebar,
             },
         ],
-    },
-
-    socialLinks: [
-        {
-            icon: "github",
-            link: "https://github.com/danielpokladek/pixi-particle-system",
+        socialLinks: [
+            {
+                icon: "github",
+                link: "https://github.com/danielpokladek/pixi-particle-system",
+            },
+        ],
+        lastUpdated: {
+            text: "Last Update",
+            formatOptions: {
+                dateStyle: "short",
+                timeStyle: "short",
+            },
         },
-    ],
+    },
 };

@@ -48,7 +48,7 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public get behaviorOrder(): BehaviorOrder {
+    public get updateOrder(): BehaviorOrder {
         return "normal";
     }
 

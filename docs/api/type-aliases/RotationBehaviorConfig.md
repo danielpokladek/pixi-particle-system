@@ -1,20 +1,20 @@
 # RotationBehaviorConfig
 
 ```ts
-type RotationBehaviorConfig = 
+type RotationBehaviorConfig =
   | {
-  mode: "static";
-  value: number;
-}
+      mode: "static";
+      value: number;
+    }
   | {
-  listData: ValueList<number>;
-  mode: "list";
-}
+      listData: ValueList<number>;
+      mode: "list";
+    }
   | {
-  acceleration: number;
-  mode: "acceleration";
-  startRotation: number;
-};
+      acceleration: number;
+      mode: "acceleration";
+      startRotation: number;
+    };
 ```
 
 Type defining the configuration for RotationBehavior.

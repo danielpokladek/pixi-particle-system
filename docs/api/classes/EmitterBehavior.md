@@ -1,6 +1,6 @@
-# EmitterBehavior\<Config\>
+# EmitterBehavior\<ConfigType\>
 
-Abstract behavior class which all behaviors inherit from.
+Abstract base class for emitter behaviors to extend from.
 
 ## Extended by
 
@@ -15,29 +15,29 @@ Abstract behavior class which all behaviors inherit from.
 
 ## Type Parameters
 
-| Type Parameter |
-| ------ |
-| `Config` |
+| Type Parameter | Description                                       |
+| -------------- | ------------------------------------------------- |
+| `ConfigType`   | Type defining the configuration for the behavior. |
 
 ## Constructors
 
 ### Constructor
 
 ```ts
-new EmitterBehavior<Config>(emitter): EmitterBehavior<Config>;
+new EmitterBehavior<ConfigType>(emitter): EmitterBehavior<ConfigType>;
 ```
 
-Creates a new EmitterBehavior.
+Creates a new instance of the behavior.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description                                |
+| --------- | ----------------------- | ------------------------------------------ |
 | `emitter` | [`Emitter`](Emitter.md) | Emitter instance this behavior belongs to. |
 
 #### Returns
 
-`EmitterBehavior`\<`Config`\>
+`EmitterBehavior`\<`ConfigType`\>
 
 ## Properties
 
@@ -49,15 +49,16 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
-### behaviorOrder
+### updateOrder
 
 #### Get Signature
 
 ```ts
-get abstract behaviorOrder(): BehaviorOrder;
+get abstract updateOrder(): BehaviorOrder;
 ```
 
-Returns the order in which this behavior is applied.
+Order in which the behavior will be updated.
+This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
@@ -71,33 +72,36 @@ Returns the order in which this behavior is applied.
 applyConfig(config): void;
 ```
 
-Applies the config to behavior.
+Apply behavior config to the behavior.
+Please note, this will reset the behavior to its default state before applying the config.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | `Config` | Config to apply. |
+| Parameter | Type         | Description             |
+| --------- | ------------ | ----------------------- |
+| `config`  | `ConfigType` | Behavior configuration. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### getConfig()
 
 ```ts
-abstract getConfig(): Config;
+abstract getConfig(): ConfigType;
 ```
 
-Returns current behavior settings as a config.
+Retrieves the current behavior properties as a configuration object.
 
 #### Returns
 
-`Config`
+`ConfigType`
 
-***
+Behavior configuration.
+
+---
 
 ### reset()
 

@@ -1,6 +1,21 @@
 # AlphaBehavior
 
-Behavior which manages particle alpha over their lifetime.
+Behavior used to control the opacity of particles over their lifetime.
+Behavior can be configured using a static value, a list of values to interpolate over time, or a random value from a list.
+
+## Example
+
+```typescript
+// Interpolate alpha from 0 to 1 and back to 0 over the particle's lifetime.
+alphaBehavior.applyConfig({
+  listData: [
+    { time: 0.0, value: 0.0 },
+    { time: 0.5, value: 1.0 },
+    { time: 1.0, value: 0.0 },
+  ],
+  mode: "list",
+});
+```
 
 ## Extends
 
@@ -23,8 +38,8 @@ Creates new instance of AlphaBehavior.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description                                |
+| --------- | ----------------------- | ------------------------------------------ |
 | `emitter` | [`Emitter`](Emitter.md) | Emitter instance this behavior belongs to. |
 
 #### Returns
@@ -53,15 +68,16 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
-### behaviorOrder
+### updateOrder
 
 #### Get Signature
 
 ```ts
-get behaviorOrder(): BehaviorOrder;
+get updateOrder(): BehaviorOrder;
 ```
 
-Returns the order in which this behavior is applied.
+Order in which the behavior will be updated.
+This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
@@ -69,11 +85,11 @@ Returns the order in which this behavior is applied.
 
 #### Implementation of
 
-[`UpdateBehavior`](../interfaces/UpdateBehavior.md).[`behaviorOrder`](../interfaces/UpdateBehavior.md#behaviororder)
+[`UpdateBehavior`](../interfaces/UpdateBehavior.md).[`updateOrder`](../interfaces/UpdateBehavior.md#updateorder)
 
 #### Overrides
 
-[`EmitterBehavior`](EmitterBehavior.md).[`behaviorOrder`](EmitterBehavior.md#behaviororder)
+[`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
 
 ## Methods
 
@@ -83,13 +99,14 @@ Returns the order in which this behavior is applied.
 applyConfig(config): void;
 ```
 
-Applies the config to behavior.
+Apply behavior config to the behavior.
+Please note, this will reset the behavior to its default state before applying the config.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | [`AlphaBehaviorConfig`](../type-aliases/AlphaBehaviorConfig.md) | Config to apply. |
+| Parameter | Type                                                            | Description             |
+| --------- | --------------------------------------------------------------- | ----------------------- |
+| `config`  | [`AlphaBehaviorConfig`](../type-aliases/AlphaBehaviorConfig.md) | Behavior configuration. |
 
 #### Returns
 
@@ -103,7 +120,7 @@ Applies the config to behavior.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`applyConfig`](EmitterBehavior.md#applyconfig)
 
-***
+---
 
 ### getConfig()
 
@@ -111,11 +128,13 @@ Applies the config to behavior.
 getConfig(): AlphaBehaviorConfig;
 ```
 
-Returns current behavior settings as a config.
+Retrieves the current behavior properties as a configuration object.
 
 #### Returns
 
 [`AlphaBehaviorConfig`](../type-aliases/AlphaBehaviorConfig.md)
+
+Behavior configuration.
 
 #### Implementation of
 
@@ -125,7 +144,7 @@ Returns current behavior settings as a config.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`getConfig`](EmitterBehavior.md#getconfig)
 
-***
+---
 
 ### init()
 
@@ -137,8 +156,8 @@ Initializes the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                    | Description             |
+| ---------- | --------------------------------------- | ----------------------- |
 | `particle` | [`EmitterParticle`](EmitterParticle.md) | Particle to initialize. |
 
 #### Returns
@@ -149,7 +168,7 @@ Initializes the particle.
 
 [`InitBehavior`](../interfaces/InitBehavior.md).[`init`](../interfaces/InitBehavior.md#init)
 
-***
+---
 
 ### reset()
 
@@ -171,7 +190,7 @@ Resets the behavior to its default state.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`reset`](EmitterBehavior.md#reset)
 
-***
+---
 
 ### update()
 
@@ -183,8 +202,8 @@ Updates the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                    | Description         |
+| ---------- | --------------------------------------- | ------------------- |
 | `particle` | [`EmitterParticle`](EmitterParticle.md) | Particle to update. |
 
 #### Returns

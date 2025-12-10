@@ -3,13 +3,14 @@ import { EmitterParticle } from "../particle/EmitterParticle";
 import { BehaviorOrder } from "../util/Types";
 
 /**
- * Abstract behavior class which all behaviors inherit from.
+ * Abstract base class for emitter behaviors to extend from.
+ * @template ConfigType Type defining the configuration for the behavior.
  */
-export abstract class EmitterBehavior<Config> {
+export abstract class EmitterBehavior<ConfigType> {
     protected readonly _emitter: Emitter;
 
     /**
-     * Creates a new EmitterBehavior.
+     * Creates a new instance of the behavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
     constructor(emitter: Emitter) {
@@ -17,24 +18,27 @@ export abstract class EmitterBehavior<Config> {
     }
 
     /**
-     * Returns the order in which this behavior is applied.
+     * Order in which the behavior will be updated.
+     * This is useful to ensure certain behaviors are updated before/after others.
      */
-    public abstract get behaviorOrder(): BehaviorOrder;
+    public abstract get updateOrder(): BehaviorOrder;
 
     /**
-     * Applies the config to behavior.
-     * @param config Config to apply.
+     * Apply behavior config to the behavior.
+     * Please note, this will reset the behavior to its default state before applying the config.
+     * @param config Behavior configuration.
      */
-    public applyConfig(config: Config): void {
+    public applyConfig(config: ConfigType): void {
         if (!config) return;
 
         this.reset();
     }
 
     /**
-     * Returns current behavior settings as a config.
+     * Retrieves the current behavior properties as a configuration object.
+     * @returns Behavior configuration.
      */
-    public abstract getConfig(): Config;
+    public abstract getConfig(): ConfigType;
 
     /**
      * Resets the behavior to its default state.
@@ -43,9 +47,10 @@ export abstract class EmitterBehavior<Config> {
 }
 
 /**
- * Interface for behaviors which initialize particles.
+ * Interface defining behaviors which update particles on initialization.
+ * @template Config Type defining the configuration for the behavior.
  */
-export interface InitBehavior<Config> extends EmitterBehavior<Config> {
+export interface InitBehavior<ConfigType> extends EmitterBehavior<ConfigType> {
     /**
      * Initializes the particle.
      * @param particle Particle to initialize.
@@ -54,13 +59,14 @@ export interface InitBehavior<Config> extends EmitterBehavior<Config> {
 }
 
 /**
- * Interface for behaviors which update particles.
+ * Interface defining behaviors which update particles on each update cycle.
+ * @template Config Type defining the configuration for the behavior.
  */
 export interface UpdateBehavior<Config> extends EmitterBehavior<Config> {
     /**
      * Updates the particle.
      * @param particle Particle to update.
-     * @param deltaTime Time elapsed since last update (in seconds).
+     * @param deltaTime Time elapsed since the last update, in seconds.
      */
     update(particle: EmitterParticle, deltaTime: number): void;
 }

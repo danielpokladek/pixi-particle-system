@@ -16,7 +16,7 @@ addAtBack: boolean;
 
 Whether new particles are added to the back of the particle list (behind other particles).
 
-***
+---
 
 ### alphaBehavior?
 
@@ -26,7 +26,7 @@ optional alphaBehavior: AlphaBehaviorConfig;
 
 Configuration for the AlphaBehavior.
 
-***
+---
 
 ### colorBehavior?
 
@@ -36,7 +36,7 @@ optional colorBehavior: ColorBehaviorConfig;
 
 Configuration for the ColorBehavior.
 
-***
+---
 
 ### emitterVersion
 
@@ -46,7 +46,7 @@ emitterVersion: number;
 
 Emitter version this config was made for.
 
-***
+---
 
 ### maxParticleLifetime
 
@@ -56,7 +56,7 @@ maxParticleLifetime: number;
 
 Maximum lifetime of particles emitted, in seconds.
 
-***
+---
 
 ### maxParticles
 
@@ -66,7 +66,7 @@ maxParticles: number;
 
 Maximum number of particles allowed alive at once.
 
-***
+---
 
 ### minParticleLifetime
 
@@ -76,7 +76,7 @@ minParticleLifetime: number;
 
 Minimum lifetime of particles emitted, in seconds.
 
-***
+---
 
 ### particlesPerWave
 
@@ -86,7 +86,7 @@ particlesPerWave: number;
 
 Number of particles to spawn each wave.
 
-***
+---
 
 ### rotationBehavior?
 
@@ -96,7 +96,7 @@ optional rotationBehavior: RotationBehaviorConfig;
 
 Configuration for the RotationBehavior.
 
-***
+---
 
 ### scaleBehavior?
 
@@ -106,7 +106,7 @@ optional scaleBehavior: ScaleBehaviorConfig;
 
 Configuration for the ScaleBehavior.
 
-***
+---
 
 ### spawnBehavior?
 
@@ -116,7 +116,7 @@ optional spawnBehavior: SpawnBehaviorConfig;
 
 Configuration for the SpawnBehavior.
 
-***
+---
 
 ### spawnChance
 
@@ -126,7 +126,7 @@ spawnChance: number;
 
 Chance of spawning particles each wave, between 0 and 1.
 
-***
+---
 
 ### spawnInterval
 
@@ -136,7 +136,7 @@ spawnInterval: number;
 
 Interval between spawn waves, in seconds.
 
-***
+---
 
 ### textureBehavior?
 

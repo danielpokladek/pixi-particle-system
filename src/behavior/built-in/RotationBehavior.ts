@@ -53,7 +53,7 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public get behaviorOrder(): BehaviorOrder {
+    public get updateOrder(): BehaviorOrder {
         return "normal";
     }
 

@@ -1,16 +1,20 @@
-# InitBehavior\<Config\>
+# InitBehavior\<ConfigType\>
 
-Interface for behaviors which initialize particles.
+Interface defining behaviors which update particles on initialization.
+
+## Template
+
+Type defining the configuration for the behavior.
 
 ## Extends
 
-- [`EmitterBehavior`](../classes/EmitterBehavior.md)\<`Config`\>
+- [`EmitterBehavior`](../classes/EmitterBehavior.md)\<`ConfigType`\>
 
 ## Type Parameters
 
 | Type Parameter |
-| ------ |
-| `Config` |
+| -------------- |
+| `ConfigType`   |
 
 ## Properties
 
@@ -26,15 +30,16 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
-### behaviorOrder
+### updateOrder
 
 #### Get Signature
 
 ```ts
-get abstract behaviorOrder(): BehaviorOrder;
+get abstract updateOrder(): BehaviorOrder;
 ```
 
-Returns the order in which this behavior is applied.
+Order in which the behavior will be updated.
+This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
@@ -42,7 +47,7 @@ Returns the order in which this behavior is applied.
 
 #### Inherited from
 
-[`EmitterBehavior`](../classes/EmitterBehavior.md).[`behaviorOrder`](../classes/EmitterBehavior.md#behaviororder)
+[`EmitterBehavior`](../classes/EmitterBehavior.md).[`updateOrder`](../classes/EmitterBehavior.md#updateorder)
 
 ## Methods
 
@@ -52,13 +57,14 @@ Returns the order in which this behavior is applied.
 applyConfig(config): void;
 ```
 
-Applies the config to behavior.
+Apply behavior config to the behavior.
+Please note, this will reset the behavior to its default state before applying the config.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | `Config` | Config to apply. |
+| Parameter | Type         | Description             |
+| --------- | ------------ | ----------------------- |
+| `config`  | `ConfigType` | Behavior configuration. |
 
 #### Returns
 
@@ -68,25 +74,27 @@ Applies the config to behavior.
 
 [`EmitterBehavior`](../classes/EmitterBehavior.md).[`applyConfig`](../classes/EmitterBehavior.md#applyconfig)
 
-***
+---
 
 ### getConfig()
 
 ```ts
-abstract getConfig(): Config;
+abstract getConfig(): ConfigType;
 ```
 
-Returns current behavior settings as a config.
+Retrieves the current behavior properties as a configuration object.
 
 #### Returns
 
-`Config`
+`ConfigType`
+
+Behavior configuration.
 
 #### Inherited from
 
 [`EmitterBehavior`](../classes/EmitterBehavior.md).[`getConfig`](../classes/EmitterBehavior.md#getconfig)
 
-***
+---
 
 ### init()
 
@@ -98,15 +106,15 @@ Initializes the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                               | Description             |
+| ---------- | -------------------------------------------------- | ----------------------- |
 | `particle` | [`EmitterParticle`](../classes/EmitterParticle.md) | Particle to initialize. |
 
 #### Returns
 
 `void`
 
-***
+---
 
 ### reset()
 

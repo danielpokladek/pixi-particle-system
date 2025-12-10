@@ -14,7 +14,7 @@ Type defining the configuration for TextureBehavior.
 mode: TextureBehaviorMode;
 ```
 
-***
+---
 
 ### textureConfigs
 

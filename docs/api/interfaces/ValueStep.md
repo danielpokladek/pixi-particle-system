@@ -5,8 +5,8 @@ A single step of a ValueList.
 ## Type Parameters
 
 | Type Parameter |
-| ------ |
-| `T` |
+| -------------- |
+| `T`            |
 
 ## Properties
 
@@ -19,7 +19,7 @@ time: number;
 The percentage time of the particle's lifespan that this step happens at.
 Values are between 0 and 1, inclusive.
 
-***
+---
 
 ### value
 

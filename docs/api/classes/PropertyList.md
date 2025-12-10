@@ -6,8 +6,8 @@ Each Particle will have one of these for each interpolated property.
 ## Type Parameters
 
 | Type Parameter |
-| ------ |
-| `V` |
+| -------------- |
+| `V`            |
 
 ## Constructors
 
@@ -21,9 +21,9 @@ Creates a new PropertyList.
 
 #### Parameters
 
-| Parameter | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| `isColor` | `boolean` | `false` | If this list manages colors. |
+| Parameter | Type      | Default value | Description                  |
+| --------- | --------- | ------------- | ---------------------------- |
+| `isColor` | `boolean` | `false`       | If this list manages colors. |
 
 #### Returns
 
@@ -47,7 +47,7 @@ The interpolation value from 0-1.
 
 The eased value, also from 0-1.
 
-***
+---
 
 ### first
 
@@ -57,12 +57,12 @@ first: PropertyNode<V> | null;
 
 The first property node in the linked list.
 
-***
+---
 
 ### interpolate()
 
 ```ts
-interpolate: (lerp) => number = intValueSimple;
+interpolate: (lerp) => (number = intValueSimple);
 ```
 
 Calculates the correct value for the current interpolation value. This method is set in
@@ -70,9 +70,9 @@ the reset() method.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `lerp` | `number` | The interpolation value from 0-1. |
+| Parameter | Type     | Description                       |
+| --------- | -------- | --------------------------------- |
+| `lerp`    | `number` | The interpolation value from 0-1. |
 
 #### Returns
 
@@ -92,9 +92,9 @@ Resets the list for use.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `first` | `PropertyNode`\<`V`\> | The first node in the list. |
+| Parameter | Type                  | Description                 |
+| --------- | --------------------- | --------------------------- |
+| `first`   | `PropertyNode`\<`V`\> | The first node in the list. |
 
 #### Returns
 

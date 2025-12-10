@@ -14,7 +14,7 @@ Type defining the configuration for TextureBehavior.
 optional duration: number;
 ```
 
-***
+---
 
 ### framerate?
 
@@ -22,7 +22,7 @@ optional duration: number;
 optional framerate: number;
 ```
 
-***
+---
 
 ### loop?
 
@@ -30,7 +30,7 @@ optional framerate: number;
 optional loop: boolean;
 ```
 
-***
+---
 
 ### textures
 

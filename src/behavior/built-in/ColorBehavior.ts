@@ -49,7 +49,7 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public get behaviorOrder(): BehaviorOrder {
+    public get updateOrder(): BehaviorOrder {
         return "normal";
     }
 

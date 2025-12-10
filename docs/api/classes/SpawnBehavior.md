@@ -18,12 +18,12 @@ Behavior which spawns particles within a defined shape.
 new SpawnBehavior(emitter): SpawnBehavior;
 ```
 
-Creates a new EmitterBehavior.
+Creates a new instance of the behavior.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description                                |
+| --------- | ----------------------- | ------------------------------------------ |
 | `emitter` | [`Emitter`](Emitter.md) | Emitter instance this behavior belongs to. |
 
 #### Returns
@@ -52,15 +52,16 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
-### behaviorOrder
+### updateOrder
 
 #### Get Signature
 
 ```ts
-get behaviorOrder(): BehaviorOrder;
+get updateOrder(): BehaviorOrder;
 ```
 
-Returns the order in which this behavior is applied.
+Order in which the behavior will be updated.
+This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
@@ -68,11 +69,11 @@ Returns the order in which this behavior is applied.
 
 #### Implementation of
 
-[`InitBehavior`](../interfaces/InitBehavior.md).[`behaviorOrder`](../interfaces/InitBehavior.md#behaviororder)
+[`InitBehavior`](../interfaces/InitBehavior.md).[`updateOrder`](../interfaces/InitBehavior.md#updateorder)
 
 #### Overrides
 
-[`EmitterBehavior`](EmitterBehavior.md).[`behaviorOrder`](EmitterBehavior.md#behaviororder)
+[`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
 
 ## Methods
 
@@ -82,13 +83,14 @@ Returns the order in which this behavior is applied.
 applyConfig(config): void;
 ```
 
-Applies the config to behavior.
+Apply behavior config to the behavior.
+Please note, this will reset the behavior to its default state before applying the config.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | [`SpawnBehaviorConfig`](../type-aliases/SpawnBehaviorConfig.md) | Config to apply. |
+| Parameter | Type                                                            | Description             |
+| --------- | --------------------------------------------------------------- | ----------------------- |
+| `config`  | [`SpawnBehaviorConfig`](../type-aliases/SpawnBehaviorConfig.md) | Behavior configuration. |
 
 #### Returns
 
@@ -102,7 +104,7 @@ Applies the config to behavior.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`applyConfig`](EmitterBehavior.md#applyconfig)
 
-***
+---
 
 ### getConfig()
 
@@ -110,11 +112,13 @@ Applies the config to behavior.
 getConfig(): SpawnBehaviorConfig;
 ```
 
-Returns current behavior settings as a config.
+Retrieves the current behavior properties as a configuration object.
 
 #### Returns
 
 [`SpawnBehaviorConfig`](../type-aliases/SpawnBehaviorConfig.md)
+
+Behavior configuration.
 
 #### Implementation of
 
@@ -124,7 +128,7 @@ Returns current behavior settings as a config.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`getConfig`](EmitterBehavior.md#getconfig)
 
-***
+---
 
 ### init()
 
@@ -136,8 +140,8 @@ Initializes the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                    | Description             |
+| ---------- | --------------------------------------- | ----------------------- |
 | `particle` | [`EmitterParticle`](EmitterParticle.md) | Particle to initialize. |
 
 #### Returns
@@ -148,7 +152,7 @@ Initializes the particle.
 
 [`InitBehavior`](../interfaces/InitBehavior.md).[`init`](../interfaces/InitBehavior.md#init)
 
-***
+---
 
 ### reset()
 

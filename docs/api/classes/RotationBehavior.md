@@ -23,8 +23,8 @@ Creates a new RotationBehavior.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter | Type                    | Description                                |
+| --------- | ----------------------- | ------------------------------------------ |
 | `emitter` | [`Emitter`](Emitter.md) | Emitter instance this behavior belongs to. |
 
 #### Returns
@@ -53,15 +53,16 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
-### behaviorOrder
+### updateOrder
 
 #### Get Signature
 
 ```ts
-get behaviorOrder(): BehaviorOrder;
+get updateOrder(): BehaviorOrder;
 ```
 
-Returns the order in which this behavior is applied.
+Order in which the behavior will be updated.
+This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
@@ -69,11 +70,11 @@ Returns the order in which this behavior is applied.
 
 #### Implementation of
 
-[`UpdateBehavior`](../interfaces/UpdateBehavior.md).[`behaviorOrder`](../interfaces/UpdateBehavior.md#behaviororder)
+[`UpdateBehavior`](../interfaces/UpdateBehavior.md).[`updateOrder`](../interfaces/UpdateBehavior.md#updateorder)
 
 #### Overrides
 
-[`EmitterBehavior`](EmitterBehavior.md).[`behaviorOrder`](EmitterBehavior.md#behaviororder)
+[`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
 
 ## Methods
 
@@ -83,13 +84,14 @@ Returns the order in which this behavior is applied.
 applyConfig(config): void;
 ```
 
-Applies the config to behavior.
+Apply behavior config to the behavior.
+Please note, this will reset the behavior to its default state before applying the config.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `config` | [`RotationBehaviorConfig`](../type-aliases/RotationBehaviorConfig.md) | Config to apply. |
+| Parameter | Type                                                                  | Description             |
+| --------- | --------------------------------------------------------------------- | ----------------------- |
+| `config`  | [`RotationBehaviorConfig`](../type-aliases/RotationBehaviorConfig.md) | Behavior configuration. |
 
 #### Returns
 
@@ -103,7 +105,7 @@ Applies the config to behavior.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`applyConfig`](EmitterBehavior.md#applyconfig)
 
-***
+---
 
 ### getConfig()
 
@@ -111,11 +113,13 @@ Applies the config to behavior.
 getConfig(): RotationBehaviorConfig;
 ```
 
-Returns current behavior settings as a config.
+Retrieves the current behavior properties as a configuration object.
 
 #### Returns
 
 [`RotationBehaviorConfig`](../type-aliases/RotationBehaviorConfig.md)
+
+Behavior configuration.
 
 #### Implementation of
 
@@ -125,7 +129,7 @@ Returns current behavior settings as a config.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`getConfig`](EmitterBehavior.md#getconfig)
 
-***
+---
 
 ### init()
 
@@ -137,8 +141,8 @@ Initializes the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
+| Parameter  | Type                                    | Description             |
+| ---------- | --------------------------------------- | ----------------------- |
 | `particle` | [`EmitterParticle`](EmitterParticle.md) | Particle to initialize. |
 
 #### Returns
@@ -149,7 +153,7 @@ Initializes the particle.
 
 [`InitBehavior`](../interfaces/InitBehavior.md).[`init`](../interfaces/InitBehavior.md#init)
 
-***
+---
 
 ### reset()
 
@@ -171,7 +175,7 @@ Resets the behavior to its default state.
 
 [`EmitterBehavior`](EmitterBehavior.md).[`reset`](EmitterBehavior.md#reset)
 
-***
+---
 
 ### update()
 
@@ -183,10 +187,10 @@ Updates the particle.
 
 #### Parameters
 
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `particle` | [`EmitterParticle`](EmitterParticle.md) | Particle to update. |
-| `deltaTime` | `number` | Time elapsed since last update (in seconds). |
+| Parameter   | Type                                    | Description                                     |
+| ----------- | --------------------------------------- | ----------------------------------------------- |
+| `particle`  | [`EmitterParticle`](EmitterParticle.md) | Particle to update.                             |
+| `deltaTime` | `number`                                | Time elapsed since the last update, in seconds. |
 
 #### Returns
 

@@ -1,24 +1,24 @@
 # SpawnBehaviorConfig
 
 ```ts
-type SpawnBehaviorConfig = 
+type SpawnBehaviorConfig =
   | {
-  shape: "point";
-}
+      shape: "point";
+    }
   | {
-  shape: "line";
-  width: number;
-}
+      shape: "line";
+      width: number;
+    }
   | {
-  height: number;
-  shape: "rectangle";
-  width: number;
-}
+      height: number;
+      shape: "rectangle";
+      width: number;
+    }
   | {
-  innerRadius?: number;
-  outerRadius: number;
-  shape: "circle";
-};
+      innerRadius?: number;
+      outerRadius: number;
+      shape: "circle";
+    };
 ```
 
 Type defining the configuration for SpawnBehavior.

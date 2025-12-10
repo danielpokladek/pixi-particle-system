@@ -1,15 +1,15 @@
 # ColorBehaviorConfig
 
 ```ts
-type ColorBehaviorConfig = 
+type ColorBehaviorConfig =
   | {
-  mode?: "static";
-  value: ColorSource;
-}
+      mode?: "static";
+      value: ColorSource;
+    }
   | {
-  listData: ValueList<string>;
-  mode: "list" | "random";
-};
+      listData: ValueList<string>;
+      mode: "list" | "random";
+    };
 ```
 
 Type defining the configuration for ColorBehavior.
