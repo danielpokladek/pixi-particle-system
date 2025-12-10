@@ -8,6 +8,10 @@ export type BaseParticleData = {
     age: number;
     agePercent: number;
     oneOverLifetime: number;
+
+    velocityX: number;
+    velocityY: number;
+
     textureConfig: {
         textures: Texture[];
         duration: number;
@@ -63,6 +67,9 @@ export class EmitterParticle extends Particle implements IEmitterParticle {
         this.data.agePercent = 0;
         this.data.maxLifetime = 0;
         this.data.oneOverLifetime = 0;
+
+        this.data.velocityX = 0;
+        this.data.velocityY = 0;
 
         this.data.textureConfig.textures = [];
         this.data.textureConfig.duration = 0;

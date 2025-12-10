@@ -1,5 +1,6 @@
 import { AlphaBehaviorConfig } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehaviorConfig } from "./behavior/built-in/ColorBehavior";
+import { MovementBehaviorConfig } from "./behavior/built-in/MovementBehavior";
 import { RotationBehaviorConfig } from "./behavior/built-in/RotationBehavior";
 import { ScaleBehaviorConfig } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehaviorConfig } from "./behavior/built-in/SpawnBehavior";
@@ -58,6 +59,11 @@ export type EmitterConfig = {
      * Configuration for the ColorBehavior.
      */
     colorBehavior?: ColorBehaviorConfig;
+
+    /**
+     * Configuration for the MovementBehavior.
+     */
+    movementBehavior?: MovementBehaviorConfig;
 
     /**
      * Configuration for the RotationBehavior.

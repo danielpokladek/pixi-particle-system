@@ -1,6 +1,7 @@
 import { ParticleContainer, Ticker } from "pixi.js";
 import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
+import { MovementBehavior } from "./behavior/built-in/MovementBehavior";
 import { RotationBehavior } from "./behavior/built-in/RotationBehavior";
 import { ScaleBehavior } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
@@ -24,11 +25,12 @@ export class Emitter {
     private readonly _updateBehaviors: UpdateBehavior<unknown>[] = [];
 
     // *** Built-In Behaviors *** //
-    private readonly _spawnBehavior: SpawnBehavior;
-    private readonly _colorBehavior: ColorBehavior;
     private readonly _alphaBehavior: AlphaBehavior;
-    private readonly _scaleBehavior: ScaleBehavior;
+    private readonly _colorBehavior: ColorBehavior;
+    private readonly _movementBehavior: MovementBehavior;
     private readonly _rotationBehavior: RotationBehavior;
+    private readonly _scaleBehavior: ScaleBehavior;
+    private readonly _spawnBehavior: SpawnBehavior;
     private readonly _textureBehavior: TextureBehavior;
     // *** ---            --- *** //
 
@@ -60,11 +62,12 @@ export class Emitter {
     constructor(parent: ParticleContainer, initialConfig?: EmitterConfig) {
         this._parent = parent;
 
-        this._spawnBehavior = new SpawnBehavior(this);
         this._alphaBehavior = new AlphaBehavior(this);
         this._colorBehavior = new ColorBehavior(this);
-        this._scaleBehavior = new ScaleBehavior(this);
+        this._movementBehavior = new MovementBehavior(this);
         this._rotationBehavior = new RotationBehavior(this);
+        this._scaleBehavior = new ScaleBehavior(this);
+        this._spawnBehavior = new SpawnBehavior(this);
         this._textureBehavior = new TextureBehavior(this);
 
         // Spawn behavior is always active.
@@ -130,6 +133,10 @@ export class Emitter {
 
         if (config.colorBehavior) {
             this._colorBehavior.applyConfig(config.colorBehavior);
+        }
+
+        if (config.movementBehavior) {
+            this._movementBehavior.applyConfig(config.movementBehavior);
         }
 
         if (config.rotationBehavior) {
@@ -232,14 +239,6 @@ export class Emitter {
                 this._parent.addParticle(particle);
             } else {
                 this._parent.addParticleAt(particle, 0);
-            }
-
-            for (const behavior of this._initBehaviors) {
-                behavior.init(particle);
-            }
-
-            for (const behavior of this._updateBehaviors) {
-                behavior.update(particle, 0);
             }
 
             this._particles.push(particle);
