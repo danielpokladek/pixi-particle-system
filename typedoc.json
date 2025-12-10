@@ -1,0 +1,44 @@
+{
+    "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
+    
+    "entryPoints": ["src/index.ts"],
+    "entryPointStrategy": "resolve",
+    "entryFileName": "index",
+    
+    "out": "./docs/api",
+    "docsRoot": "./docs",
+
+    "readme": "none",
+
+    "indexFormat": "table",
+    "parametersFormat": "table",
+
+    "includeHierarchySummary": false,
+
+    "hidePageHeader": true,
+    "hideBreadcrumbs": true,
+    "useCodeBlocks": true,
+
+    "pageTitleTemplates": {
+        "index": "{projectName} {version}",
+        "member": "{name}"
+    },
+
+    "formatWithPrettier": true,
+    
+    "categorizeByGroup": false,
+    "disableSources": true,
+    "searchInDocuments": true,
+    "navigation": {
+        "includeCategories": true,
+        "includeGroups": true,
+        "excludeReferences": false,
+        "includeFolders": true
+    },
+    "mergeReadme": true,
+    "sidebar": {
+        "pretty": true,
+        "format": "vitepress",
+        "collapsed": false,
+    }
+}

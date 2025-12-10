@@ -1,0 +1,108 @@
+[
+  {
+    "text": "Classes",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "AlphaBehavior",
+        "link": "/api/classes/AlphaBehavior.md"
+      },
+      {
+        "text": "ColorBehavior",
+        "link": "/api/classes/ColorBehavior.md"
+      },
+      {
+        "text": "Emitter",
+        "link": "/api/classes/Emitter.md"
+      },
+      {
+        "text": "EmitterBehavior",
+        "link": "/api/classes/EmitterBehavior.md"
+      },
+      {
+        "text": "EmitterParticle",
+        "link": "/api/classes/EmitterParticle.md"
+      },
+      {
+        "text": "PropertyList",
+        "link": "/api/classes/PropertyList.md"
+      },
+      {
+        "text": "RotationBehavior",
+        "link": "/api/classes/RotationBehavior.md"
+      },
+      {
+        "text": "ScaleBehavior",
+        "link": "/api/classes/ScaleBehavior.md"
+      },
+      {
+        "text": "SpawnBehavior",
+        "link": "/api/classes/SpawnBehavior.md"
+      },
+      {
+        "text": "TextureBehavior",
+        "link": "/api/classes/TextureBehavior.md"
+      }
+    ]
+  },
+  {
+    "text": "Interfaces",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "InitBehavior",
+        "link": "/api/interfaces/InitBehavior.md"
+      },
+      {
+        "text": "UpdateBehavior",
+        "link": "/api/interfaces/UpdateBehavior.md"
+      },
+      {
+        "text": "ValueList",
+        "link": "/api/interfaces/ValueList.md"
+      },
+      {
+        "text": "ValueStep",
+        "link": "/api/interfaces/ValueStep.md"
+      }
+    ]
+  },
+  {
+    "text": "Type Aliases",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "AlphaBehaviorConfig",
+        "link": "/api/type-aliases/AlphaBehaviorConfig.md"
+      },
+      {
+        "text": "ColorBehaviorConfig",
+        "link": "/api/type-aliases/ColorBehaviorConfig.md"
+      },
+      {
+        "text": "EmitterConfig",
+        "link": "/api/type-aliases/EmitterConfig.md"
+      },
+      {
+        "text": "RotationBehaviorConfig",
+        "link": "/api/type-aliases/RotationBehaviorConfig.md"
+      },
+      {
+        "text": "ScaleBehaviorConfig",
+        "link": "/api/type-aliases/ScaleBehaviorConfig.md"
+      },
+      {
+        "text": "SpawnBehaviorConfig",
+        "link": "/api/type-aliases/SpawnBehaviorConfig.md"
+      },
+      {
+        "text": "TextureBehaviorConfig",
+        "link": "/api/type-aliases/TextureBehaviorConfig.md"
+      },
+      {
+        "text": "TextureConfig",
+        "link": "/api/type-aliases/TextureConfig.md"
+      }
+    ]
+  }
+]
