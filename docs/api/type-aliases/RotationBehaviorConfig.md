@@ -7,7 +7,7 @@ type RotationBehaviorConfig =
       value: number;
     }
   | {
-      listData: ValueList<number>;
+      listData: ListData<number>;
       mode: "list";
     }
   | {

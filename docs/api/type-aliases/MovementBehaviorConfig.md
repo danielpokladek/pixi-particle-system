@@ -8,7 +8,7 @@ type MovementBehaviorConfig =
       mode?: "linear" | "acceleration";
     }
   | {
-      listData: ValueList<number>;
+      listData: ListData<number>;
       mode?: "linear" | "acceleration";
     };
 ```

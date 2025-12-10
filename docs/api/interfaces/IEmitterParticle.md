@@ -1,32 +1,10 @@
-# EmitterParticle
+# IEmitterParticle
 
-Particle class used by the Emitter.
+Interface defining an emitter particle.
 
 ## Extends
 
 - `Particle`
-
-## Implements
-
-- [`IEmitterParticle`](../interfaces/IEmitterParticle.md)
-
-## Constructors
-
-### Constructor
-
-```ts
-new EmitterParticle(): EmitterParticle;
-```
-
-#### Returns
-
-`EmitterParticle`
-
-#### Overrides
-
-```ts
-Particle.constructor;
-```
 
 ## Properties
 
@@ -50,10 +28,6 @@ particle.anchorX = 0.5; // Center horizontally
 ```ts
 0;
 ```
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`anchorX`](../interfaces/IEmitterParticle.md#anchorx)
 
 #### Inherited from
 
@@ -83,10 +57,6 @@ particle.anchorY = 0.5; // Center vertically
 ```ts
 0;
 ```
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`anchorY`](../interfaces/IEmitterParticle.md#anchory)
 
 #### Inherited from
 
@@ -120,10 +90,6 @@ console.log(particle.color); // Combined RGBA value
 0xffffffff;
 ```
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`color`](../interfaces/IEmitterParticle.md#color)
-
 #### Inherited from
 
 ```ts
@@ -137,10 +103,6 @@ Particle.color;
 ```ts
 data: BaseParticleData;
 ```
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`data`](../interfaces/IEmitterParticle.md#data)
 
 ---
 
@@ -165,10 +127,6 @@ particle.rotation += 0.1; // Rotate slowly clockwise
 ```ts
 0;
 ```
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`rotation`](../interfaces/IEmitterParticle.md#rotation)
 
 #### Inherited from
 
@@ -200,10 +158,6 @@ particle.scaleX *= 0.9; // Shrink over time
 1;
 ```
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`scaleX`](../interfaces/IEmitterParticle.md#scalex)
-
 #### Inherited from
 
 ```ts
@@ -234,10 +188,6 @@ particle.scaleY *= 0.9; // Shrink over time
 1;
 ```
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`scaleY`](../interfaces/IEmitterParticle.md#scaley)
-
 #### Inherited from
 
 ```ts
@@ -260,10 +210,6 @@ All particles in a container should share the same base texture.
 ```ts
 particle.texture = Texture.from("particle.png");
 ```
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`texture`](../interfaces/IEmitterParticle.md#texture)
 
 #### Inherited from
 
@@ -294,10 +240,6 @@ particle.x += Math.sin(time) * 10; // Oscillate horizontally
 0;
 ```
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`x`](../interfaces/IEmitterParticle.md#x)
-
 #### Inherited from
 
 ```ts
@@ -327,53 +269,10 @@ particle.y += Math.cos(time) * 10; // Oscillate vertically
 0;
 ```
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`y`](../interfaces/IEmitterParticle.md#y)
-
 #### Inherited from
 
 ```ts
 Particle.y;
-```
-
----
-
-### defaultOptions
-
-```ts
-static defaultOptions: Partial<ParticleOptions>;
-```
-
-Default options used when creating new particles. These values are applied when specific
-options aren't provided in the constructor.
-
-#### Example
-
-```ts
-// Override defaults globally
-Particle.defaultOptions = {
-  ...Particle.defaultOptions,
-  anchorX: 0.5,
-  anchorY: 0.5,
-  alpha: 0.8,
-};
-
-// New particles use modified defaults
-const centeredParticle = new Particle(texture);
-console.log(centeredParticle.anchorX); // 0.5
-console.log(centeredParticle.alpha); // 0.8
-```
-
-#### See
-
-- ParticleOptions For all available options
-- Particle For the particle implementation
-
-#### Inherited from
-
-```ts
-Particle.defaultOptions;
 ```
 
 ## Accessors
@@ -424,7 +323,7 @@ app.ticker.add((delta) => {
 ##### See
 
 - Particle#tint For controlling particle color
-- [Particle#color](../interfaces/IEmitterParticle.md#color) For the combined color and alpha value
+- [Particle#color](#color) For the combined color and alpha value
 
 ##### Returns
 
@@ -445,10 +344,6 @@ set alpha(value): void;
 ##### Returns
 
 `void`
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`alpha`](../interfaces/IEmitterParticle.md#alpha)
 
 #### Inherited from
 
@@ -504,7 +399,7 @@ particle.tint = 0xffffff;
 ##### See
 
 - Particle#alpha For controlling transparency
-- [Particle#color](../interfaces/IEmitterParticle.md#color) For the combined color and alpha value
+- [Particle#color](#color) For the combined color and alpha value
 - Color For supported color formats
 
 ##### Returns
@@ -527,10 +422,6 @@ set tint(value): void;
 
 `void`
 
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`tint`](../interfaces/IEmitterParticle.md#tint)
-
 #### Inherited from
 
 ```ts
@@ -550,7 +441,3 @@ Resets the particle data.
 #### Returns
 
 `void`
-
-#### Implementation of
-
-[`IEmitterParticle`](../interfaces/IEmitterParticle.md).[`reset`](../interfaces/IEmitterParticle.md#reset)

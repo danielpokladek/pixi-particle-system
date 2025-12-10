@@ -7,7 +7,7 @@ type AlphaBehaviorConfig =
       value: number;
     }
   | {
-      listData: ValueList<number>;
+      listData: ListData<number>;
       mode: "list" | "random";
     };
 ```

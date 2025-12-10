@@ -43,7 +43,7 @@ This is useful to ensure certain behaviors are updated before/after others.
 
 ##### Returns
 
-`BehaviorOrder`
+[`BehaviorOrder`](../type-aliases/BehaviorOrder.md)
 
 #### Inherited from
 

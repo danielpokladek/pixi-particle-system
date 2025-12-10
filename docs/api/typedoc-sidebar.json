@@ -12,6 +12,10 @@
         "link": "/api/classes/ColorBehavior.md"
       },
       {
+        "text": "ColorList",
+        "link": "/api/classes/ColorList.md"
+      },
+      {
         "text": "Emitter",
         "link": "/api/classes/Emitter.md"
       },
@@ -20,16 +24,24 @@
         "link": "/api/classes/EmitterBehavior.md"
       },
       {
+        "text": "EmitterError",
+        "link": "/api/classes/EmitterError.md"
+      },
+      {
         "text": "EmitterParticle",
         "link": "/api/classes/EmitterParticle.md"
+      },
+      {
+        "text": "List",
+        "link": "/api/classes/List.md"
       },
       {
         "text": "MovementBehavior",
         "link": "/api/classes/MovementBehavior.md"
       },
       {
-        "text": "PropertyList",
-        "link": "/api/classes/PropertyList.md"
+        "text": "NumberList",
+        "link": "/api/classes/NumberList.md"
       },
       {
         "text": "RotationBehavior",
@@ -54,20 +66,16 @@
     "collapsed": false,
     "items": [
       {
+        "text": "IEmitterParticle",
+        "link": "/api/interfaces/IEmitterParticle.md"
+      },
+      {
         "text": "InitBehavior",
         "link": "/api/interfaces/InitBehavior.md"
       },
       {
         "text": "UpdateBehavior",
         "link": "/api/interfaces/UpdateBehavior.md"
-      },
-      {
-        "text": "ValueList",
-        "link": "/api/interfaces/ValueList.md"
-      },
-      {
-        "text": "ValueStep",
-        "link": "/api/interfaces/ValueStep.md"
       }
     ]
   },
@@ -80,16 +88,52 @@
         "link": "/api/type-aliases/AlphaBehaviorConfig.md"
       },
       {
+        "text": "BaseParticleData",
+        "link": "/api/type-aliases/BaseParticleData.md"
+      },
+      {
+        "text": "BasicTweenable",
+        "link": "/api/type-aliases/BasicTweenable.md"
+      },
+      {
+        "text": "BehaviorMode",
+        "link": "/api/type-aliases/BehaviorMode.md"
+      },
+      {
+        "text": "BehaviorOrder",
+        "link": "/api/type-aliases/BehaviorOrder.md"
+      },
+      {
         "text": "ColorBehaviorConfig",
         "link": "/api/type-aliases/ColorBehaviorConfig.md"
+      },
+      {
+        "text": "EaseSegment",
+        "link": "/api/type-aliases/EaseSegment.md"
       },
       {
         "text": "EmitterConfig",
         "link": "/api/type-aliases/EmitterConfig.md"
       },
       {
+        "text": "ListData",
+        "link": "/api/type-aliases/ListData.md"
+      },
+      {
+        "text": "ListNode",
+        "link": "/api/type-aliases/ListNode.md"
+      },
+      {
+        "text": "ListStep",
+        "link": "/api/type-aliases/ListStep.md"
+      },
+      {
         "text": "MovementBehaviorConfig",
         "link": "/api/type-aliases/MovementBehaviorConfig.md"
+      },
+      {
+        "text": "RGBAColor",
+        "link": "/api/type-aliases/RGBAColor.md"
       },
       {
         "text": "RotationBehaviorConfig",
@@ -98,6 +142,10 @@
       {
         "text": "ScaleBehaviorConfig",
         "link": "/api/type-aliases/ScaleBehaviorConfig.md"
+      },
+      {
+        "text": "SimpleEase",
+        "link": "/api/type-aliases/SimpleEase.md"
       },
       {
         "text": "SpawnBehaviorConfig",
@@ -110,6 +158,28 @@
       {
         "text": "TextureConfig",
         "link": "/api/type-aliases/TextureConfig.md"
+      }
+    ]
+  },
+  {
+    "text": "Functions",
+    "collapsed": false,
+    "items": [
+      {
+        "text": "convertHexToRGB",
+        "link": "/api/functions/convertHexToRGB.md"
+      },
+      {
+        "text": "convertRgbToUint",
+        "link": "/api/functions/convertRgbToUint.md"
+      },
+      {
+        "text": "defaultInterpolateFunction",
+        "link": "/api/functions/defaultInterpolateFunction.md"
+      },
+      {
+        "text": "generateEase",
+        "link": "/api/functions/generateEase.md"
       }
     ]
   }

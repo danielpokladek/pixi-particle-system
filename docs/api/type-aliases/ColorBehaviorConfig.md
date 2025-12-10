@@ -7,7 +7,7 @@ type ColorBehaviorConfig =
       value: ColorSource;
     }
   | {
-      listData: ValueList<string>;
+      listData: ListData<string>;
       mode: "list" | "random";
     };
 ```
