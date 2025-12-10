@@ -220,6 +220,14 @@ export class Emitter {
             particleData.age = particleAge;
             particleData.agePercent = particleAge / lifetime;
 
+            for (const behavior of this._initBehaviors) {
+                behavior.init(particle);
+            }
+
+            for (const behavior of this._updateBehaviors) {
+                behavior.update(particle, particleAge);
+            }
+
             if (this._addAtBack) {
                 this._parent.addParticle(particle);
             } else {
@@ -439,6 +447,8 @@ export class Emitter {
      * @param particle Particle to recycle.
      */
     private recycleParticle(particle: EmitterParticle): void {
+        this._parent.removeParticle(particle);
+
         particle.reset();
 
         this._pooledParticles.push(particle);
