@@ -1,4 +1,5 @@
-import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { ListData } from "../../data/list/List";
+import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
@@ -16,7 +17,7 @@ export type RotationBehaviorConfig =
           value: number;
           mode: "static";
       }
-    | { listData: ValueList<number>; mode: "list" }
+    | { listData: ListData<number>; mode: "list" }
     | {
           startRotation: number;
           acceleration: number;
@@ -32,7 +33,7 @@ export class RotationBehavior
         InitBehavior<RotationBehaviorConfig>,
         UpdateBehavior<RotationBehaviorConfig>
 {
-    private readonly _list: PropertyList<number>;
+    private readonly _list: NumberList;
 
     private _mode: "static" | "list" | "acceleration" = "static";
 
@@ -47,7 +48,7 @@ export class RotationBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new PropertyList<number>();
+        this._list = new NumberList();
     }
 
     /**
@@ -68,19 +69,23 @@ export class RotationBehavior
         if (config.mode === "static") {
             this._staticValue = config.value;
             this._mode = "static";
+            this._list.reset();
+
             return;
         }
 
         if (config.mode === "acceleration") {
-            this._mode = "acceleration";
             this._startRotation = config.startRotation;
             this._acceleration = config.acceleration;
+
+            this._mode = "acceleration";
+            this._list.reset();
 
             this._emitter.addToActiveUpdateBehaviors(this);
             return;
         }
 
-        this._list.reset(PropertyNode.createList(config.listData));
+        this._list.initialize(config.listData);
         this._mode = "list";
 
         this._emitter.addToActiveUpdateBehaviors(this);

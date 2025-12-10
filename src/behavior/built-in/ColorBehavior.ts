@@ -1,8 +1,9 @@
 import { ColorSource } from "pixi.js";
-import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { ColorList } from "../../data/list/ColorList";
+import { ListData } from "../../data/list/List";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { BehaviorOrder, RGBAColor } from "../../util/Types";
+import { BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -18,7 +19,7 @@ export type ColorBehaviorConfig =
           mode?: "static";
       }
     | {
-          listData: ValueList<string>;
+          listData: ListData<string>;
           mode: "list" | "random";
       };
 
@@ -31,7 +32,7 @@ export class ColorBehavior
         InitBehavior<ColorBehaviorConfig>,
         UpdateBehavior<ColorBehaviorConfig>
 {
-    private readonly _list: PropertyList<RGBAColor>;
+    private readonly _list: ColorList;
 
     private _staticValue: ColorSource = "#FFFFFF";
     private _behaviorMode: "static" | "list" | "random" = "static";
@@ -43,7 +44,7 @@ export class ColorBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new PropertyList<RGBAColor>(true);
+        this._list = new ColorList();
     }
 
     /**
@@ -64,12 +65,13 @@ export class ColorBehavior
         if ("value" in config) {
             this._staticValue = config.value;
             this._behaviorMode = "static";
+            this._list.reset();
 
             return;
         }
 
         this._behaviorMode = config.mode;
-        this._list.reset(PropertyNode.createList(config.listData));
+        this._list.initialize(config.listData);
 
         if (this._behaviorMode === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);

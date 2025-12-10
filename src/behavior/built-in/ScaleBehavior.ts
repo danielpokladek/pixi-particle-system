@@ -1,4 +1,5 @@
-import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { ListData } from "../../data/list/List";
+import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
@@ -17,7 +18,7 @@ export type ScaleBehaviorConfig =
           mode?: "static";
       }
     | {
-          listData: ValueList<number>;
+          listData: ListData<number>;
           mode: "list" | "random";
       };
 
@@ -30,7 +31,7 @@ export class ScaleBehavior
         InitBehavior<ScaleBehaviorConfig>,
         UpdateBehavior<ScaleBehaviorConfig>
 {
-    private readonly _list: PropertyList<number>;
+    private readonly _list: NumberList;
 
     private _mode: "static" | "list" | "random" = "static";
     private _staticValue: number = 1;
@@ -42,7 +43,7 @@ export class ScaleBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new PropertyList<number>();
+        this._list = new NumberList();
     }
 
     /**
@@ -67,7 +68,7 @@ export class ScaleBehavior
         }
 
         this._mode = config.mode;
-        this._list.reset(PropertyNode.createList(config.listData));
+        this._list.initialize(config.listData);
 
         if (this._mode === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);

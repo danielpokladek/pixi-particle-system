@@ -1,4 +1,5 @@
-import { PropertyList, PropertyNode, ValueList } from "../../data/PropertyList";
+import { ListData } from "../../data/list/List";
+import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
@@ -18,7 +19,7 @@ export type MovementBehaviorConfig =
           mode?: "linear" | "acceleration";
       }
     | {
-          listData: ValueList<number>;
+          listData: ListData<number>;
           mode?: "linear" | "acceleration";
       };
 
@@ -31,7 +32,7 @@ export class MovementBehavior
         InitBehavior<MovementBehaviorConfig>,
         UpdateBehavior<MovementBehaviorConfig>
 {
-    private readonly _list: PropertyList<number>;
+    private readonly _list: NumberList;
 
     private _mode: "acceleration" | "linear" = "linear";
     private _useList: boolean = false;
@@ -46,7 +47,7 @@ export class MovementBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new PropertyList<number>();
+        this._list = new NumberList();
     }
 
     /**
@@ -67,7 +68,7 @@ export class MovementBehavior
             this._maxMoveSpeed = config.maxMoveSpeed;
             this._useList = false;
         } else {
-            this._list.reset(PropertyNode.createList(config.listData));
+            this._list.initialize(config.listData);
             this._useList = true;
         }
 
