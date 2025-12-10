@@ -78,6 +78,16 @@ Minimum lifetime of particles emitted, in seconds.
 
 ---
 
+### movementBehavior?
+
+```ts
+optional movementBehavior: MovementBehaviorConfig;
+```
+
+Configuration for the MovementBehavior.
+
+---
+
 ### particlesPerWave
 
 ```ts

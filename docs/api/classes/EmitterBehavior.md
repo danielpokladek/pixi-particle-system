@@ -8,6 +8,7 @@ Abstract base class for emitter behaviors to extend from.
 - [`UpdateBehavior`](../interfaces/UpdateBehavior.md)
 - [`AlphaBehavior`](AlphaBehavior.md)
 - [`ColorBehavior`](ColorBehavior.md)
+- [`MovementBehavior`](MovementBehavior.md)
 - [`RotationBehavior`](RotationBehavior.md)
 - [`ScaleBehavior`](ScaleBehavior.md)
 - [`SpawnBehavior`](SpawnBehavior.md)

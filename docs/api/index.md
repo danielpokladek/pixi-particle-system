@@ -9,6 +9,7 @@
 | [Emitter](classes/Emitter.md)                   | Emitter class which handles particle spawning and updating.                                                                                                                                       |
 | [EmitterBehavior](classes/EmitterBehavior.md)   | Abstract base class for emitter behaviors to extend from.                                                                                                                                         |
 | [EmitterParticle](classes/EmitterParticle.md)   | Particle class used by the Emitter.                                                                                                                                                               |
+| [MovementBehavior](classes/MovementBehavior.md) | Behavior used to control the movement of particles over their lifetime.                                                                                                                           |
 | [PropertyList](classes/PropertyList.md)         | Singly linked list container for keeping track of interpolated properties for particles. Each Particle will have one of these for each interpolated property.                                     |
 | [RotationBehavior](classes/RotationBehavior.md) | Behavior which handles particle rotation.                                                                                                                                                         |
 | [ScaleBehavior](classes/ScaleBehavior.md)       | Behavior which scales particles over their lifetime.                                                                                                                                              |
@@ -31,6 +32,7 @@
 | [AlphaBehaviorConfig](type-aliases/AlphaBehaviorConfig.md)       | Type defining the configuration for AlphaBehavior.    |
 | [ColorBehaviorConfig](type-aliases/ColorBehaviorConfig.md)       | Type defining the configuration for ColorBehavior.    |
 | [EmitterConfig](type-aliases/EmitterConfig.md)                   | Type defining the configuration for an Emitter.       |
+| [MovementBehaviorConfig](type-aliases/MovementBehaviorConfig.md) | Type defining the configuration for MovementBehavior. |
 | [RotationBehaviorConfig](type-aliases/RotationBehaviorConfig.md) | Type defining the configuration for RotationBehavior. |
 | [ScaleBehaviorConfig](type-aliases/ScaleBehaviorConfig.md)       | Type defining the configuration for ScaleBehavior.    |
 | [SpawnBehaviorConfig](type-aliases/SpawnBehaviorConfig.md)       | Type defining the configuration for SpawnBehavior.    |
