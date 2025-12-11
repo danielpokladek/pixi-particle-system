@@ -312,6 +312,7 @@ export class Emitter {
         behavior: InitBehavior<unknown>,
     ): void {
         const index = this._initBehaviors.indexOf(behavior);
+
         if (index !== -1) {
             this._initBehaviors.splice(index, 1);
         }
@@ -325,6 +326,7 @@ export class Emitter {
         behavior: UpdateBehavior<unknown>,
     ): void {
         const index = this._updateBehaviors.indexOf(behavior);
+
         if (index !== -1) {
             this._updateBehaviors.splice(index, 1);
         }
@@ -356,7 +358,7 @@ export class Emitter {
 
                 this.recycleParticle(particle);
             } else {
-                // TODO DP: Custom ease implementation.
+                // TODO: Lifetime ease implementation.
 
                 for (const behavior of this._updateBehaviors) {
                     behavior.update(particle, deltaTime);

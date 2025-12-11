@@ -9,6 +9,9 @@ export type BaseParticleData = {
     agePercent: number;
     oneOverLifetime: number;
 
+    directionVectorX: number;
+    directionVectorY: number;
+
     accelerationX: number;
     accelerationY: number;
 
@@ -70,6 +73,12 @@ export class EmitterParticle extends Particle implements IEmitterParticle {
         this.data.agePercent = 0;
         this.data.maxLifetime = 0;
         this.data.oneOverLifetime = 0;
+
+        this.data.directionVectorX = 0;
+        this.data.directionVectorY = 0;
+
+        this.data.accelerationX = 0;
+        this.data.accelerationY = 0;
 
         this.data.velocityX = 0;
         this.data.velocityY = 0;

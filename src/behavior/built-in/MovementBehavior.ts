@@ -17,11 +17,13 @@ export type MovementBehaviorConfig =
           minMoveSpeed: number;
           maxMoveSpeed: number;
           mode?: "linear" | "acceleration";
+          space?: "local" | "global";
       }
     | {
           xListData: ListData<number>;
           yListData?: ListData<number>;
           mode?: "linear" | "acceleration";
+          space?: "local" | "global";
       };
 
 /**
@@ -37,6 +39,8 @@ export class MovementBehavior
     private readonly _yList: NumberList;
 
     private _mode: "acceleration" | "linear" = "linear";
+    private _space: "local" | "global" = "local";
+
     private _useList: boolean = false;
 
     private _minMoveSpeed: number = 0;
@@ -77,6 +81,7 @@ export class MovementBehavior
         }
 
         this._mode = config.mode ?? "linear";
+        this._space = config.space ?? "global";
 
         this._emitter.addToActiveInitBehaviors(this);
         this._emitter.addToActiveUpdateBehaviors(this);
@@ -94,6 +99,8 @@ export class MovementBehavior
      * @inheritdoc
      */
     public init(particle: EmitterParticle): void {
+        const particleData = particle.data;
+
         let xVelocity: number;
         let yVelocity: number;
 
@@ -110,13 +117,34 @@ export class MovementBehavior
                 this._minMoveSpeed;
         }
 
-        // TODO DP: Make particles rotation aware.
-        // TODO DP: Add logic to SpawnBehavior where direction vector can be set.
-        particle.data.accelerationX = xVelocity;
-        particle.data.accelerationY = yVelocity;
+        // TODO: Make particles rotation aware.
+        // TODO: Add logic to SpawnBehavior where direction vector can be set.
 
-        particle.data.velocityX = xVelocity;
-        particle.data.velocityY = yVelocity;
+        if (this._space === "local") {
+            const dirX = particleData.directionVectorX;
+            const dirY = particleData.directionVectorY;
+            const length = Math.sqrt(dirX * dirX + dirY * dirY);
+            const forwardX = dirX / length;
+            const forwardY = dirY / length;
+            const perpX = -forwardY;
+            const perpY = forwardX;
+
+            const finalX = forwardX * yVelocity + perpX * xVelocity;
+            const finalY = forwardY * yVelocity + perpY * xVelocity;
+
+            particleData.accelerationX = finalX;
+            particleData.accelerationY = finalY;
+
+            particleData.velocityX = finalX;
+            particleData.velocityY = finalY;
+            return;
+        }
+
+        particleData.accelerationX = xVelocity;
+        particleData.accelerationY = yVelocity;
+
+        particleData.velocityX = xVelocity;
+        particleData.velocityY = yVelocity;
     }
 
     /**
@@ -126,13 +154,32 @@ export class MovementBehavior
         const particleData = particle.data;
 
         if (this._mode === "acceleration") {
-            const xAcceleration = this._useList
-                ? this._xList.interpolate(particleData.agePercent)
-                : particleData.accelerationX;
+            let xAcceleration: number;
+            let yAcceleration: number;
 
-            const yAcceleration = this._useList
-                ? this._yList.interpolate(particleData.agePercent)
-                : particleData.accelerationY;
+            if (this._useList) {
+                const xValue = this._xList.interpolate(particleData.agePercent);
+                const yValue = this._yList.interpolate(particleData.agePercent);
+
+                if (this._space === "local") {
+                    const dirX = particleData.directionVectorX;
+                    const dirY = particleData.directionVectorY;
+                    const length = Math.sqrt(dirX * dirX + dirY * dirY);
+                    const forwardX = dirX / length;
+                    const forwardY = dirY / length;
+                    const perpX = -forwardY;
+                    const perpY = forwardX;
+
+                    xAcceleration = forwardX * yValue + perpX * xValue;
+                    yAcceleration = forwardY * yValue + perpY * xValue;
+                } else {
+                    xAcceleration = xValue;
+                    yAcceleration = yValue;
+                }
+            } else {
+                xAcceleration = particleData.accelerationX;
+                yAcceleration = particleData.accelerationY;
+            }
 
             particleData.velocityX += xAcceleration * deltaTime;
             particleData.velocityY += yAcceleration * deltaTime;

@@ -1,3 +1,4 @@
+import { PointData } from "pixi.js";
 import { EmitterError } from "../../error";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
@@ -6,24 +7,27 @@ import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 /**
  * Type defining the configuration for SpawnBehavior.
  */
-export type SpawnBehaviorConfig =
+export type SpawnBehaviorConfig = {
+    direction?: PointData;
+} & (
     | {
           shape: "point";
       }
     | {
           shape: "line";
-          width: number;
+          length: number;
       }
     | {
           shape: "rectangle";
           width: number;
-          height: number;
+          height?: number;
       }
     | {
           shape: "circle";
           outerRadius: number;
           innerRadius?: number;
-      };
+      }
+);
 
 /**
  * Behavior which spawns particles within a defined shape.
@@ -40,6 +44,8 @@ export class SpawnBehavior
     private _innerRadius: number = 0;
     private _outerRadius: number = 0;
 
+    private _directionVector: PointData = { x: 0, y: 0 };
+
     /**
      * @inheritdoc
      */
@@ -48,10 +54,19 @@ export class SpawnBehavior
     }
 
     /**
+     * Direction vector applied to spawned particles.
+     */
+    public get direction(): PointData {
+        return this._directionVector;
+    }
+
+    /**
      * @inheritdoc
      */
     public applyConfig(config: SpawnBehaviorConfig): void {
         super.applyConfig(config);
+
+        this._directionVector = config.direction ?? { x: 0, y: 0 };
 
         if (config.shape === "point") {
             this._shape = "point";
@@ -60,14 +75,14 @@ export class SpawnBehavior
 
         if (config.shape === "line") {
             this._shape = "line";
-            this._width = config.width;
+            this._width = config.length;
             return;
         }
 
         if (config.shape === "rectangle") {
             this._shape = "rectangle";
             this._width = config.width;
-            this._height = config.height;
+            this._height = config.height ?? config.width;
             return;
         }
 
@@ -92,7 +107,7 @@ export class SpawnBehavior
         if (this._shape === "line") {
             return {
                 shape: "line",
-                width: this._width,
+                length: this._width,
             };
         }
 
@@ -119,6 +134,11 @@ export class SpawnBehavior
      * @inheritdoc
      */
     public init(particle: EmitterParticle): void {
+        const particleData = particle.data;
+
+        particleData.directionVectorX = this._directionVector.x;
+        particleData.directionVectorY = this._directionVector.y;
+
         if (this._shape === "point") {
             particle.x = 0;
             particle.y = 0;
