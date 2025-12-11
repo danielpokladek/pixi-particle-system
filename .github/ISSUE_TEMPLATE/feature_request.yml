@@ -1,0 +1,33 @@
+name: "Feature Request"
+description: Suggest enhancements or new capabilities for the library
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve the library!  
+        Tell us what feature you'd like to see.
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Description"
+      description: "What should the library do that it doesn't do today?"
+      placeholder: "Particles should be able to do a barrel roll!"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Why is this feature useful?"
+      description: "Explain what problem it solves or what possibilities it opens."
+      placeholder: "Because everything should be able to do a barrel roll!"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional context"
+      description: "Mockups, examples, or pseudo-code are welcome."

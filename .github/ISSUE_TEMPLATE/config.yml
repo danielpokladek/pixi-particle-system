@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/danielpokladek/pixi-particle-system/discussions
+    about: Ask general questions or share ideas here.

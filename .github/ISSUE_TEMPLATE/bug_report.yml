@@ -1,0 +1,59 @@
+name: "Bug Report"
+description: Report a problem or unexpected behavior.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report an issue!  
+        Please fill out the details below to help us investigate.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: "A clear and concise description of what went wrong."
+      placeholder: "Particles move without `MovementBehavior` being enabled."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Reproduction Steps"
+      description: "If possible, provide a minimal code example or steps to reproduce the bug."
+      placeholder: |
+        1. Create an emitter with X configuration  
+        2. Start the emitter  
+        3. Observe unexpected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior"
+      description: "What did you expect to happen?"
+      placeholder: "Particles should not move without `MovementBehavior` being enabled."
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Details"
+      description: "Include as much details as possible about the issue."
+      placeholder: |
+        - PixiJS: v8.1.0  
+        - OS: Windows 11  
+        - Browser: Chrome 122  
+        - Node: 20.10  
+        - pnpm: 9.x
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional context"
+      description: "Anything else we should know?"

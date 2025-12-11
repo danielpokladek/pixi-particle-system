@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     build: {
         lib: {
             entry: "./src/index.ts",
@@ -18,7 +18,7 @@ export default defineConfig({
             },
         },
         sourcemap: true,
-        minify: false,
+        minify: mode === "production",
     },
     plugins: [
         dts({
@@ -26,4 +26,4 @@ export default defineConfig({
             outDir: "dist",
         }),
     ],
-});
+}));

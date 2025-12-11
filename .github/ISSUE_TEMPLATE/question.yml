@@ -1,0 +1,26 @@
+name: "Question / Help"
+description: Ask a question or request guidance
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about the API, behaviors, or usage?  
+        Ask away!
+
+  - type: textarea
+    id: question
+    attributes:
+      label: "What's your question?"
+      placeholder: "How do I combine MovementBehavior with ScaleBehavior to create a shockwave effect?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context"
+      description: "If applicable, provide code snippets or describe your setup."
+      placeholder: |
+        Using PixiJS v8.1.0 and latest version of Particle System.  
+        Emitter config: {...}
