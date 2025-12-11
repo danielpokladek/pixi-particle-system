@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle System Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+
+        #app {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 100;
+        }
+
+        th {
+            border-left: 1px solid white;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <table style="width: 100%; text-align: left; margin-top: 5px;">
+    <tr>
+        <th>FPS:</th>
+        <th id="fps">---</th>
+    </tr>
+    <tr>
+        <th>Particles:</th>
+        <th id="particles">---:</th>
+    </tr>
+</table>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

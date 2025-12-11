@@ -26,11 +26,12 @@
     ],
 
     "scripts": {
-        "build": "tsc && vite build",
-        "dev": "vite build --watch --mode development",
-        "docs:dev": "typedoc && vitepress dev docs",
-        "docs:build": "typedoc && vitepress build docs",
-        "docs:serve": "vitepress serve docs"
+        "build:system": "tsc && vite build",
+        "build:editor": "vite dev editor --config editor/vite.config.ts",
+        "build:docs": "typedoc && vitepress build docs",
+        "dev:system": "vite build --watch --mode development",
+        "dev:editor": "vite dev editor --config editor/vite.config.ts",
+        "dev:docs": "typedoc && vitepress dev docs"
     },
 
     "peerDependencies": {
