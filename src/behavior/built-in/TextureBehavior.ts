@@ -1,4 +1,5 @@
 import { Texture } from "pixi.js";
+import { EmitterError } from "../../error";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorMode, BehaviorOrder } from "../../util/Types";
 import {
@@ -139,7 +140,7 @@ export class TextureBehavior
         particle.texture = config.textures[frameIndex];
 
         if (particle.texture === undefined) {
-            throw new Error(
+            throw new EmitterError(
                 `Texture undefined in TextureBehavior update ${frameIndex}`,
             );
         }

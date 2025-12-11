@@ -1,3 +1,4 @@
+import { EmitterError } from "../../error";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
@@ -111,7 +112,7 @@ export class SpawnBehavior
             };
         }
 
-        throw new Error("Invalid spawn shape.");
+        throw new EmitterError("Invalid spawn shape.");
     }
 
     /**
