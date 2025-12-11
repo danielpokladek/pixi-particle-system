@@ -8,6 +8,22 @@ Type defining the data stored in each particle.
 
 ## Properties
 
+### accelerationX
+
+```ts
+accelerationX: number;
+```
+
+---
+
+### accelerationY
+
+```ts
+accelerationY: number;
+```
+
+---
+
 ### age
 
 ```ts
@@ -20,6 +36,22 @@ age: number;
 
 ```ts
 agePercent: number;
+```
+
+---
+
+### directionVectorX
+
+```ts
+directionVectorX: number;
+```
+
+---
+
+### directionVectorY
+
+```ts
+directionVectorY: number;
 ```
 
 ---

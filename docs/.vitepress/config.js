@@ -1,6 +1,7 @@
 import typedocSidebar from "../api/typedoc-sidebar.json";
 
 export default {
+    base: "/pixi-particle-system/",
     title: "PixiJS Particle System",
     description: "Fast, powerful and intuitive particle system for PixiJS.",
     themeConfig: {

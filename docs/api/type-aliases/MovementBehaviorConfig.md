@@ -6,10 +6,13 @@ type MovementBehaviorConfig =
       maxMoveSpeed: number;
       minMoveSpeed: number;
       mode?: "linear" | "acceleration";
+      space?: "local" | "global";
     }
   | {
-      listData: ListData<number>;
       mode?: "linear" | "acceleration";
+      space?: "local" | "global";
+      xListData: ListData<number>;
+      yListData?: ListData<number>;
     };
 ```
 

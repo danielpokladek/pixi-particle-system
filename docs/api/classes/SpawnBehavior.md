@@ -52,6 +52,22 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
+### direction
+
+#### Get Signature
+
+```ts
+get direction(): PointData;
+```
+
+Direction vector applied to spawned particles.
+
+##### Returns
+
+`PointData`
+
+---
+
 ### updateOrder
 
 #### Get Signature
