@@ -9,6 +9,9 @@ export type BaseParticleData = {
     agePercent: number;
     oneOverLifetime: number;
 
+    accelerationX: number;
+    accelerationY: number;
+
     velocityX: number;
     velocityY: number;
 

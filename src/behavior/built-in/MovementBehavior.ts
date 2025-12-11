@@ -19,7 +19,8 @@ export type MovementBehaviorConfig =
           mode?: "linear" | "acceleration";
       }
     | {
-          listData: ListData<number>;
+          xListData: ListData<number>;
+          yListData?: ListData<number>;
           mode?: "linear" | "acceleration";
       };
 
@@ -32,7 +33,8 @@ export class MovementBehavior
         InitBehavior<MovementBehaviorConfig>,
         UpdateBehavior<MovementBehaviorConfig>
 {
-    private readonly _list: NumberList;
+    private readonly _xList: NumberList;
+    private readonly _yList: NumberList;
 
     private _mode: "acceleration" | "linear" = "linear";
     private _useList: boolean = false;
@@ -47,7 +49,8 @@ export class MovementBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new NumberList();
+        this._xList = new NumberList();
+        this._yList = new NumberList();
     }
 
     /**
@@ -68,7 +71,8 @@ export class MovementBehavior
             this._maxMoveSpeed = config.maxMoveSpeed;
             this._useList = false;
         } else {
-            this._list.initialize(config.listData);
+            this._xList.initialize(config.xListData);
+            this._yList.initialize(config.yListData ?? config.xListData);
             this._useList = true;
         }
 
@@ -90,20 +94,29 @@ export class MovementBehavior
      * @inheritdoc
      */
     public init(particle: EmitterParticle): void {
-        let velocity = 0;
+        let xVelocity: number;
+        let yVelocity: number;
 
         if (this._useList) {
-            velocity = this._list.interpolate(0);
+            xVelocity = this._xList.interpolate(0);
+            yVelocity = this._yList.interpolate(0);
         } else {
-            velocity =
+            xVelocity =
+                Math.random() * (this._maxMoveSpeed - this._minMoveSpeed) +
+                this._minMoveSpeed;
+
+            yVelocity =
                 Math.random() * (this._maxMoveSpeed - this._minMoveSpeed) +
                 this._minMoveSpeed;
         }
 
         // TODO DP: Make particles rotation aware.
         // TODO DP: Add logic to SpawnBehavior where direction vector can be set.
-        particle.data.velocityX = velocity;
-        particle.data.velocityY = velocity;
+        particle.data.accelerationX = xVelocity;
+        particle.data.accelerationY = yVelocity;
+
+        particle.data.velocityX = xVelocity;
+        particle.data.velocityY = yVelocity;
     }
 
     /**
@@ -111,13 +124,18 @@ export class MovementBehavior
      */
     public update(particle: EmitterParticle, deltaTime: number): void {
         const particleData = particle.data;
-        const velocity = this._useList
-            ? this._list.interpolate(particleData.agePercent)
-            : particleData.velocityX;
 
         if (this._mode === "acceleration") {
-            particleData.velocityX += velocity * deltaTime;
-            particleData.velocityY += velocity * deltaTime;
+            const xAcceleration = this._useList
+                ? this._xList.interpolate(particleData.agePercent)
+                : particleData.accelerationX;
+
+            const yAcceleration = this._useList
+                ? this._yList.interpolate(particleData.agePercent)
+                : particleData.accelerationY;
+
+            particleData.velocityX += xAcceleration * deltaTime;
+            particleData.velocityY += yAcceleration * deltaTime;
         }
 
         particle.x += particleData.velocityX * deltaTime;
