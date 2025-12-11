@@ -120,5 +120,17 @@ const config: EmitterConfig = {
 };
 
 // Create a simple particle system
-const particleSystem = new Emitter(container, config);
-particleSystem.play();
+const emitter = new Emitter(container, config);
+emitter.play();
+
+function setupDebug(): void {
+    const fpsElement = document.getElementById("fps")!;
+    const particlesElement = document.getElementById("particles")!;
+
+    app.ticker.add(() => {
+        fpsElement.textContent = `${Math.round(app.ticker.FPS)}`;
+        particlesElement.textContent = `${emitter.particleCount} / ${emitter.maxParticles}`;
+    });
+}
+
+setupDebug();

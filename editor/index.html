@@ -15,6 +15,7 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            font-family: Arial, sans-serif;
             background: #1a1a2e;
         }
 
@@ -41,21 +42,24 @@
         th {
             border-left: 1px solid white;
             padding-left: 5px;
+            padding-right: 5px;
         }
     </style>
 </head>
 <body>
     <div id="app"></div>
-    <table style="width: 100%; text-align: left; margin-top: 5px;">
-    <tr>
-        <th>FPS:</th>
-        <th id="fps">---</th>
-    </tr>
-    <tr>
-        <th>Particles:</th>
-        <th id="particles">---:</th>
-    </tr>
-</table>
+    <div id="info">
+        <table style="width: 100%; text-align: left; margin-top: 5px;">
+            <tr>
+                <th>FPS</th>
+                <th id="fps">---</th>
+            </tr>
+            <tr>
+                <th>Particles</th>
+                <th id="particles">---</th>
+            </tr>
+        </table>
+    </div>
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
