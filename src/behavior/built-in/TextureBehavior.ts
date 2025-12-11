@@ -71,7 +71,7 @@ export class TextureBehavior
      * @inheritdoc
      */
     public getConfig(): TextureBehaviorConfig {
-        // TODO DP: Handle this properly.
+        // TODO: Handle this properly.
         return null as unknown as TextureBehaviorConfig;
     }
 

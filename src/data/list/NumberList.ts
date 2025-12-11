@@ -42,7 +42,7 @@ function complexValue(this: List<number>, lerp: number): number {
     while (lerp > next.time) {
         current = next;
 
-        // TODO DP: Handle error better?
+        // TODO: Handle error better?
         next = next.next!;
     }
 

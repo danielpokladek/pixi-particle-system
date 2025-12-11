@@ -86,7 +86,7 @@ export class MovementBehavior
      * @inheritdoc
      */
     public getConfig(): MovementBehaviorConfig {
-        // TODO DP: Implement the getter.
+        // TODO: Implement the getter.
         return {} as MovementBehaviorConfig;
     }
 

@@ -100,7 +100,7 @@ export class AlphaBehavior
             };
         }
 
-        // TODO DP: Update this to return list.
+        // TODO: Update this to return list.
         return {
             value: this._staticValue,
         };

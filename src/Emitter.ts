@@ -193,7 +193,19 @@ export class Emitter {
      * @param time Time in seconds to prewarm the emitter.
      */
     public prewarm(time: number): void {
-        if (time <= 0 || this._emit === true) return;
+        if (this._emit === true) {
+            // eslint-disable-next-line no-console
+            console.warn(
+                "Emitter: Cannot prewarm an emitter that is already playing!",
+            );
+            return;
+        }
+
+        if (time <= 0) {
+            // eslint-disable-next-line no-console
+            console.warn("Emitter: Prewarm time must be greater than zero!");
+            return;
+        }
 
         const spawnCycles = Math.floor(time / this._spawnInterval);
         const maxCycles = Math.min(spawnCycles, this._maxParticles);
