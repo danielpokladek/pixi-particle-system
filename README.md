@@ -1,8 +1,5 @@
 # PixiJS Particle System
 
-[![Build Status](https://github.com/danielpokladek/pixi-particle-system/workflows/Build/badge.svg)](https://github.com/danielpokladek/pixi-particle-system/actions)
-[![Latest Release](https://img.shields.io/github/v/release/danielpokladek/pixi-particle-system)](https://github.com/danielpokladek/pixi-particle-system/releases)
-
 A modern, flexible particle system for **PixiJS** - inspired by the original [Particle Emitter](https://github.com/pixijs-userland/particle-emitter/tree/master), but rebuilt with a clean TypeScript-first architecture and more expressive API.
 
 ## Features
