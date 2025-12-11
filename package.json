@@ -27,7 +27,7 @@
 
     "scripts": {
         "build:system": "tsc && vite build",
-        "build:editor": "vite dev editor --config editor/vite.config.ts",
+        "build:editor": "tsc && vite build editor --config editor/vite.config.ts",
         "build:docs": "typedoc && vitepress build docs",
         "dev:system": "vite build --watch --mode development",
         "dev:editor": "vite dev editor --config editor/vite.config.ts",
