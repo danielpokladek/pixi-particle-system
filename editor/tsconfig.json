@@ -3,7 +3,8 @@
     "compilerOptions": {
         "rootDir": "..",
         "outDir": "../dist-editor",
-        "noEmit": true
+        "noEmit": true,
+        "jsx": "react-jsx"
     },
     "include": ["src/**/*"]
 }

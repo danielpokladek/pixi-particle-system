@@ -6,7 +6,5 @@ export default defineConfig({
         target: "esnext",
         outDir: "../dist-editor",
         emptyOutDir: true,
-        sourcemap: true,
-        minify: false,
     },
 });

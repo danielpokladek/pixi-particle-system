@@ -7,10 +7,11 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@pixi/react": "^8.0.5",
         "pixi-particle-system": "link:../system",
         "pixi.js": "^8.14.3",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
     },
     "devDependencies": {
         "@types/react": "^18.3.12",
