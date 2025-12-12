@@ -353,10 +353,10 @@ options aren't provided in the constructor.
 ```ts
 // Override defaults globally
 Particle.defaultOptions = {
-  ...Particle.defaultOptions,
-  anchorX: 0.5,
-  anchorY: 0.5,
-  alpha: 0.8,
+    ...Particle.defaultOptions,
+    anchorX: 0.5,
+    anchorY: 0.5,
+    alpha: 0.8,
 };
 
 // New particles use modified defaults
@@ -394,8 +394,8 @@ to 1 (fully opaque). Values outside this range are clamped.
 ```ts
 // Create a semi-transparent particle
 const particle = new Particle({
-  texture: Texture.from("particle.png"),
-  alpha: 0.5,
+    texture: Texture.from("particle.png"),
+    alpha: 0.5,
 });
 
 // Fade out
@@ -410,8 +410,8 @@ particle.alpha = -0.5; // Becomes 0.0
 
 // Animate transparency
 app.ticker.add((delta) => {
-  const time = performance.now() / 1000;
-  particle.alpha = 0.5 + Math.sin(time) * 0.5; // Pulse between 0-1
+    const time = performance.now() / 1000;
+    particle.alpha = 0.5 + Math.sin(time) * 0.5; // Pulse between 0-1
 });
 ```
 
@@ -474,8 +474,8 @@ The tint is multiplied with the texture color to create the final particle color
 ```ts
 // Create a red particle
 const particle = new Particle({
-  texture: Texture.from("particle.png"),
-  tint: 0xff0000,
+    texture: Texture.from("particle.png"),
+    tint: 0xff0000,
 });
 
 // Use CSS color strings
@@ -484,11 +484,11 @@ particle.tint = "blue"; // Blue
 
 // Animate tint color
 app.ticker.add(() => {
-  const time = performance.now() / 1000;
+    const time = performance.now() / 1000;
 
-  // Cycle through hues
-  const hue = (time * 50) % 360;
-  particle.tint = `hsl(${hue}, 100%, 50%)`;
+    // Cycle through hues
+    const hue = (time * 50) % 360;
+    particle.tint = `hsl(${hue}, 100%, 50%)`;
 });
 
 // Reset to white (no tint)

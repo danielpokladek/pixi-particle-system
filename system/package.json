@@ -1,0 +1,48 @@
+{
+    "name": "pixi-particle-system",
+    "version": "0.0.0",
+    "description": "A modern, flexible particle system for PixiJS.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/danielpokladek/pixi-particle-system"
+    },
+    "keywords": [
+        "pixijs",
+        "pixi",
+        "particles",
+        "webgl",
+        "typescript"
+    ],
+    "author": "Daniel Pokladek",
+    "license": "MIT",
+    "type": "module",
+    "private": "false",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build:system": "tsc && vite build",
+        "build:docs": "typedoc && vitepress build docs",
+        "dev:system": "vite build --watch --mode development",
+        "dev:docs": "typedoc && vitepress dev docs"
+    },
+    "peerDependencies": {
+        "pixi.js": "^8.0.0"
+    },
+    "devDependencies": {
+        "typedoc": "^0.28.15",
+        "typedoc-plugin-markdown": "^4.9.0",
+        "typedoc-vitepress-theme": "^1.1.2",
+        "vite-plugin-dts": "^4.3.0",
+        "vitepress": "^1.6.4"
+    }
+}

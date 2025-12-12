@@ -8,12 +8,12 @@ Behavior can be configured using a static value, a list of values to interpolate
 ```typescript
 // Interpolate alpha from 0 to 1 and back to 0 over the particle's lifetime.
 alphaBehavior.applyConfig({
-  listData: [
-    { time: 0.0, value: 0.0 },
-    { time: 0.5, value: 1.0 },
-    { time: 1.0, value: 0.0 },
-  ],
-  mode: "list",
+    listData: [
+        { time: 0.0, value: 0.0 },
+        { time: 0.5, value: 1.0 },
+        { time: 1.0, value: 0.0 },
+    ],
+    mode: "list",
 });
 ```
 

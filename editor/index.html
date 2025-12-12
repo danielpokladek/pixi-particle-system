@@ -1,65 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Particle System Editor</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Particle System Editor</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+        <link rel="stylesheet" href="/src/style.css" />
+    </head>
+    <body>
+        <div class="editor">
+            <div class="stats">
+                <span id="fps">---</span>
+                <span id="particles">---/---</span>
+            </div>
+            <header class="header">
+                <div style="width: 100%; display: flex">
+                    <div>
+                        <button>Play</button>
+                        <button>Pause</button>
+                        <button>Stop</button>
+                    </div>
+                    <div
+                        style="
+                            border-left: 1px solid
+                                var(--pico-muted-border-color);
+                            margin: 0 1rem;
+                        "
+                    ></div>
+                    <div>
+                        <button disabled>Download Config</button>
+                        <button disabled>Upload Config</button>
+                        <button disabled>Examples</button>
+                    </div>
+                </div>
+                <div
+                    style="
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    "
+                >
+                    <div>
+                        <a
+                            href="#"
+                            style="text-decoration: none; color: inherit"
+                            ><i
+                                style="font-size: 28px"
+                                class="devicon-github-original"
+                            ></i
+                        ></a>
+                    </div>
+                </div>
+            </header>
 
-        body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background: #1a1a2e;
-        }
+            <div class="main">
+                <aside class="sidebar">
+                    <details open>
+                        <summary>Emitter Settings</summary>
 
-        #app {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+                        <div class="control">
+                            <label>Lifetime</label>
+                            <input type="number" id="lifetime" value="2" />
+                        </div>
 
-        #info {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            z-index: 100;
-        }
+                        <div class="control">
+                            <label>Spawn Interval</label>
+                            <input
+                                type="number"
+                                id="spawnInterval"
+                                value="0.1"
+                            />
+                        </div>
 
-        th {
-            border-left: 1px solid white;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div id="app"></div>
-    <div id="info">
-        <table style="width: 100%; text-align: left; margin-top: 5px;">
-            <tr>
-                <th>FPS</th>
-                <th id="fps">---</th>
-            </tr>
-            <tr>
-                <th>Particles</th>
-                <th id="particles">---</th>
-            </tr>
-        </table>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
-</body>
+                        <div class="control">
+                            <label>Spawn Chance</label>
+                            <input type="number" id="spawnChance" value="1" />
+                        </div>
+
+                        <div class="control">
+                            <label>Max Particles</label>
+                            <input
+                                type="number"
+                                id="maxParticles"
+                                value="500"
+                            />
+                        </div>
+
+                        <div class="control">
+                            <label>Wave Particles</label>
+                            <input
+                                type="number"
+                                id="particlesPerWave"
+                                value="1"
+                            />
+                        </div>
+
+                        <div class="control">
+                            <label>Blend Mode</label>
+                            <select name="select" aria-label="Select" required>
+                                <option selected value="">Normal</option>
+                                <option>Add</option>
+                            </select>
+                        </div>
+
+                        <div class="control">
+                            <label>Add At Back</label>
+                            <input
+                                type="checkbox"
+                                id="addAtBack"
+                                role="switch"
+                            />
+                        </div>
+                    </details>
+
+                    <details open>
+                        <summary>Spawn Behavior</summary>
+                    </details>
+                </aside>
+
+                <div class="canvas-container">
+                    <div id="app"></div>
+                </div>
+            </div>
+        </div>
+        <div id="info">
+            <table style="width: 100%; text-align: left; margin-top: 5px">
+                <tr>
+                    <th>FPS</th>
+                    <th id="fps">---</th>
+                </tr>
+                <tr>
+                    <th>Particles</th>
+                    <th id="particles">---</th>
+                </tr>
+            </table>
+        </div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>

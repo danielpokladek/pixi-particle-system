@@ -1,6 +1,5 @@
+import { Emitter, EmitterConfig } from "pixi-particle-system";
 import { Application, ParticleContainer } from "pixi.js";
-import { Emitter } from "../../src/Emitter";
-import { EmitterConfig } from "../../src/EmitterConfig";
 
 // Create Pixi application
 const app = new Application();
@@ -8,7 +7,7 @@ const app = new Application();
 await app.init({
     width: window.innerWidth,
     height: window.innerHeight,
-    backgroundColor: 0x1a1a1a,
+    backgroundColor: 0x0a0e27,
     resizeTo: window,
 });
 
@@ -20,8 +19,6 @@ app.stage.addChild(container);
 
 const config: EmitterConfig = {
     emitterVersion: 0,
-    // minParticleLifetime: 0.4,
-    // maxParticleLifetime: 0.4,
     minParticleLifetime: 2,
     maxParticleLifetime: 2,
     spawnInterval: 0.01,
@@ -43,34 +40,17 @@ const config: EmitterConfig = {
         mode: "list",
     },
 
-    // colorBehavior: {
-    //     listData: {
-    //         list: [
-    //             { value: "#ff0000", time: 0 },
-    //             { value: "#00ff00", time: 0.5 },
-    //             { value: "#0000ff", time: 1 },
-    //         ],
-    //     },
-    //     mode: "random",
-    // },
-
-    // movementBehavior: {
-    //     minMoveSpeed: -50,
-    //     maxMoveSpeed: -50,
-    //     mode: "acceleration",
-    // },
-
     movementBehavior: {
         xListData: {
             list: [
-                { value: 50, time: 0 },
-                { value: 150, time: 1 },
+                { value: 0, time: 0 },
+                { value: 0, time: 1 },
             ],
         },
         yListData: {
             list: [
-                { value: -100, time: 0 },
-                { value: 450, time: 1 },
+                { value: -50, time: 0 },
+                { value: -450, time: 1 },
             ],
         },
         space: "local",
@@ -82,55 +62,34 @@ const config: EmitterConfig = {
     //     value: Math.PI / 4,
     // },
 
-    // scaleBehavior: {
-    //     mode: "random",
-    //     listData: {
-    //         list: [
-    //             { value: 0, time: 0 },
-    //             { value: 100, time: 0.5 },
-    //             { value: 0, time: 1 },
-    //         ],
-    //     },
-    // },
-
     scaleBehavior: {
-        mode: "list",
+        mode: "random",
         listData: {
             list: [
                 { value: 0, time: 0 },
-                { value: 100, time: 1 },
+                { value: 100, time: 0.5 },
+                { value: 0, time: 1 },
             ],
         },
     },
 
-    // scaleBehavior: {
-    //     value: 100,
-    // },
-
-    // spawnBehavior: {
-    //     shape: "point",
-    // },
-
     spawnBehavior: {
-        shape: "point",
-        // width: 400,
-        // height: 400,
+        shape: "rectangle",
+        width: 300,
+        height: 300,
         direction: { x: 0, y: 1 },
     },
 };
 
-// Create a simple particle system
+// Create emitter
 const emitter = new Emitter(container, config);
 emitter.play();
 
-function setupDebug(): void {
-    const fpsElement = document.getElementById("fps")!;
-    const particlesElement = document.getElementById("particles")!;
+// Stats
+const fpsElement = document.getElementById("fps")!;
+const particlesElement = document.getElementById("particles")!;
 
-    app.ticker.add(() => {
-        fpsElement.textContent = `${Math.round(app.ticker.FPS)}`;
-        particlesElement.textContent = `${emitter.particleCount} / ${emitter.maxParticles}`;
-    });
-}
-
-setupDebug();
+app.ticker.add(() => {
+    fpsElement.textContent = `FPS: ${Math.round(app.ticker.FPS)}`;
+    particlesElement.textContent = `Particles: ${emitter.particleCount} / ${emitter.maxParticles}`;
+});

@@ -1,0 +1,100 @@
+:root {
+    --pico-form-element-spacing-vertical: 0.3rem;
+    --pico-form-element-spacing-horizontal: 0.7rem;
+    --pico-font-size: 0.95rem;
+}
+
+body {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.header {
+    padding: 0.2rem 1.5rem;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--pico-background-color);
+}
+
+.stats {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: white;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.875rem;
+    font-family: "Courier New", monospace;
+    z-index: 999;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 320px;
+    border-right: 1px solid var(--pico-muted-border-color);
+    padding: 1.5rem;
+    overflow-y: auto;
+    background: var(--pico-background-color);
+}
+
+.sidebar h2 {
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #0a0e27;
+}
+
+.controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.control {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.control > input[type="number"] {
+    min-width: 50% !important;
+    max-width: 50% !important;
+}
+
+.control > select {
+    min-width: 50% !important;
+    max-width: 50% !important;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app canvas {
+    display: block;
+}
