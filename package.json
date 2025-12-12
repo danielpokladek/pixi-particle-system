@@ -5,10 +5,10 @@
 		"eslint": "^9.39.1",
 		"eslint-plugin-jsdoc": "^61.5.0",
 		"pixi.js": "^8.14.3",
+		"prettier": "^3.6.2",
+		"typescript": "^5.6.2",
 		"typescript-eslint": "^8.49.0",
-        "prettier": "^3.6.2",
-        "typescript": "^5.6.2",
-        "vite": "^5.4.11"
+		"vite": "^5.4.11"
 	},
 	"scripts": {
 		"installDeps": "pnpm install && cd library && pnpm install && cd ../editor && pnpm install",
@@ -18,5 +18,9 @@
 		"build:library": "cd library && pnpm build:lib",
 		"build:editor": "cd editor && pnpm build",
 		"build:docs": "cd library && pnpm build:docs"
+	},
+	"dependencies": {
+		"@picocss/pico": "^2.1.1",
+		"theme-toggles": "^4.10.1"
 	}
 }

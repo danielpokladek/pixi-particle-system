@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@picocss/pico':
+        specifier: ^2.1.1
+        version: 2.1.1
+      theme-toggles:
+        specifier: ^4.10.1
+        version: 4.10.1
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.1
@@ -234,6 +241,9 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@picocss/pico@2.1.1':
+    resolution: {integrity: sha512-kIDugA7Ps4U+2BHxiNHmvgPIQDWPDU4IeU6TNRdvXQM1uZX+FibqDQT2xUOnnO2yq/LUHcwnGlu1hvf4KfXnMg==}
 
   '@pixi/colord@2.9.6':
     resolution: {integrity: sha512-nezytU2pw587fQstUu1AsJZDVEynjskwOL+kibwcdxsMBFqPsFFNA7xl0ii/gXuDi6M0xj3mfRJj8pBSc2jCfA==}
@@ -812,6 +822,9 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
+  theme-toggles@4.10.1:
+    resolution: {integrity: sha512-PCvj0cB+3JOv8gUXjvp+/7Nu7hSLAYCwmxsAjltIhUUpF6NPn3jDMo64KCu2S2HQe+lGAEM01f2hDzqlPg3bsQ==}
+
   tiny-lru@11.4.5:
     resolution: {integrity: sha512-hkcz3FjNJfKXjV4mjQ1OrXSLAehg8Hw+cEZclOVT+5c/cWQWImQ9wolzTjth+dmmDe++p3bme3fTxz6Q4Etsqw==}
     engines: {node: '>=12'}
@@ -1030,6 +1043,8 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@picocss/pico@2.1.1': {}
 
   '@pixi/colord@2.9.6': {}
 
@@ -1611,6 +1626,8 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  theme-toggles@4.10.1: {}
 
   tiny-lru@11.4.5: {}
 
