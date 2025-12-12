@@ -1,2 +1,2 @@
 overrides:
-  pixi-particle-system: link:../system
+  pixi-particle-system: link:../library

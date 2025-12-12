@@ -5,15 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  pixi-particle-system: link:../system
+  pixi-particle-system: link:../library
 
 importers:
 
   .:
     dependencies:
       pixi-particle-system:
-        specifier: link:../system
-        version: link:../system
+        specifier: link:../library
+        version: link:../library
       pixi.js:
         specifier: ^8.14.3
         version: 8.14.3
