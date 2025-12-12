@@ -98,3 +98,21 @@ body {
 #app canvas {
     display: block;
 }
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background-color: var(--pico-muted-border-color);
+    margin: 0 5px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.social-icon {
+    font-size: 1.5rem;
+}

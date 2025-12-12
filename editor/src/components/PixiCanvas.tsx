@@ -1,7 +1,7 @@
-import { Application, extend } from "@pixi/react";
-import { Container, Graphics, Sprite } from "pixi.js";
-import { useRef } from "react";
-import { BunnySprite } from "./BunnySprite";
+import { Application, extend, useApplication } from "@pixi/react";
+import { Emitter } from "pixi-particle-system";
+import { Container, Graphics, ParticleContainer, Sprite } from "pixi.js";
+import { useEffect, useRef } from "react";
 
 // const config: EmitterConfig = {
 //     emitterVersion: 0,
@@ -60,19 +60,59 @@ import { BunnySprite } from "./BunnySprite";
 // };
 
 extend({
+    ParticleContainer,
     Container,
     Graphics,
     Sprite,
 });
 
-export default function PixiCanvas() {
-    const parentRef = useRef(null);
+type Props = {
+    particleContainer: ParticleContainer | null;
+    emitter: Emitter | null;
+};
+
+function EmitterContainer({ particleContainer }: Props) {
+    const { app } = useApplication();
+
+    useEffect(() => {
+        console.log(`EmitterContainer mounted - ${particleContainer}`);
+
+        if (!particleContainer || !app.renderer) return;
+
+        app.stage.addChild(particleContainer);
+        particleContainer.x = app.renderer.width / 2;
+        particleContainer.y = app.renderer.height / 2;
+
+        console.log("ParticleContainer added to stage");
+
+        return () => {
+            app.stage.removeChild(particleContainer);
+        };
+    }, [app.renderer, particleContainer]);
+
+    return <pixiContainer></pixiContainer>;
+}
+
+export default function PixiCanvas({ particleContainer, emitter }: Props) {
+    const parentRef = useRef<HTMLDivElement | null>(null);
 
     return (
         <div ref={parentRef} className="canvas-container">
             <Application resizeTo={parentRef}>
-                <BunnySprite />
+                <EmitterContainer
+                    particleContainer={particleContainer}
+                    emitter={emitter}
+                />
             </Application>
+            {emitter && (
+                <div className="stats">
+                    <span>FPS: {Math.round(0)}</span>
+                    <span>
+                        Particles: {emitter.particleCount} /{" "}
+                        {emitter.maxParticles}
+                    </span>
+                </div>
+            )}
         </div>
     );
 }
