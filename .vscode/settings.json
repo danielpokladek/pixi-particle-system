@@ -10,6 +10,11 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/**/node_modules": true,
+        "library/docs/api": true
+    },
     "cSpell.words": [
         "AARRGGBB",
         "danielpokladek",
