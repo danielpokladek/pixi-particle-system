@@ -1,10 +1,12 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    root: "editor",
     base: "/pixi-particle-system/editor/",
     build: {
+        target: "esnext",
         outDir: "../dist-editor",
         emptyOutDir: true,
+        sourcemap: true,
+        minify: false,
     },
 });

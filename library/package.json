@@ -30,9 +30,9 @@
         "dist"
     ],
     "scripts": {
-        "build:system": "tsc && vite build",
+        "build:lib": "tsc && vite build",
         "build:docs": "typedoc && vitepress build docs",
-        "dev:system": "vite build --watch --mode development",
+        "dev:lib": "vite build --watch --mode development",
         "dev:docs": "typedoc && vitepress dev docs"
     },
     "peerDependencies": {
