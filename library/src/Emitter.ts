@@ -78,11 +78,20 @@ export class Emitter {
         }
     }
 
-    /**
-     * Current number of active particles in the emitter.
-     */
-    public get particleCount(): number {
-        return this._particleCount;
+    public get minLifetime(): number {
+        return this._minLifetime;
+    }
+
+    public get maxLifetime(): number {
+        return this._maxLifetime;
+    }
+
+    public get spawnInterval(): number {
+        return this._spawnInterval;
+    }
+
+    public get spawnChance(): number {
+        return this._spawnChance;
     }
 
     /**
@@ -90,6 +99,21 @@ export class Emitter {
      */
     public get maxParticles(): number {
         return this._maxParticles;
+    }
+
+    public get addAtBack(): boolean {
+        return this._addAtBack;
+    }
+
+    public get particlesPerWave(): number {
+        return this._particlesPerWave;
+    }
+
+    /**
+     * Current number of active particles in the emitter.
+     */
+    public get particleCount(): number {
+        return this._particleCount;
     }
 
     /**
@@ -104,6 +128,34 @@ export class Emitter {
      */
     public get parent(): ParticleContainer {
         return this._parent;
+    }
+
+    public set minLifetime(value: number) {
+        this._minLifetime = value;
+    }
+
+    public set maxLifetime(value: number) {
+        this._maxLifetime = value;
+    }
+
+    public set spawnInterval(value: number) {
+        this._spawnInterval = value;
+    }
+
+    public set spawnChance(value: number) {
+        this._spawnChance = value;
+    }
+
+    public set maxParticles(value: number) {
+        this._maxParticles = value;
+    }
+
+    public set addAtBack(value: boolean) {
+        this._addAtBack = value;
+    }
+
+    public set particlesPerWave(value: number) {
+        this._particlesPerWave = value;
     }
 
     /**

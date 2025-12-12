@@ -82,9 +82,19 @@ body {
     max-width: 50% !important;
 }
 
+.control > input[type="color"] {
+    min-width: 50% !important;
+    max-width: 50% !important;
+}
+
 .control > select {
     min-width: 50% !important;
     max-width: 50% !important;
+}
+
+.main > aside > details {
+    border-top: 1px solid var(--pico-primary);
+    padding-top: 10px;
 }
 
 #app {

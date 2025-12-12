@@ -79,6 +79,9 @@ export default function App() {
     const [container, setContainer] = useState<ParticleContainer | null>(null);
     const [emitter, setEmitter] = useState<Emitter | null>(null);
 
+    const [particleCount, setParticleCount] = useState(0);
+    const [maxParticleCount, setMaxParticleCount] = useState(0);
+
     useEffect(() => {
         console.log("App mounted");
 
@@ -89,25 +92,40 @@ export default function App() {
         emitter.play();
         setEmitter(emitter);
 
+        const updateIntervalId = setInterval(() => {
+            setParticleCount(emitter.particleCount);
+            setMaxParticleCount(emitter.maxParticles);
+        }, 100);
+
         return () => {
             console.log("App unmounted");
+
             container.destroy();
+            clearInterval(updateIntervalId);
         };
     }, []);
 
     return (
-        <div className="editor">
-            <Header />
-            <div className="main">
-                <Sidebar />
+        <>
+            <div className="editor">
+                <Header />
+                <div className="main">
+                    <Sidebar emitter={emitter} />
 
-                {container && emitter && (
-                    <PixiCanvas
-                        particleContainer={container}
-                        emitter={emitter}
-                    />
-                )}
+                    {container && emitter && (
+                        <PixiCanvas particleContainer={container} />
+                    )}
+                </div>
             </div>
-        </div>
+
+            {emitter && (
+                <div className="stats">
+                    <span>FPS: {Math.round(0)}</span>
+                    <span>
+                        Particles: {particleCount} / {maxParticleCount}
+                    </span>
+                </div>
+            )}
+        </>
     );
 }

@@ -4,8 +4,8 @@ import { Toggle } from "../ui/Toggle";
 
 export function SpawnPanel() {
     return (
-        <details open>
-            <summary>Spawn Settings</summary>
+        <details>
+            <summary>Spawn Behavior</summary>
 
             <Select
                 label="Shape"
