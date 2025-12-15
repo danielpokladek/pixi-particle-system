@@ -16,6 +16,10 @@ type Props = {
 function EmitterContainer({ particleContainer }: Props) {
     const { app } = useApplication();
 
+    const updateFPS = () => {
+        window.fps = app.ticker.FPS;
+    };
+
     useEffect(() => {
         console.log(`EmitterContainer mounted - ${particleContainer}`);
 
@@ -25,9 +29,15 @@ function EmitterContainer({ particleContainer }: Props) {
         particleContainer.x = app.renderer.width / 2;
         particleContainer.y = app.renderer.height / 2;
 
+        app.ticker.add(updateFPS);
+
         console.log("ParticleContainer added to stage");
 
         return () => {
+            console.log("EmitterContainer unmounted");
+
+            app.ticker.remove(updateFPS);
+            window.fps = 0;
             app.stage.removeChild(particleContainer);
         };
     }, [app.renderer, particleContainer]);

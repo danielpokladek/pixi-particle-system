@@ -120,7 +120,7 @@ export default function App() {
 
             {emitter && (
                 <div className="stats">
-                    <span>FPS: {Math.round(0)}</span>
+                    <span>FPS: {Math.round(window.fps)}</span>
                     <span>
                         Particles: {particleCount} / {maxParticleCount}
                     </span>
