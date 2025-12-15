@@ -1,4 +1,4 @@
-import { ColorInput } from "../ui/ColorInput";
+import { ColorInput } from "../ui/inputs/ColorInput";
 
 export function ColorPanel() {
     return (

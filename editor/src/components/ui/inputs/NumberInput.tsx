@@ -13,13 +13,12 @@ export function NumberInput({ label, defaultValue = 1, onChange }: Props) {
         <div className="control">
             <label htmlFor="">{label}</label>
             <input
-                type="number"
                 defaultValue={defaultValue}
                 onBlur={(e) => {
                     const newValue = Number(e.currentTarget.value);
                     if (newValue === lastValueRef.current) return;
 
-                    onChange?.(Number(e.target.value));
+                    onChange?.(newValue);
                     lastValueRef.current = newValue;
                 }}
                 onKeyDown={(e) => {
@@ -28,7 +27,7 @@ export function NumberInput({ label, defaultValue = 1, onChange }: Props) {
                     const newValue = Number(e.currentTarget.value);
                     if (newValue === lastValueRef.current) return;
 
-                    onChange?.(Number(e.currentTarget.value));
+                    onChange?.(newValue);
                     lastValueRef.current = newValue;
                 }}
             />

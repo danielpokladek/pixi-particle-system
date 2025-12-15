@@ -1,36 +1,99 @@
-import { NumberInput } from "../ui/NumberInput";
-import { Select } from "../ui/Select";
-import { Toggle } from "../ui/Toggle";
+import { SpawnShape } from "pixi-particle-system";
+import { useState } from "react";
+import { PanelProps } from "../../Types";
+import { NumberInput } from "../ui/inputs/NumberInput";
+import { Select } from "../ui/inputs/Select";
+import { Vector2DInput } from "../ui/inputs/Vector2DInput";
 
-export function SpawnPanel() {
+const spawnOptionToType: Record<string, SpawnShape> = {
+    Point: "point",
+    Rectangle: "rectangle",
+    Circle: "circle",
+    Line: "line",
+};
+
+const spawnTypeToOption: Record<SpawnShape, string> = {
+    point: "Point",
+    rectangle: "Rectangle",
+    circle: "Circle",
+    line: "Line",
+};
+
+export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
+    const [spawnShape, setSpawnShape] = useState<SpawnShape>(
+        emitter.spawnBehavior.shape,
+    );
+
     return (
-        <details>
+        <details open={isOpen}>
             <summary>Spawn Behavior</summary>
+
+            <Vector2DInput
+                label="Direction"
+                xDefault={emitter.spawnBehavior.direction.x}
+                yDefault={emitter.spawnBehavior.direction.y}
+                onChange={(x, y) => {
+                    console.log(x, y);
+                    emitter.spawnBehavior.direction.x = x;
+                    emitter.spawnBehavior.direction.y = y;
+                }}
+            />
 
             <Select
                 label="Shape"
+                defaultValue={spawnTypeToOption[emitter.spawnBehavior.shape]}
                 // prettier-ignore
                 options={[
-                    { label: "Point",     key: "point"    , selected: true },
-                    { label: "Rectangle", key: "rectangle"                 },
-                    { label: "Circle",    key: "circle"                    },
-                    { label: "Line",      key: "line"                      },
+                    { label: "Point"    , key: "point"     },
+                    { label: "Rectangle", key: "rectangle" },
+                    { label: "Circle"   , key: "circle"    },
+                    { label: "Line"     , key: "line"      },
                 ]}
-            />
+                onChange={(shape) => {
+                    const newShape = spawnOptionToType[shape];
+                    setSpawnShape(newShape);
 
-            <NumberInput label="Min Lifetime" defaultValue={0.2} />
-            <NumberInput label="Max Lifetime" defaultValue={0.4} />
-            <NumberInput label="Spawn Interval" defaultValue={0.1} />
-            <NumberInput label="Spawn Chance" defaultValue={1} />
-            <NumberInput label="Max Particles" defaultValue={500} />
-            <NumberInput label="Wave Particles" defaultValue={1} />
-
-            <Toggle
-                label="Add At Back"
-                onChange={(value) => {
-                    console.log(value);
+                    emitter.spawnBehavior.shape = newShape;
                 }}
             />
+
+            {spawnShape === "rectangle" && (
+                <>
+                    <Vector2DInput
+                        label="Size"
+                        xDefault={emitter.spawnBehavior.width}
+                        yDefault={emitter.spawnBehavior.height}
+                        onChange={(width, height) => {
+                            emitter.spawnBehavior.width = width;
+                            emitter.spawnBehavior.height = height;
+                        }}
+                    />
+                </>
+            )}
+
+            {spawnShape === "circle" && (
+                <>
+                    <Vector2DInput
+                        label="Radius"
+                        xDefault={emitter.spawnBehavior.outerRadius}
+                        yDefault={emitter.spawnBehavior.innerRadius}
+                        onChange={(outer, inner) => {
+                            emitter.spawnBehavior.outerRadius = outer;
+                            emitter.spawnBehavior.innerRadius = inner;
+                        }}
+                    />
+                </>
+            )}
+
+            {spawnShape === "line" && (
+                <NumberInput
+                    label="Width"
+                    defaultValue={emitter.spawnBehavior.width}
+                    onChange={(value) => {
+                        emitter.spawnBehavior.width = value;
+                    }}
+                />
+            )}
         </details>
     );
 }

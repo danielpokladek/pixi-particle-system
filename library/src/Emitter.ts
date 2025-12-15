@@ -78,35 +78,12 @@ export class Emitter {
         }
     }
 
-    public get minLifetime(): number {
-        return this._minLifetime;
-    }
-
-    public get maxLifetime(): number {
-        return this._maxLifetime;
-    }
-
-    public get spawnInterval(): number {
-        return this._spawnInterval;
-    }
-
-    public get spawnChance(): number {
-        return this._spawnChance;
-    }
-
+    //#region Getters and Setters
     /**
-     * Maximum number of particles allowed in the emitter.
+     * Parent ParticleContainer of the emitter.
      */
-    public get maxParticles(): number {
-        return this._maxParticles;
-    }
-
-    public get addAtBack(): boolean {
-        return this._addAtBack;
-    }
-
-    public get particlesPerWave(): number {
-        return this._particlesPerWave;
+    public get parent(): ParticleContainer {
+        return this._parent;
     }
 
     /**
@@ -117,46 +94,124 @@ export class Emitter {
     }
 
     /**
+     * Minimum lifetime of particles in seconds.
+     */
+    public get minLifetime(): number {
+        return this._minLifetime;
+    }
+    public set minLifetime(value: number) {
+        this._minLifetime = value;
+    }
+
+    /**
+     * Maximum lifetime of particles in seconds.
+     */
+    public get maxLifetime(): number {
+        return this._maxLifetime;
+    }
+    public set maxLifetime(value: number) {
+        this._maxLifetime = value;
+    }
+
+    /**
+     * Interval between particle spawns in seconds.
+     */
+    public get spawnInterval(): number {
+        return this._spawnInterval;
+    }
+    public set spawnInterval(value: number) {
+        this._spawnInterval = value;
+    }
+
+    /**
+     * Chance of spawning a particle (0.0 - 1.0).
+     */
+    public get spawnChance(): number {
+        return this._spawnChance;
+    }
+    public set spawnChance(value: number) {
+        this._spawnChance = value;
+    }
+
+    /**
+     * Maximum number of particles allowed in the emitter.
+     */
+    public get maxParticles(): number {
+        return this._maxParticles;
+    }
+    public set maxParticles(value: number) {
+        this._maxParticles = value;
+    }
+
+    /**
+     * Whether to add new particles at the back of the container.
+     */
+    public get addAtBack(): boolean {
+        return this._addAtBack;
+    }
+    public set addAtBack(value: boolean) {
+        this._addAtBack = value;
+    }
+
+    /**
+     * Number of particles to spawn per wave.
+     */
+    public get particlesPerWave(): number {
+        return this._particlesPerWave;
+    }
+    public set particlesPerWave(value: number) {
+        this._particlesPerWave = value;
+    }
+
+    /**
+     * Alpha behavior of the emitter.
+     */
+    public get alphaBehavior(): AlphaBehavior {
+        return this._alphaBehavior;
+    }
+
+    /**
+     * Color behavior of the emitter.
+     */
+    public get colorBehavior(): ColorBehavior {
+        return this._colorBehavior;
+    }
+
+    /**
+     * Movement behavior of the emitter.
+     */
+    public get movementBehavior(): MovementBehavior {
+        return this._movementBehavior;
+    }
+
+    /**
+     * Rotation behavior of the emitter.
+     */
+    public get rotationBehavior(): RotationBehavior {
+        return this._rotationBehavior;
+    }
+
+    /**
+     * Scale behavior of the emitter.
+     */
+    public get scaleBehavior(): ScaleBehavior {
+        return this._scaleBehavior;
+    }
+
+    /**
+     *
+     */
+    public get spawnBehavior(): SpawnBehavior {
+        return this._spawnBehavior;
+    }
+
+    /**
      * Texture behavior of the emitter.
      */
     public get textureBehavior(): TextureBehavior {
         return this._textureBehavior;
     }
-
-    /**
-     * Parent ParticleContainer of the emitter.
-     */
-    public get parent(): ParticleContainer {
-        return this._parent;
-    }
-
-    public set minLifetime(value: number) {
-        this._minLifetime = value;
-    }
-
-    public set maxLifetime(value: number) {
-        this._maxLifetime = value;
-    }
-
-    public set spawnInterval(value: number) {
-        this._spawnInterval = value;
-    }
-
-    public set spawnChance(value: number) {
-        this._spawnChance = value;
-    }
-
-    public set maxParticles(value: number) {
-        this._maxParticles = value;
-    }
-
-    public set addAtBack(value: boolean) {
-        this._addAtBack = value;
-    }
-
-    public set particlesPerWave(value: number) {
-        this._particlesPerWave = value;
-    }
+    //#endregion
 
     /**
      * Applies a configuration to the emitter.

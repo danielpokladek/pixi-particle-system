@@ -77,12 +77,7 @@ body {
     width: 100%;
 }
 
-.control > input[type="number"] {
-    min-width: 50% !important;
-    max-width: 50% !important;
-}
-
-.control > input[type="color"] {
+.control > input:not([type="checkbox"]) {
     min-width: 50% !important;
     max-width: 50% !important;
 }

@@ -10,6 +10,11 @@ import {
 } from "../EmitterBehavior";
 
 /**
+ * Type defining the possible movement spaces.
+ */
+export type MovementSpace = "local" | "global";
+
+/**
  * Type defining the configuration for MovementBehavior.
  */
 export type MovementBehaviorConfig =
@@ -17,13 +22,13 @@ export type MovementBehaviorConfig =
           minMoveSpeed: number;
           maxMoveSpeed: number;
           mode?: "linear" | "acceleration";
-          space?: "local" | "global";
+          space?: MovementSpace;
       }
     | {
           xListData: ListData<number>;
           yListData?: ListData<number>;
           mode?: "linear" | "acceleration";
-          space?: "local" | "global";
+          space?: MovementSpace;
       };
 
 /**
@@ -39,7 +44,7 @@ export class MovementBehavior
     private readonly _yList: NumberList;
 
     private _mode: "acceleration" | "linear" = "linear";
-    private _space: "local" | "global" = "local";
+    private _space: MovementSpace = "local";
 
     private _useList: boolean = false;
 
@@ -62,6 +67,16 @@ export class MovementBehavior
      */
     public get updateOrder(): BehaviorOrder {
         return "late";
+    }
+
+    /**
+     * Space in which movement is applied.
+     */
+    public get space(): "local" | "global" {
+        return this._space;
+    }
+    public set space(value: "local" | "global") {
+        this._space = value;
     }
 
     /**

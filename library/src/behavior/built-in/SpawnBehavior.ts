@@ -5,9 +5,15 @@ import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
 /**
+ * Type defining the possible spawn shapes.
+ */
+export type SpawnShape = "point" | "line" | "rectangle" | "circle";
+
+/**
  * Type defining the configuration for SpawnBehavior.
  */
 export type SpawnBehaviorConfig = {
+    shape: SpawnShape;
     direction?: PointData;
 } & (
     | {
@@ -58,6 +64,60 @@ export class SpawnBehavior
      */
     public get direction(): PointData {
         return this._directionVector;
+    }
+    public set direction(value: PointData) {
+        this._directionVector.x = value.x;
+        this._directionVector.y = value.y;
+    }
+
+    /**
+     * Shape used for spawning particles.
+     */
+    public get shape(): SpawnShape {
+        return this._shape;
+    }
+    public set shape(value: SpawnShape) {
+        this._shape = value;
+    }
+
+    /**
+     * Width of the spawn shape (for rectangle and line shapes).
+     */
+    public get width(): number {
+        return this._width;
+    }
+    public set width(value: number) {
+        this._width = value;
+    }
+
+    /**
+     * Height of the spawn shape (for rectangle shape).
+     */
+    public get height(): number {
+        return this._height;
+    }
+    public set height(value: number) {
+        this._height = value;
+    }
+
+    /**
+     * Inner radius of the spawn shape (for circle shape).
+     */
+    public get innerRadius(): number {
+        return this._innerRadius;
+    }
+    public set innerRadius(value: number) {
+        this._innerRadius = value;
+    }
+
+    /**
+     * Outer radius of the spawn shape (for circle shape).
+     */
+    public get outerRadius(): number {
+        return this._outerRadius;
+    }
+    public set outerRadius(value: number) {
+        this._outerRadius = value;
     }
 
     /**

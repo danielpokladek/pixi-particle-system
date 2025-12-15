@@ -1,4 +1,4 @@
-import { NumberInput } from "../ui/NumberInput";
+import { NumberInput } from "../ui/inputs/NumberInput";
 
 export function AlphaPanel() {
     return (
