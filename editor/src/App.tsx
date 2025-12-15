@@ -107,6 +107,22 @@ export default function App() {
 
     return (
         <>
+            {window.error && (
+                <dialog open>
+                    <article>
+                        <header>
+                            <p>
+                                <strong>There has been an error!</strong>
+                            </p>
+                        </header>
+                        <p>{window.error.message}</p>
+                        <p>
+                            We apologize for the inconvenience; please refresh
+                            the page to resume the editor.
+                        </p>
+                    </article>
+                </dialog>
+            )}
             <div className="editor">
                 <Header />
                 <div className="main">
