@@ -17,8 +17,38 @@ export default defineConfig({
         ecmaVersion: 2020,
     },
     rules: {
+        "@typescript-eslint/member-ordering": [
+            "error",
+            {
+                default: {
+                    memberTypes: [
+                        // Fields
+                        "private-static-field",
+                        "protected-static-field",
+                        "public-static-field",
+
+                        "private-instance-field",
+                        "protected-instance-field",
+                        "public-instance-field",
+
+                        // Constructors
+                        "constructor",
+
+                        // Getters & Setters (grouped together)
+                        ["public-instance-get", "public-instance-set"],
+                        ["protected-instance-get", "protected-instance-set"],
+                        ["private-instance-get", "private-instance-set"],
+
+                        // Methods
+                        "public-instance-method",
+                        "protected-instance-method",
+                        "private-instance-method",
+                    ],
+                    order: "as-written",
+                },
+            },
+        ],
         "@typescript-eslint/explicit-function-return-type": "error",
-        "@typescript-eslint/member-ordering": "error",
         "@typescript-eslint/prefer-readonly": "error",
         "no-console": "warn",
         "jsdoc/require-returns": [
@@ -51,6 +81,7 @@ export default defineConfig({
                     FunctionExpression: false,
                 },
                 exemptEmptyConstructors: true,
+                checkSetters: false,
             },
         ],
     },
