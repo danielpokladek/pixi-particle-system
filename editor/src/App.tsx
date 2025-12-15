@@ -140,6 +140,7 @@ export default function App() {
                     <span>
                         Particles: {particleCount} / {maxParticleCount}
                     </span>
+                    <span>Current Version: 0.0.0</span>
                 </div>
             )}
         </>

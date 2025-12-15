@@ -1,8 +1,16 @@
+import { BLEND_MODES } from "pixi.js";
 import { PanelProps } from "../../Types";
 import { NumberInput } from "../ui/inputs/NumberInput";
 import { Select } from "../ui/inputs/Select";
 import { Toggle } from "../ui/inputs/Toggle";
 import { Vector2DInput } from "../ui/inputs/Vector2DInput";
+
+const blendModeOptions: { label: string; key: BLEND_MODES }[] = [
+    { label: "Normal", key: "normal" },
+    { label: "Add", key: "add" },
+    { label: "Multiply", key: "multiply" },
+    { label: "Screen", key: "screen" },
+];
 
 export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
     return (
@@ -21,7 +29,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <NumberInput
                 label="Spawn Interval"
-                defaultValue={0.1}
+                defaultValue={emitter.spawnInterval}
                 onChange={(value) => {
                     emitter.spawnInterval = value;
                 }}
@@ -29,7 +37,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <NumberInput
                 label="Spawn Chance"
-                defaultValue={1}
+                defaultValue={emitter.spawnChance}
                 onChange={(value) => {
                     emitter.spawnChance = value;
                 }}
@@ -37,7 +45,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <NumberInput
                 label="Max Particles"
-                defaultValue={500}
+                defaultValue={emitter.maxParticles}
                 onChange={(value) => {
                     emitter.maxParticles = value;
                 }}
@@ -45,7 +53,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <NumberInput
                 label="Wave Particles"
-                defaultValue={1}
+                defaultValue={emitter.particlesPerWave}
                 onChange={(value) => {
                     emitter.particlesPerWave = value;
                 }}
@@ -53,11 +61,21 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <Select
                 label="Blend Mode"
-                defaultValue="normal"
-                options={[
-                    { label: "Normal", key: "normal" },
-                    { label: "Add", key: "Add" },
-                ]}
+                defaultValue={
+                    blendModeOptions.find(
+                        (option) => option.key === emitter.parent.blendMode,
+                    )?.label || "Normal"
+                }
+                options={blendModeOptions}
+                onChange={(value) => {
+                    const selectedOption = blendModeOptions.find(
+                        (option) => option.label === value,
+                    );
+
+                    if (selectedOption) {
+                        emitter.parent.blendMode = selectedOption.key;
+                    }
+                }}
             />
 
             <Toggle

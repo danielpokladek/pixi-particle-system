@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Input } from "../base/Input";
 
 type Props = {
     label: string;
@@ -7,29 +7,13 @@ type Props = {
 };
 
 export function NumberInput({ label, defaultValue = 1, onChange }: Props) {
-    const lastValueRef = useRef<number>(defaultValue);
-
     return (
         <div className="control">
             <label htmlFor="">{label}</label>
-            <input
+            <Input
+                inputType="text"
                 defaultValue={defaultValue}
-                onBlur={(e) => {
-                    const newValue = Number(e.currentTarget.value);
-                    if (newValue === lastValueRef.current) return;
-
-                    onChange?.(newValue);
-                    lastValueRef.current = newValue;
-                }}
-                onKeyDown={(e) => {
-                    if (e.key !== "Enter") return;
-
-                    const newValue = Number(e.currentTarget.value);
-                    if (newValue === lastValueRef.current) return;
-
-                    onChange?.(newValue);
-                    lastValueRef.current = newValue;
-                }}
+                onChange={onChange}
             />
         </div>
     );

@@ -67,6 +67,39 @@ export class AlphaBehavior
     }
 
     /**
+     * List used for value interpolation.
+     */
+    public get list(): NumberList {
+        return this._list;
+    }
+
+    /**
+     * Behavior mode determining how alpha is applied.
+     */
+    public get mode(): "static" | "list" | "random" {
+        return this._mode;
+    }
+    public set mode(value: "static" | "list" | "random") {
+        this._mode = value;
+
+        if (this._mode === "static") {
+            this._emitter.removeFromActiveUpdateBehaviors(this);
+        } else {
+            this._emitter.addToActiveUpdateBehaviors(this);
+        }
+    }
+
+    /**
+     * Value used when in "static" mode.
+     */
+    public get staticValue(): number {
+        return this._staticValue;
+    }
+    public set staticValue(value: number) {
+        this._staticValue = value;
+    }
+
+    /**
      * @inheritdoc
      */
     public applyConfig(config: AlphaBehaviorConfig): void {
