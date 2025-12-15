@@ -92,6 +92,8 @@ export default function App() {
         emitter.play();
         setEmitter(emitter);
 
+        window.emitter = emitter;
+
         const updateIntervalId = setInterval(() => {
             setParticleCount(emitter.particleCount);
             setMaxParticleCount(emitter.maxParticles);
@@ -99,6 +101,9 @@ export default function App() {
 
         return () => {
             console.log("App unmounted");
+
+            emitter.stop(true);
+            window.emitter = null;
 
             container.destroy();
             clearInterval(updateIntervalId);

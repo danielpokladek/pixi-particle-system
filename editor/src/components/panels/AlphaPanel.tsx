@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
 import { NumberInput } from "../ui/inputs/NumberInput";
 import { Select } from "../ui/inputs/Select";
@@ -20,6 +20,18 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
     const [useList, setUseList] = useState(
         emitter.alphaBehavior.mode !== "static",
     );
+
+    useEffect(() => {
+        // TODO: Fix this initialization logic.
+        // if (!emitter.colorBehavior.list.isInitialized) {
+        //     emitter.alphaBehavior.list.initialize({
+        //         list: [
+        //             { time: 0, value: 1 },
+        //             { time: 1, value: 0 },
+        //         ],
+        //     });
+        // }
+    }, [emitter]);
 
     return (
         <details open={isOpen}>
@@ -56,11 +68,13 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
             {useList && (
                 <ValueList
                     label="Alpha List"
-                    defaultList={[
-                        { value: 0.0, time: 0.0, ID: 1 },
-                        { value: 1.0, time: 0.5, ID: 2 },
-                        { value: 0.0, time: 1.0, ID: 3 },
-                    ]}
+                    defaultList={emitter.alphaBehavior.list.list.map(
+                        (step, index) => ({
+                            time: step.time,
+                            value: step.value,
+                            ID: Date.now() + index,
+                        }),
+                    )}
                     onChange={(newList) => {
                         emitter.alphaBehavior.list.initialize({
                             list: newList,

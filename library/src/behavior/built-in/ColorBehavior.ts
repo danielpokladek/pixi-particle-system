@@ -54,6 +54,30 @@ export class ColorBehavior
         return "normal";
     }
 
+    public get list(): ColorList {
+        return this._list;
+    }
+
+    public get mode(): "static" | "list" | "random" {
+        return this._behaviorMode;
+    }
+    public set mode(value: "static" | "list" | "random") {
+        this._behaviorMode = value;
+
+        if (value === "random" || value === "static") {
+            this._emitter.removeFromActiveUpdateBehaviors(this);
+        } else {
+            this._emitter.addToActiveUpdateBehaviors(this);
+        }
+    }
+
+    public get staticValue(): ColorSource {
+        return this._staticValue;
+    }
+    public set staticValue(value: ColorSource) {
+        this._staticValue = value;
+    }
+
     /**
      * @inheritdoc
      */

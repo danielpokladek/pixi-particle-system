@@ -82,7 +82,7 @@ export class AlphaBehavior
     public set mode(value: "static" | "list" | "random") {
         this._mode = value;
 
-        if (this._mode === "static") {
+        if (value === "random" || value === "static") {
             this._emitter.removeFromActiveUpdateBehaviors(this);
         } else {
             this._emitter.addToActiveUpdateBehaviors(this);

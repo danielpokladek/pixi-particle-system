@@ -2,14 +2,16 @@ import { ListStep } from "pixi-particle-system";
 import { useState } from "react";
 import { Input } from "../../base/Input";
 
+// ? TODO: Should the list auto sort on change?
+
 type ListStepData = {
     ID: number;
-} & ListStep<number>;
+} & ListStep<any>;
 
 type Props = {
     label: string;
     defaultList: ListStepData[];
-    onChange?: (list: ListStep<number>[]) => void;
+    onChange?: (list: ListStep<any>[]) => void;
 };
 
 /**
@@ -41,7 +43,7 @@ export function ValueList({
                     >
                         <label style={{ width: "100%" }}>Time</label>
                         <label style={{ width: "100%" }}>Value</label>
-                        <div style={{ width: "100%" }}></div>
+                        <div style={{ width: "70%" }}></div>
                     </div>
                     {list.map((step, index) => (
                         <div role="group" key={step.ID}>
@@ -75,21 +77,38 @@ export function ValueList({
                             </button>
                         </div>
                     ))}
-                    <button
-                        onClick={() => {
-                            const newStep: ListStepData = {
-                                ID: Date.now(),
-                                time: 0,
-                                value: 0,
-                            };
+                    <div role="group">
+                        <button
+                            onClick={() => {
+                                const newStep: ListStepData = {
+                                    ID: Date.now(),
+                                    time: 0,
+                                    value: defaultList[0].value,
+                                };
 
-                            const newList = [...list, newStep];
-                            setList(newList);
-                            onChange?.(newList);
-                        }}
-                    >
-                        Add New
-                    </button>
+                                const newList = [...list, newStep];
+                                setList(newList);
+                                onChange?.(newList);
+                            }}
+                        >
+                            New
+                        </button>
+
+                        {/* <hr /> */}
+
+                        <button
+                            onClick={() => {
+                                const newList = [...list].sort(
+                                    (a, b) => a.time - b.time,
+                                );
+
+                                setList(newList);
+                                onChange?.(newList);
+                            }}
+                        >
+                            Sort
+                        </button>
+                    </div>
                 </div>
             </details>
         </>

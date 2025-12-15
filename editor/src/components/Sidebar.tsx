@@ -1,6 +1,6 @@
 import { Emitter } from "pixi-particle-system";
 import { AlphaPanel } from "./panels/AlphaPanel";
-import { ColorPanel } from "./panels/ColorBehavior";
+import { ColorPanel } from "./panels/ColorPanel";
 import { EmitterPanel } from "./panels/EmitterPanel";
 import { MovementPanel } from "./panels/MovementPanel";
 import { SpawnPanel } from "./panels/SpawnPanel";
@@ -16,11 +16,11 @@ export default function Sidebar({ emitter }: Props) {
 
             {emitter && (
                 <>
-                    <EmitterPanel emitter={emitter} />
-                    <SpawnPanel emitter={emitter} />
+                    <EmitterPanel emitter={emitter} isOpen={false} />
+                    <SpawnPanel emitter={emitter} isOpen={false} />
                     <AlphaPanel emitter={emitter} isOpen={true} />
-                    <ColorPanel />
-                    <MovementPanel emitter={emitter} isOpen={true} />
+                    <ColorPanel emitter={emitter} isOpen={false} />
+                    <MovementPanel emitter={emitter} isOpen={false} />
                 </>
             )}
         </aside>

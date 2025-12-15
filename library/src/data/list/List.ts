@@ -47,6 +47,7 @@ export abstract class List<
 > {
     protected _first: ListNode<ListDataType> | null = null;
     protected _ease: SimpleEase | null = null;
+    protected _list: ListStep<InputValue>[] = [];
 
     protected _isStepped = false;
 
@@ -64,10 +65,27 @@ export abstract class List<
     }
 
     /**
+     * Nodes in the list.
+     */
+    public get list(): ListStep<InputValue>[] {
+        return this._list;
+    }
+
+    /**
+     * Indicates whether the list has been initialized.
+     */
+    public get isInitialized(): boolean {
+        return this._first !== null;
+    }
+
+    /**
      * Gets the ease function for the list.
      */
     public get ease(): SimpleEase | null {
         return this._ease;
+    }
+    public set ease(value: SimpleEase | null) {
+        this._ease = value;
     }
 
     /**
@@ -75,6 +93,9 @@ export abstract class List<
      */
     public get isStepped(): boolean {
         return this._isStepped;
+    }
+    public set isStepped(value: boolean) {
+        this._isStepped = value;
     }
 
     /**
@@ -90,6 +111,8 @@ export abstract class List<
      */
     public initialize(data: ListData<InputValue>): void {
         this.initializeList(data);
+
+        this._list = data.list;
 
         this._isStepped = !!data.isStepped;
         this._ease = data.ease || null;
