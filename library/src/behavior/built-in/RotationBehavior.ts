@@ -59,6 +59,53 @@ export class RotationBehavior
     }
 
     /**
+     * List used to set rotation at different points in the particle's life.
+     */
+    public get list(): NumberList {
+        return this._list;
+    }
+
+    /**
+     * Behavior mode.
+     */
+    public get mode(): "static" | "list" | "acceleration" {
+        return this._mode;
+    }
+    public set mode(value: "static" | "list" | "acceleration") {
+        this._mode = value;
+    }
+
+    /**
+     * Static rotation value.
+     */
+    public get staticValue(): number {
+        return this._staticValue;
+    }
+    public set staticValue(value: number) {
+        this._staticValue = value;
+    }
+
+    /**
+     * Rotation acceleration value.
+     */
+    public get acceleration(): number {
+        return this._acceleration;
+    }
+    public set acceleration(value: number) {
+        this._acceleration = value;
+    }
+
+    /**
+     * Starting rotation value (used for acceleration mode).
+     */
+    public get startRotation(): number {
+        return this._startRotation;
+    }
+    public set startRotation(value: number) {
+        this._startRotation = value;
+    }
+
+    /**
      * @inheritdoc
      */
     public applyConfig(config: RotationBehaviorConfig): void {
