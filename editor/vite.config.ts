@@ -7,4 +7,8 @@ export default defineConfig({
         outDir: "../dist-editor",
         emptyOutDir: true,
     },
+    server: {
+        host: true,
+        port: 3000,
+    },
 });

@@ -6,6 +6,7 @@ import { MovementPanel } from "./panels/MovementPanel";
 import { RotationPanel } from "./panels/RotationPanel";
 import { ScalePanel } from "./panels/ScalePanel";
 import { SpawnPanel } from "./panels/SpawnPanel";
+import { TexturePanel } from "./panels/TexturePanel";
 
 type Props = {
     emitter: Emitter | null;
@@ -24,7 +25,8 @@ export default function Sidebar({ emitter }: Props) {
                     <ColorPanel emitter={emitter} isOpen={false} />
                     <MovementPanel emitter={emitter} isOpen={false} />
                     <RotationPanel emitter={emitter} isOpen={false} />
-                    <ScalePanel emitter={emitter} isOpen={true} />
+                    <ScalePanel emitter={emitter} isOpen={false} />
+                    <TexturePanel emitter={emitter} isOpen={true} />
                 </>
             )}
         </aside>
