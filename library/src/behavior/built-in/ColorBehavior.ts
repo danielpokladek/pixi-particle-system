@@ -54,10 +54,16 @@ export class ColorBehavior
         return "normal";
     }
 
+    /**
+     * List used for color interpolation.
+     */
     public get list(): ColorList {
         return this._list;
     }
 
+    /**
+     * Behavior mode determining how color is applied.
+     */
     public get mode(): "static" | "list" | "random" {
         return this._behaviorMode;
     }
@@ -71,6 +77,9 @@ export class ColorBehavior
         }
     }
 
+    /**
+     * Static color value used in "static" mode.
+     */
     public get staticValue(): ColorSource {
         return this._staticValue;
     }
