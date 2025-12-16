@@ -1,3 +1,4 @@
+import { PointData } from "pixi.js";
 import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
@@ -19,8 +20,8 @@ export type MovementSpace = "local" | "global";
  */
 export type MovementBehaviorConfig =
     | {
-          minMoveSpeed: number;
-          maxMoveSpeed: number;
+          minMoveSpeed: PointData;
+          maxMoveSpeed: PointData;
           mode?: "linear" | "acceleration";
           space?: MovementSpace;
       }
@@ -48,8 +49,8 @@ export class MovementBehavior
 
     private _useList: boolean = false;
 
-    private _minMoveSpeed: number = 0;
-    private _maxMoveSpeed: number = 0;
+    private _minMoveSpeed: PointData = { x: 0, y: 0 };
+    private _maxMoveSpeed: PointData = { x: 0, y: 0 };
 
     /**
      * Creates new instance of MovementBehavior.
@@ -70,6 +71,20 @@ export class MovementBehavior
     }
 
     /**
+     * X-axis movement list.
+     */
+    public get xList(): NumberList {
+        return this._xList;
+    }
+
+    /**
+     * Y-axis movement list.
+     */
+    public get yList(): NumberList {
+        return this._yList;
+    }
+
+    /**
      * Space in which movement is applied.
      */
     public get space(): "local" | "global" {
@@ -77,6 +92,48 @@ export class MovementBehavior
     }
     public set space(value: "local" | "global") {
         this._space = value;
+    }
+
+    /**
+     * Movement mode.
+     */
+    public get mode(): "acceleration" | "linear" {
+        return this._mode;
+    }
+    public set mode(value: "acceleration" | "linear") {
+        this._mode = value;
+    }
+
+    /**
+     * Whether to use lists for movement values.
+     */
+    public get useList(): boolean {
+        return this._useList;
+    }
+    public set useList(value: boolean) {
+        this._useList = value;
+    }
+
+    /**
+     * Minimum movement speed (used when not using lists).
+     */
+    public get minMoveSpeed(): PointData {
+        return this._minMoveSpeed;
+    }
+    public set minMoveSpeed(value: PointData) {
+        this._minMoveSpeed.x = value.x;
+        this._minMoveSpeed.y = value.y;
+    }
+
+    /**
+     * Maximum movement speed (used when not using lists).
+     */
+    public get maxMoveSpeed(): PointData {
+        return this._maxMoveSpeed;
+    }
+    public set maxMoveSpeed(value: PointData) {
+        this._maxMoveSpeed.x = value.x;
+        this._maxMoveSpeed.y = value.y;
     }
 
     /**
@@ -124,12 +181,12 @@ export class MovementBehavior
             yVelocity = this._yList.interpolate(0);
         } else {
             xVelocity =
-                Math.random() * (this._maxMoveSpeed - this._minMoveSpeed) +
-                this._minMoveSpeed;
+                Math.random() * (this._maxMoveSpeed.x - this._minMoveSpeed.x) +
+                this._minMoveSpeed.x;
 
             yVelocity =
-                Math.random() * (this._maxMoveSpeed - this._minMoveSpeed) +
-                this._minMoveSpeed;
+                Math.random() * (this._maxMoveSpeed.y - this._minMoveSpeed.y) +
+                this._minMoveSpeed.y;
         }
 
         // TODO: Make particles rotation aware.
@@ -208,7 +265,14 @@ export class MovementBehavior
      * @inheritdoc
      */
     protected reset(): void {
-        this._minMoveSpeed = 0;
-        this._maxMoveSpeed = 0;
+        this._mode = "linear";
+        this._space = "global";
+
+        this._minMoveSpeed.x = 0;
+        this._minMoveSpeed.y = 0;
+        this._maxMoveSpeed.x = 0;
+        this._maxMoveSpeed.y = 0;
+
+        this._useList = false;
     }
 }

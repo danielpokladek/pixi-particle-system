@@ -1,9 +1,9 @@
 import { BLEND_MODES } from "pixi.js";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
+import { Vector2DControl } from "../ui/controls/Vector2DControl";
 import { Select } from "../ui/inputs/Select";
 import { Toggle } from "../ui/inputs/Toggle";
-import { Vector2DInput } from "../ui/inputs/Vector2DInput";
 
 const blendModeOptions: { label: string; key: BLEND_MODES }[] = [
     { label: "Normal", key: "normal" },
@@ -17,7 +17,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
         <details open={isOpen}>
             <summary>Emitter</summary>
 
-            <Vector2DInput
+            <Vector2DControl
                 label="Particle Lifetime"
                 xDefault={emitter.minLifetime}
                 yDefault={emitter.maxLifetime}

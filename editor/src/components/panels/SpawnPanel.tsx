@@ -2,8 +2,8 @@ import { SpawnShape } from "pixi-particle-system";
 import { useState } from "react";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
+import { Vector2DControl } from "../ui/controls/Vector2DControl";
 import { Select } from "../ui/inputs/Select";
-import { Vector2DInput } from "../ui/inputs/Vector2DInput";
 
 const spawnOptionToType: Record<string, SpawnShape> = {
     Point: "point",
@@ -28,7 +28,7 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
         <details open={isOpen}>
             <summary>Spawn Behavior</summary>
 
-            <Vector2DInput
+            <Vector2DControl
                 label="Direction"
                 xDefault={emitter.spawnBehavior.direction.x}
                 yDefault={emitter.spawnBehavior.direction.y}
@@ -59,7 +59,7 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
 
             {spawnShape === "rectangle" && (
                 <>
-                    <Vector2DInput
+                    <Vector2DControl
                         label="Size"
                         xDefault={emitter.spawnBehavior.width}
                         yDefault={emitter.spawnBehavior.height}
@@ -73,7 +73,7 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
 
             {spawnShape === "circle" && (
                 <>
-                    <Vector2DInput
+                    <Vector2DControl
                         label="Radius"
                         xDefault={emitter.spawnBehavior.outerRadius}
                         yDefault={emitter.spawnBehavior.innerRadius}
