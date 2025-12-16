@@ -554,6 +554,8 @@ export class Emitter {
             }
         }
 
+        this._parent.update();
+
         if (!this._emit && this._particleCount === 0) {
             this._onComplete?.();
             this._onComplete = null;

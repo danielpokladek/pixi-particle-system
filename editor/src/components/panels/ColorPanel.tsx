@@ -1,8 +1,9 @@
 import { Color } from "pixi.js";
 import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
-import { ColorInput } from "../ui/inputs/ColorInput";
+import { ColorControl } from "../ui/controls/ColorControl";
 import { Select } from "../ui/inputs/Select";
+import { ColorList } from "../ui/inputs/list/ColorList";
 
 const labelToType: Record<string, "static" | "list" | "random"> = {
     Static: "static",
@@ -52,23 +53,22 @@ export function ColorPanel({ emitter, isOpen = true }: PanelProps) {
                 ]}
             />
 
-            <hr></hr>
+            <hr />
 
             {!useList && (
-                <ColorInput
+                <ColorControl
                     label="Static Value"
                     defaultValue={Color.shared
                         .setValue(emitter.colorBehavior.staticValue)
                         .toHex()}
                     onChange={(value) => {
-                        console.log(value);
                         emitter.colorBehavior.staticValue = value;
                     }}
                 />
             )}
 
-            {/* {useList && (
-                <ValueList
+            {useList && (
+                <ColorList
                     label="List"
                     defaultList={emitter.colorBehavior.list.list.map(
                         (step, index) => ({
@@ -83,7 +83,7 @@ export function ColorPanel({ emitter, isOpen = true }: PanelProps) {
                         });
                     }}
                 />
-            )} */}
+            )}
         </details>
     );
 }

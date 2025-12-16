@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
-import { NumberInput } from "../ui/inputs/NumberInput";
+import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/inputs/Select";
 import { ValueList } from "../ui/inputs/list/ValueList";
 
@@ -53,10 +53,10 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
                 ]}
             />
 
-            <hr></hr>
+            <hr />
 
             {!useList && (
-                <NumberInput
+                <NumberControl
                     label="Static Value"
                     defaultValue={emitter.alphaBehavior.staticValue}
                     onChange={(value) => {

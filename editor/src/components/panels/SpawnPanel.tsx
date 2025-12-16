@@ -1,7 +1,7 @@
 import { SpawnShape } from "pixi-particle-system";
 import { useState } from "react";
 import { PanelProps } from "../../Types";
-import { NumberInput } from "../ui/inputs/NumberInput";
+import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/inputs/Select";
 import { Vector2DInput } from "../ui/inputs/Vector2DInput";
 
@@ -86,7 +86,7 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
             )}
 
             {spawnShape === "line" && (
-                <NumberInput
+                <NumberControl
                     label="Width"
                     defaultValue={emitter.spawnBehavior.width}
                     onChange={(value) => {

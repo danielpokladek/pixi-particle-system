@@ -64,10 +64,10 @@ export class ColorBehavior
     public set mode(value: "static" | "list" | "random") {
         this._behaviorMode = value;
 
-        if (value === "random" || value === "static") {
-            this._emitter.removeFromActiveUpdateBehaviors(this);
-        } else {
+        if (value === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);
+        } else {
+            this._emitter.removeFromActiveUpdateBehaviors(this);
         }
     }
 

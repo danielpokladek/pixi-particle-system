@@ -30,6 +30,17 @@ const config: EmitterConfig = {
         mode: "list",
     },
 
+    colorBehavior: {
+        listData: {
+            list: [
+                { value: "#ff0000", time: 0 },
+                { value: "#00ff00", time: 0.5 },
+                { value: "#0000ff", time: 1 },
+            ],
+        },
+        mode: "random",
+    },
+
     movementBehavior: {
         xListData: {
             list: [

@@ -18,8 +18,8 @@ export default function Sidebar({ emitter }: Props) {
                 <>
                     <EmitterPanel emitter={emitter} isOpen={false} />
                     <SpawnPanel emitter={emitter} isOpen={false} />
-                    <AlphaPanel emitter={emitter} isOpen={true} />
-                    <ColorPanel emitter={emitter} isOpen={false} />
+                    <AlphaPanel emitter={emitter} isOpen={false} />
+                    <ColorPanel emitter={emitter} isOpen={true} />
                     <MovementPanel emitter={emitter} isOpen={false} />
                 </>
             )}

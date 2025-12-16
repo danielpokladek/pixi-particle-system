@@ -6,18 +6,18 @@ import { Input } from "../../base/Input";
 
 type ListStepData = {
     ID: number;
-} & ListStep<number>;
+} & ListStep<string>;
 
 type Props = {
     label: string;
     defaultList: ListStepData[];
-    onChange?: (list: ListStep<number>[]) => void;
+    onChange?: (list: ListStep<string>[]) => void;
 };
 
 /**
  * UI component for editing a list of values.
  */
-export function ValueList({
+export function ColorList({
     label,
     defaultList,
     onChange,
@@ -45,7 +45,6 @@ export function ValueList({
                         <label style={{ width: "100%" }}>Value</label>
                         <div style={{ width: "70%" }}></div>
                     </div>
-
                     {list.map((step, index) => (
                         <div role="group" key={step.ID}>
                             <Input
@@ -57,10 +56,10 @@ export function ValueList({
                                 }}
                             />
                             <Input
-                                inputType="text"
-                                defaultValue={step.value.toString()}
+                                inputType="color"
+                                defaultValue={step.value}
                                 onChange={(value) => {
-                                    list[index].value = Number(value);
+                                    list[index].value = value;
                                     onChange?.(list);
                                 }}
                             />

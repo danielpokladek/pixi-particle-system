@@ -1,6 +1,6 @@
 import { BLEND_MODES } from "pixi.js";
 import { PanelProps } from "../../Types";
-import { NumberInput } from "../ui/inputs/NumberInput";
+import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/inputs/Select";
 import { Toggle } from "../ui/inputs/Toggle";
 import { Vector2DInput } from "../ui/inputs/Vector2DInput";
@@ -27,7 +27,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
                 }}
             />
 
-            <NumberInput
+            <NumberControl
                 label="Spawn Interval"
                 defaultValue={emitter.spawnInterval}
                 onChange={(value) => {
@@ -35,7 +35,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
                 }}
             />
 
-            <NumberInput
+            <NumberControl
                 label="Spawn Chance"
                 defaultValue={emitter.spawnChance}
                 onChange={(value) => {
@@ -43,7 +43,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
                 }}
             />
 
-            <NumberInput
+            <NumberControl
                 label="Max Particles"
                 defaultValue={emitter.maxParticles}
                 onChange={(value) => {
@@ -51,7 +51,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
                 }}
             />
 
-            <NumberInput
+            <NumberControl
                 label="Wave Particles"
                 defaultValue={emitter.particlesPerWave}
                 onChange={(value) => {
