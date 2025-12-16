@@ -4,11 +4,12 @@
 type ScaleBehaviorConfig =
     | {
           mode?: "static";
-          value: number;
+          value: PointData;
       }
     | {
-          listData: ListData<number>;
           mode: "list" | "random";
+          xListData: ListData<number>;
+          yListData?: ListData<number>;
       };
 ```
 

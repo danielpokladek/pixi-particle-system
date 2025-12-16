@@ -57,6 +57,14 @@ protected _isStepped: boolean = false;
 
 ---
 
+### \_list
+
+```ts
+protected _list: ListStep<InputValue>[] = [];
+```
+
+---
+
 ### interpolate()
 
 ```ts
@@ -93,6 +101,22 @@ Gets the ease function for the list.
 
 [`SimpleEase`](../type-aliases/SimpleEase.md) \| `null`
 
+#### Set Signature
+
+```ts
+set ease(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                                                    |
+| --------- | ------------------------------------------------------- |
+| `value`   | [`SimpleEase`](../type-aliases/SimpleEase.md) \| `null` |
+
+##### Returns
+
+`void`
+
 ---
 
 ### first
@@ -111,6 +135,22 @@ Gets the first node in the list.
 
 ---
 
+### isInitialized
+
+#### Get Signature
+
+```ts
+get isInitialized(): boolean;
+```
+
+Indicates whether the list has been initialized.
+
+##### Returns
+
+`boolean`
+
+---
+
 ### isStepped
 
 #### Get Signature
@@ -124,6 +164,38 @@ Gets whether the list uses stepped interpolation.
 ##### Returns
 
 `boolean`
+
+#### Set Signature
+
+```ts
+set isStepped(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type      |
+| --------- | --------- |
+| `value`   | `boolean` |
+
+##### Returns
+
+`void`
+
+---
+
+### list
+
+#### Get Signature
+
+```ts
+get list(): ListStep<InputValue>[];
+```
+
+Nodes in the list.
+
+##### Returns
+
+[`ListStep`](../type-aliases/ListStep.md)\<`InputValue`\>[]
 
 ## Methods
 

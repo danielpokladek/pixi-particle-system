@@ -30,3 +30,9 @@ Type defining the configuration for SpawnBehavior.
 ```ts
 optional direction: PointData;
 ```
+
+### shape
+
+```ts
+shape: SpawnShape;
+```

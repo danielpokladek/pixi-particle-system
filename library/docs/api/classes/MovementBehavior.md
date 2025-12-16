@@ -53,6 +53,134 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
+### maxMoveSpeed
+
+#### Get Signature
+
+```ts
+get maxMoveSpeed(): PointData;
+```
+
+Maximum movement speed (used when not using lists).
+
+##### Returns
+
+`PointData`
+
+#### Set Signature
+
+```ts
+set maxMoveSpeed(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type        |
+| --------- | ----------- |
+| `value`   | `PointData` |
+
+##### Returns
+
+`void`
+
+---
+
+### minMoveSpeed
+
+#### Get Signature
+
+```ts
+get minMoveSpeed(): PointData;
+```
+
+Minimum movement speed (used when not using lists).
+
+##### Returns
+
+`PointData`
+
+#### Set Signature
+
+```ts
+set minMoveSpeed(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type        |
+| --------- | ----------- |
+| `value`   | `PointData` |
+
+##### Returns
+
+`void`
+
+---
+
+### mode
+
+#### Get Signature
+
+```ts
+get mode(): "linear" | "acceleration";
+```
+
+Movement mode.
+
+##### Returns
+
+`"linear"` \| `"acceleration"`
+
+#### Set Signature
+
+```ts
+set mode(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                           |
+| --------- | ------------------------------ |
+| `value`   | `"linear"` \| `"acceleration"` |
+
+##### Returns
+
+`void`
+
+---
+
+### space
+
+#### Get Signature
+
+```ts
+get space(): "local" | "global";
+```
+
+Space in which movement is applied.
+
+##### Returns
+
+`"local"` \| `"global"`
+
+#### Set Signature
+
+```ts
+set space(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                    |
+| --------- | ----------------------- |
+| `value`   | `"local"` \| `"global"` |
+
+##### Returns
+
+`void`
+
+---
+
 ### updateOrder
 
 #### Get Signature
@@ -75,6 +203,70 @@ This is useful to ensure certain behaviors are updated before/after others.
 #### Overrides
 
 [`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
+
+---
+
+### useList
+
+#### Get Signature
+
+```ts
+get useList(): boolean;
+```
+
+Whether to use lists for movement values.
+
+##### Returns
+
+`boolean`
+
+#### Set Signature
+
+```ts
+set useList(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type      |
+| --------- | --------- |
+| `value`   | `boolean` |
+
+##### Returns
+
+`void`
+
+---
+
+### xList
+
+#### Get Signature
+
+```ts
+get xList(): NumberList;
+```
+
+X-axis movement list.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
+
+---
+
+### yList
+
+#### Get Signature
+
+```ts
+get yList(): NumberList;
+```
+
+Y-axis movement list.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
 
 ## Methods
 

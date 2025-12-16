@@ -3,14 +3,14 @@
 ```ts
 type MovementBehaviorConfig =
     | {
-          maxMoveSpeed: number;
-          minMoveSpeed: number;
+          maxMoveSpeed: PointData;
+          minMoveSpeed: PointData;
           mode?: "linear" | "acceleration";
-          space?: "local" | "global";
+          space?: MovementSpace;
       }
     | {
           mode?: "linear" | "acceleration";
-          space?: "local" | "global";
+          space?: MovementSpace;
           xListData: ListData<number>;
           yListData?: ListData<number>;
       };

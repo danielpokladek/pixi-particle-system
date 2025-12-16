@@ -66,6 +66,150 @@ Direction vector applied to spawned particles.
 
 `PointData`
 
+#### Set Signature
+
+```ts
+set direction(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type        |
+| --------- | ----------- |
+| `value`   | `PointData` |
+
+##### Returns
+
+`void`
+
+---
+
+### height
+
+#### Get Signature
+
+```ts
+get height(): number;
+```
+
+Height of the spawn shape (for rectangle shape).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set height(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### innerRadius
+
+#### Get Signature
+
+```ts
+get innerRadius(): number;
+```
+
+Inner radius of the spawn shape (for circle shape).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set innerRadius(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### outerRadius
+
+#### Get Signature
+
+```ts
+get outerRadius(): number;
+```
+
+Outer radius of the spawn shape (for circle shape).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set outerRadius(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### shape
+
+#### Get Signature
+
+```ts
+get shape(): SpawnShape;
+```
+
+Shape used for spawning particles.
+
+##### Returns
+
+[`SpawnShape`](../type-aliases/SpawnShape.md)
+
+#### Set Signature
+
+```ts
+set shape(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                                          |
+| --------- | --------------------------------------------- |
+| `value`   | [`SpawnShape`](../type-aliases/SpawnShape.md) |
+
+##### Returns
+
+`void`
+
 ---
 
 ### updateOrder
@@ -90,6 +234,38 @@ This is useful to ensure certain behaviors are updated before/after others.
 #### Overrides
 
 [`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
+
+---
+
+### width
+
+#### Get Signature
+
+```ts
+get width(): number;
+```
+
+Width of the spawn shape (for rectangle and line shapes).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set width(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
 
 ## Methods
 

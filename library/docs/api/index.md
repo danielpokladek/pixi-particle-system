@@ -43,11 +43,13 @@
 | [ListNode](type-aliases/ListNode.md)                             | Type defining a node in a list.                         |
 | [ListStep](type-aliases/ListStep.md)                             | Type describing a value step in a list.                 |
 | [MovementBehaviorConfig](type-aliases/MovementBehaviorConfig.md) | Type defining the configuration for MovementBehavior.   |
+| [MovementSpace](type-aliases/MovementSpace.md)                   | Type defining the possible movement spaces.             |
 | [RGBAColor](type-aliases/RGBAColor.md)                           | Color type representing RGBA values.                    |
 | [RotationBehaviorConfig](type-aliases/RotationBehaviorConfig.md) | Type defining the configuration for RotationBehavior.   |
 | [ScaleBehaviorConfig](type-aliases/ScaleBehaviorConfig.md)       | Type defining the configuration for ScaleBehavior.      |
 | [SimpleEase](type-aliases/SimpleEase.md)                         | Basic easing function type.                             |
 | [SpawnBehaviorConfig](type-aliases/SpawnBehaviorConfig.md)       | Type defining the configuration for SpawnBehavior.      |
+| [SpawnShape](type-aliases/SpawnShape.md)                         | Type defining the possible spawn shapes.                |
 | [TextureBehaviorConfig](type-aliases/TextureBehaviorConfig.md)   | Type defining the configuration for TextureBehavior.    |
 | [TextureConfig](type-aliases/TextureConfig.md)                   | Type defining the configuration for TextureBehavior.    |
 

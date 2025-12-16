@@ -25,6 +25,102 @@ Creates a new Emitter instance.
 
 ## Accessors
 
+### addAtBack
+
+#### Get Signature
+
+```ts
+get addAtBack(): boolean;
+```
+
+Whether to add new particles at the back of the container.
+
+##### Returns
+
+`boolean`
+
+#### Set Signature
+
+```ts
+set addAtBack(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type      |
+| --------- | --------- |
+| `value`   | `boolean` |
+
+##### Returns
+
+`void`
+
+---
+
+### alphaBehavior
+
+#### Get Signature
+
+```ts
+get alphaBehavior(): AlphaBehavior;
+```
+
+Alpha behavior of the emitter.
+
+##### Returns
+
+[`AlphaBehavior`](AlphaBehavior.md)
+
+---
+
+### colorBehavior
+
+#### Get Signature
+
+```ts
+get colorBehavior(): ColorBehavior;
+```
+
+Color behavior of the emitter.
+
+##### Returns
+
+[`ColorBehavior`](ColorBehavior.md)
+
+---
+
+### maxLifetime
+
+#### Get Signature
+
+```ts
+get maxLifetime(): number;
+```
+
+Maximum lifetime of particles in seconds.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set maxLifetime(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
 ### maxParticles
 
 #### Get Signature
@@ -38,6 +134,70 @@ Maximum number of particles allowed in the emitter.
 ##### Returns
 
 `number`
+
+#### Set Signature
+
+```ts
+set maxParticles(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### minLifetime
+
+#### Get Signature
+
+```ts
+get minLifetime(): number;
+```
+
+Minimum lifetime of particles in seconds.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set minLifetime(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### movementBehavior
+
+#### Get Signature
+
+```ts
+get movementBehavior(): MovementBehavior;
+```
+
+Movement behavior of the emitter.
+
+##### Returns
+
+[`MovementBehavior`](MovementBehavior.md)
 
 ---
 
@@ -70,6 +230,148 @@ Current number of active particles in the emitter.
 ##### Returns
 
 `number`
+
+---
+
+### particlesPerWave
+
+#### Get Signature
+
+```ts
+get particlesPerWave(): number;
+```
+
+Number of particles to spawn per wave.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set particlesPerWave(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### rotationBehavior
+
+#### Get Signature
+
+```ts
+get rotationBehavior(): RotationBehavior;
+```
+
+Rotation behavior of the emitter.
+
+##### Returns
+
+[`RotationBehavior`](RotationBehavior.md)
+
+---
+
+### scaleBehavior
+
+#### Get Signature
+
+```ts
+get scaleBehavior(): ScaleBehavior;
+```
+
+Scale behavior of the emitter.
+
+##### Returns
+
+[`ScaleBehavior`](ScaleBehavior.md)
+
+---
+
+### spawnBehavior
+
+#### Get Signature
+
+```ts
+get spawnBehavior(): SpawnBehavior;
+```
+
+##### Returns
+
+[`SpawnBehavior`](SpawnBehavior.md)
+
+---
+
+### spawnChance
+
+#### Get Signature
+
+```ts
+get spawnChance(): number;
+```
+
+Chance of spawning a particle (0.0 - 1.0).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set spawnChance(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### spawnInterval
+
+#### Get Signature
+
+```ts
+get spawnInterval(): number;
+```
+
+Interval between particle spawns in seconds.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set spawnInterval(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
 
 ---
 
@@ -146,6 +448,22 @@ Applies a configuration to the emitter.
 #### Returns
 
 `void`
+
+---
+
+### getConfig()
+
+```ts
+getConfig(): EmitterConfig;
+```
+
+Retrieves the current configuration for emitter and its behaviors.
+
+#### Returns
+
+[`EmitterConfig`](../type-aliases/EmitterConfig.md)
+
+Current configuration object.
 
 ---
 

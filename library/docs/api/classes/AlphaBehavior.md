@@ -68,6 +68,86 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
+### list
+
+#### Get Signature
+
+```ts
+get list(): NumberList;
+```
+
+List used for value interpolation.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
+
+---
+
+### mode
+
+#### Get Signature
+
+```ts
+get mode(): "static" | "list" | "random";
+```
+
+Behavior mode determining how alpha is applied.
+
+##### Returns
+
+`"static"` \| `"list"` \| `"random"`
+
+#### Set Signature
+
+```ts
+set mode(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                                 |
+| --------- | ------------------------------------ |
+| `value`   | `"static"` \| `"list"` \| `"random"` |
+
+##### Returns
+
+`void`
+
+---
+
+### staticValue
+
+#### Get Signature
+
+```ts
+get staticValue(): number;
+```
+
+Value used when in "static" mode.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set staticValue(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
 ### updateOrder
 
 #### Get Signature

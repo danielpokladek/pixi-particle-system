@@ -132,6 +132,10 @@
         "link": "/api/type-aliases/MovementBehaviorConfig.md"
       },
       {
+        "text": "MovementSpace",
+        "link": "/api/type-aliases/MovementSpace.md"
+      },
+      {
         "text": "RGBAColor",
         "link": "/api/type-aliases/RGBAColor.md"
       },
@@ -150,6 +154,10 @@
       {
         "text": "SpawnBehaviorConfig",
         "link": "/api/type-aliases/SpawnBehaviorConfig.md"
+      },
+      {
+        "text": "SpawnShape",
+        "link": "/api/type-aliases/SpawnShape.md"
       },
       {
         "text": "TextureBehaviorConfig",

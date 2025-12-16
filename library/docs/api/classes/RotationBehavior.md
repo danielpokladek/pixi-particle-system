@@ -53,6 +53,150 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
+### acceleration
+
+#### Get Signature
+
+```ts
+get acceleration(): number;
+```
+
+Rotation acceleration value.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set acceleration(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### list
+
+#### Get Signature
+
+```ts
+get list(): NumberList;
+```
+
+List used to set rotation at different points in the particle's life.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
+
+---
+
+### mode
+
+#### Get Signature
+
+```ts
+get mode(): "static" | "list" | "acceleration";
+```
+
+Behavior mode.
+
+##### Returns
+
+`"static"` \| `"list"` \| `"acceleration"`
+
+#### Set Signature
+
+```ts
+set mode(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                                       |
+| --------- | ------------------------------------------ |
+| `value`   | `"static"` \| `"list"` \| `"acceleration"` |
+
+##### Returns
+
+`void`
+
+---
+
+### startRotation
+
+#### Get Signature
+
+```ts
+get startRotation(): number;
+```
+
+Starting rotation value (used for acceleration mode).
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set startRotation(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
+### staticValue
+
+#### Get Signature
+
+```ts
+get staticValue(): number;
+```
+
+Static rotation value.
+
+##### Returns
+
+`number`
+
+#### Set Signature
+
+```ts
+set staticValue(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type     |
+| --------- | -------- |
+| `value`   | `number` |
+
+##### Returns
+
+`void`
+
+---
+
 ### updateOrder
 
 #### Get Signature

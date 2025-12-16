@@ -53,6 +53,54 @@ protected readonly _emitter: Emitter;
 
 ## Accessors
 
+### mode
+
+#### Get Signature
+
+```ts
+get mode(): "static" | "list" | "random";
+```
+
+Behavior mode.
+
+##### Returns
+
+`"static"` \| `"list"` \| `"random"`
+
+#### Set Signature
+
+```ts
+set mode(value): void;
+```
+
+##### Parameters
+
+| Parameter | Type                                 |
+| --------- | ------------------------------------ |
+| `value`   | `"static"` \| `"list"` \| `"random"` |
+
+##### Returns
+
+`void`
+
+---
+
+### staticValue
+
+#### Get Signature
+
+```ts
+get staticValue(): PointData;
+```
+
+Static scale value.
+
+##### Returns
+
+`PointData`
+
+---
+
 ### updateOrder
 
 #### Get Signature
@@ -75,6 +123,38 @@ This is useful to ensure certain behaviors are updated before/after others.
 #### Overrides
 
 [`EmitterBehavior`](EmitterBehavior.md).[`updateOrder`](EmitterBehavior.md#updateorder)
+
+---
+
+### xList
+
+#### Get Signature
+
+```ts
+get xList(): NumberList;
+```
+
+List used for the X scale values.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
+
+---
+
+### yList
+
+#### Get Signature
+
+```ts
+get yList(): NumberList;
+```
+
+List used for the Y scale values.
+
+##### Returns
+
+[`NumberList`](NumberList.md)
 
 ## Methods
 
