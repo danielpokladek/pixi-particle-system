@@ -1,3 +1,4 @@
+import { PointData } from "pixi.js";
 import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
@@ -14,11 +15,12 @@ import {
  */
 export type ScaleBehaviorConfig =
     | {
-          value: number;
+          value: PointData;
           mode?: "static";
       }
     | {
-          listData: ListData<number>;
+          xListData: ListData<number>;
+          yListData?: ListData<number>;
           mode: "list" | "random";
       };
 
@@ -31,10 +33,11 @@ export class ScaleBehavior
         InitBehavior<ScaleBehaviorConfig>,
         UpdateBehavior<ScaleBehaviorConfig>
 {
-    private readonly _list: NumberList;
+    private readonly _xList: NumberList;
+    private readonly _yList: NumberList;
 
     private _mode: "static" | "list" | "random" = "static";
-    private _staticValue: number = 1;
+    private _staticValue: PointData = { x: 1, y: 1 };
 
     /**
      * Creates a new ScaleBehavior.
@@ -43,7 +46,8 @@ export class ScaleBehavior
     constructor(emitter: Emitter) {
         super(emitter);
 
-        this._list = new NumberList();
+        this._xList = new NumberList();
+        this._yList = new NumberList();
     }
 
     /**
@@ -51,6 +55,43 @@ export class ScaleBehavior
      */
     public get updateOrder(): BehaviorOrder {
         return "normal";
+    }
+
+    /**
+     * Static scale value.
+     */
+    public get staticValue(): PointData {
+        return this._staticValue;
+    }
+
+    /**
+     * List used for the X scale values.
+     */
+    public get xList(): NumberList {
+        return this._xList;
+    }
+
+    /**
+     * List used for the Y scale values.
+     */
+    public get yList(): NumberList {
+        return this._yList;
+    }
+
+    /**
+     * Behavior mode.
+     */
+    public get mode(): "static" | "list" | "random" {
+        return this._mode;
+    }
+    public set mode(value: "static" | "list" | "random") {
+        this._mode = value;
+
+        if (this._mode === "list") {
+            this._emitter.addToActiveUpdateBehaviors(this);
+        } else {
+            this._emitter.removeFromActiveUpdateBehaviors(this);
+        }
     }
 
     /**
@@ -68,7 +109,10 @@ export class ScaleBehavior
         }
 
         this._mode = config.mode;
-        this._list.initialize(config.listData);
+        this._xList.initialize(config.xListData);
+        this._yList.initialize(
+            config.yListData ? config.yListData : config.xListData,
+        );
 
         if (this._mode === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);
@@ -80,7 +124,7 @@ export class ScaleBehavior
      */
     public getConfig(): ScaleBehaviorConfig {
         return {
-            value: 1,
+            value: { x: 1, y: 1 },
             mode: "static",
         };
     }
@@ -90,26 +134,28 @@ export class ScaleBehavior
      */
     public init(particle: EmitterParticle): void {
         if (this._mode === "static") {
-            particle.scaleX = this._staticValue;
-            particle.scaleY = this._staticValue;
+            particle.scaleX = this._staticValue.x;
+            particle.scaleY = this._staticValue.y;
             return;
         }
 
         const i = this._mode === "random" ? Math.random() : 0;
-        const scale = this._list.interpolate(i);
+        const xScale = this._xList.interpolate(i);
+        const yScale = this._yList.interpolate(i);
 
-        particle.scaleX = scale;
-        particle.scaleY = scale;
+        particle.scaleX = xScale;
+        particle.scaleY = yScale;
     }
 
     /**
      * @inheritdoc
      */
     public update(particle: EmitterParticle): void {
-        const scale = this._list.interpolate(particle.data.agePercent);
+        const xScale = this._xList.interpolate(particle.data.agePercent);
+        const yScale = this._yList.interpolate(particle.data.agePercent);
 
-        particle.scaleX = scale;
-        particle.scaleY = scale;
+        particle.scaleX = xScale;
+        particle.scaleY = yScale;
     }
 
     /**
@@ -117,7 +163,8 @@ export class ScaleBehavior
      */
     protected reset(): void {
         this._mode = "static";
-        this._staticValue = 1;
+        this._staticValue.x = 1;
+        this._staticValue.y = 1;
 
         this._emitter.removeFromActiveInitBehaviors(this);
         this._emitter.removeFromActiveUpdateBehaviors(this);

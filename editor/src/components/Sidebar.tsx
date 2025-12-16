@@ -4,6 +4,7 @@ import { ColorPanel } from "./panels/ColorPanel";
 import { EmitterPanel } from "./panels/EmitterPanel";
 import { MovementPanel } from "./panels/MovementPanel";
 import { RotationPanel } from "./panels/RotationPanel";
+import { ScalePanel } from "./panels/ScalePanel";
 import { SpawnPanel } from "./panels/SpawnPanel";
 
 type Props = {
@@ -22,7 +23,8 @@ export default function Sidebar({ emitter }: Props) {
                     <AlphaPanel emitter={emitter} isOpen={false} />
                     <ColorPanel emitter={emitter} isOpen={false} />
                     <MovementPanel emitter={emitter} isOpen={false} />
-                    <RotationPanel emitter={emitter} isOpen={true} />
+                    <RotationPanel emitter={emitter} isOpen={false} />
+                    <ScalePanel emitter={emitter} isOpen={true} />
                 </>
             )}
         </aside>

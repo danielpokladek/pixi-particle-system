@@ -20,11 +20,11 @@ const config: EmitterConfig = {
     alphaBehavior: {
         listData: {
             list: [
-                { value: 0.0, time: 0.0 },
-                { value: 0.0, time: 0.2 },
-                { value: 0.5, time: 0.5 },
-                { value: 0.0, time: 0.8 },
-                { value: 0.0, time: 1.0 },
+                { value: 1.0, time: 0.0 },
+                // { value: 0.0, time: 0.2 },
+                { value: 1.0, time: 0.5 },
+                // { value: 0.0, time: 0.8 },
+                { value: 1.0, time: 1.0 },
             ],
         },
         mode: "list",
@@ -51,7 +51,7 @@ const config: EmitterConfig = {
         yListData: {
             list: [
                 { value: -50, time: 0 },
-                { value: -450, time: 1 },
+                { value: -50, time: 1 },
             ],
         },
         space: "local",
@@ -65,19 +65,27 @@ const config: EmitterConfig = {
 
     scaleBehavior: {
         mode: "random",
-        listData: {
+        xListData: {
             list: [
                 { value: 0, time: 0 },
                 { value: 100, time: 0.5 },
                 { value: 0, time: 1 },
             ],
         },
+        yListData: {
+            list: [
+                { value: 0, time: 0 },
+                { value: 10, time: 0.2 },
+                { value: 10, time: 0.8 },
+                { value: 0, time: 1 },
+            ],
+        },
     },
 
     spawnBehavior: {
-        shape: "rectangle",
-        width: 300,
-        height: 300,
+        shape: "point",
+        // width: 300,
+        // height: 300,
         direction: { x: 0, y: 1 },
     },
 };
