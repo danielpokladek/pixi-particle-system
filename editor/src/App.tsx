@@ -147,16 +147,19 @@ export default function App() {
                     </article>
                 </dialog>
             )}
-            <div className="editor">
-                <Header />
-                <div className="main">
-                    <Sidebar emitter={emitter} />
+            <Header />
 
-                    {container && emitter && (
-                        <PixiCanvas particleContainer={container} />
-                    )}
+            {emitter && container && (
+                <div className="editor">
+                    <div className="main">
+                        <Sidebar emitter={emitter} />
+
+                        {container && emitter && (
+                            <PixiCanvas particleContainer={container} />
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {emitter && (
                 <div className="stats">

@@ -264,6 +264,23 @@ export class Emitter {
     }
 
     /**
+     * Retrieves the current configuration for emitter and its behaviors.
+     * @returns Current configuration object.
+     */
+    public getConfig(): EmitterConfig {
+        return {
+            emitterVersion: this._emitterVersion,
+            minParticleLifetime: this._minLifetime,
+            maxParticleLifetime: this._maxLifetime,
+            spawnInterval: this._spawnInterval,
+            spawnChance: this._spawnChance,
+            maxParticles: this._maxParticles,
+            addAtBack: this._addAtBack,
+            particlesPerWave: this._particlesPerWave,
+        };
+    }
+
+    /**
      * Starts the emitter.
      */
     public play(): void {
