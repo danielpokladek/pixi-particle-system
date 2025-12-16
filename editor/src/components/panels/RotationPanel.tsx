@@ -135,9 +135,9 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                         }),
                     )}
                     onChange={(newList) => {
-                        // emitter.rotationBehavior.list.initialize({
-                        //     list: newList,
-                        // });
+                        emitter.rotationBehavior.list.initialize({
+                            list: newList,
+                        });
                     }}
                 />
             )}
