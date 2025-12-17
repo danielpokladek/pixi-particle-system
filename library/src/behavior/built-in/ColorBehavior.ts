@@ -35,7 +35,7 @@ export class ColorBehavior
     private readonly _list: ColorList;
 
     private _staticValue: ColorSource = "#FFFFFF";
-    private _behaviorMode: "static" | "list" | "random" = "static";
+    private _mode: "static" | "list" | "random" = "static";
 
     /**
      * Creates new instance of ColorBehavior.
@@ -65,10 +65,10 @@ export class ColorBehavior
      * Behavior mode determining how color is applied.
      */
     public get mode(): "static" | "list" | "random" {
-        return this._behaviorMode;
+        return this._mode;
     }
     public set mode(value: "static" | "list" | "random") {
-        this._behaviorMode = value;
+        this._mode = value;
 
         if (value === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);
@@ -97,16 +97,16 @@ export class ColorBehavior
 
         if ("value" in config) {
             this._staticValue = config.value;
-            this._behaviorMode = "static";
+            this._mode = "static";
             this._list.reset();
 
             return;
         }
 
-        this._behaviorMode = config.mode;
+        this._mode = config.mode;
         this._list.initialize(config.listData);
 
-        if (this._behaviorMode === "list") {
+        if (this._mode === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);
         }
     }
@@ -114,17 +114,27 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): ColorBehaviorConfig {
-        if (this._behaviorMode === "static") {
+    public getConfig(): ColorBehaviorConfig | undefined {
+        if (
+            !this._emitter.isBehaviorInitActive(this) &&
+            !this._emitter.isBehaviorUpdateActive(this)
+        ) {
+            return undefined;
+        }
+
+        if (this._mode === "static") {
             return {
                 value: this._staticValue,
+                mode: "static",
             };
         }
 
-        // TODO: Update this to return list.
         return {
-            value: this._staticValue,
-            mode: "static",
+            mode: this._mode,
+            listData: {
+                list: this._list.list,
+                isStepped: this._list.isStepped ? true : undefined,
+            },
         };
     }
 
@@ -132,12 +142,12 @@ export class ColorBehavior
      * @inheritdoc
      */
     public init(particle: EmitterParticle): void {
-        if (this._behaviorMode === "static") {
+        if (this._mode === "static") {
             particle.tint = this._staticValue;
             return;
         }
 
-        if (this._behaviorMode === "random") {
+        if (this._mode === "random") {
             particle.tint = this._list.interpolate(Math.random());
             return;
         }
@@ -157,7 +167,7 @@ export class ColorBehavior
      */
     protected reset(): void {
         this._staticValue = "#FFFFFF";
-        this._behaviorMode = "static";
+        this._mode = "static";
 
         this._emitter.removeFromActiveInitBehaviors(this);
         this._emitter.removeFromActiveUpdateBehaviors(this);

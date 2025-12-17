@@ -70,9 +70,11 @@ export class TextureBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): TextureBehaviorConfig {
-        // TODO: Handle this properly.
-        return null as unknown as TextureBehaviorConfig;
+    public getConfig(): TextureBehaviorConfig | undefined {
+        // TODO: Need to figure out a neat way to handle texture configs.
+        // TODO:  Textures cannot be serialized, so this will be tricky.
+        // TODO:  Could maybe return just the mode and length, and replace textures with placeholders?
+        return undefined;
     }
 
     /**

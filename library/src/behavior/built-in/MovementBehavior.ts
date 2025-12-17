@@ -162,9 +162,35 @@ export class MovementBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): MovementBehaviorConfig {
-        // TODO: Implement the getter.
-        return {} as MovementBehaviorConfig;
+    public getConfig(): MovementBehaviorConfig | undefined {
+        if (
+            !this._emitter.isBehaviorInitActive(this) &&
+            !this._emitter.isBehaviorUpdateActive(this)
+        ) {
+            return undefined;
+        }
+
+        if (this._useList) {
+            return {
+                xListData: {
+                    list: this._xList.list,
+                    isStepped: this._xList.isStepped ? true : undefined,
+                },
+                yListData: {
+                    list: this._yList.list,
+                    isStepped: this._xList.isStepped ? true : undefined,
+                },
+                mode: this._mode,
+                space: this._space,
+            };
+        }
+
+        return {
+            minMoveSpeed: this._minMoveSpeed,
+            maxMoveSpeed: this._maxMoveSpeed,
+            mode: this._mode,
+            space: this._space,
+        };
     }
 
     /**

@@ -126,16 +126,27 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): AlphaBehaviorConfig {
+    public getConfig(): AlphaBehaviorConfig | undefined {
+        if (
+            !this._emitter.isBehaviorInitActive(this) &&
+            !this._emitter.isBehaviorUpdateActive(this)
+        ) {
+            return undefined;
+        }
+
         if (this._mode === "static") {
             return {
                 value: this._staticValue,
+                mode: "static",
             };
         }
 
-        // TODO: Update this to return list.
         return {
-            value: this._staticValue,
+            mode: this._mode,
+            listData: {
+                list: this._list.list,
+                isStepped: this._list.isStepped ? true : undefined,
+            },
         };
     }
 

@@ -277,6 +277,14 @@ export class Emitter {
             maxParticles: this._maxParticles,
             addAtBack: this._addAtBack,
             particlesPerWave: this._particlesPerWave,
+
+            alphaBehavior: this._alphaBehavior.getConfig(),
+            colorBehavior: this._colorBehavior.getConfig(),
+            movementBehavior: this._movementBehavior.getConfig(),
+            rotationBehavior: this._rotationBehavior.getConfig(),
+            scaleBehavior: this._scaleBehavior.getConfig(),
+            spawnBehavior: this._spawnBehavior.getConfig(),
+            textureBehavior: this._textureBehavior.getConfig(),
         };
     }
 
@@ -384,6 +392,24 @@ export class Emitter {
         }
 
         this.play();
+    }
+
+    /**
+     * Checks if a behavior is currently active in the emitter's init behaviors.
+     * @param behavior Behavior to check.
+     * @returns Whether the behavior is active.
+     */
+    public isBehaviorInitActive(behavior: InitBehavior<unknown>): boolean {
+        return this._initBehaviors.indexOf(behavior) !== -1;
+    }
+
+    /**
+     * Checks if a behavior is currently active in the emitter's update behaviors.
+     * @param behavior Behavior to check.
+     * @returns Whether the behavior is active.
+     */
+    public isBehaviorUpdateActive(behavior: UpdateBehavior<unknown>): boolean {
+        return this._updateBehaviors.indexOf(behavior) !== -1;
     }
 
     /**

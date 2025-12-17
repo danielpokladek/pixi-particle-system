@@ -17,18 +17,18 @@ const config: EmitterConfig = {
     addAtBack: true,
     particlesPerWave: 1,
 
-    alphaBehavior: {
-        listData: {
-            list: [
-                { value: 1.0, time: 0.0 },
-                // { value: 0.0, time: 0.2 },
-                { value: 1.0, time: 0.5 },
-                // { value: 0.0, time: 0.8 },
-                { value: 1.0, time: 1.0 },
-            ],
-        },
-        mode: "list",
-    },
+    // alphaBehavior: {
+    //     listData: {
+    //         list: [
+    //             { value: 1.0, time: 0.0 },
+    //             // { value: 0.0, time: 0.2 },
+    //             { value: 1.0, time: 0.5 },
+    //             // { value: 0.0, time: 0.8 },
+    //             { value: 1.0, time: 1.0 },
+    //         ],
+    //     },
+    //     mode: "list",
+    // },
 
     colorBehavior: {
         listData: {

@@ -161,6 +161,7 @@ export class SpawnBehavior
         if (this._shape === "point") {
             return {
                 shape: "point",
+                direction: this._directionVector,
             };
         }
 
@@ -168,6 +169,7 @@ export class SpawnBehavior
             return {
                 shape: "line",
                 length: this._width,
+                direction: this._directionVector,
             };
         }
 
@@ -175,7 +177,8 @@ export class SpawnBehavior
             return {
                 shape: "rectangle",
                 width: this._width,
-                height: this._height,
+                height: this._height === this._width ? undefined : this._height,
+                direction: this._directionVector,
             };
         }
 
@@ -183,11 +186,15 @@ export class SpawnBehavior
             return {
                 shape: "circle",
                 outerRadius: this._outerRadius,
-                innerRadius: this._innerRadius,
+                innerRadius:
+                    this._innerRadius === this._outerRadius
+                        ? undefined
+                        : this._innerRadius,
+                direction: this._directionVector,
             };
         }
 
-        throw new EmitterError("Invalid spawn shape.");
+        throw new EmitterError("Invalid spawn shape, cannot get config.");
     }
 
     /**

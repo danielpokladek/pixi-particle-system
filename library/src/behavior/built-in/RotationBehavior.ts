@@ -141,10 +141,35 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): RotationBehaviorConfig {
+    public getConfig(): RotationBehaviorConfig | undefined {
+        if (
+            !this._emitter.isBehaviorInitActive(this) &&
+            !this._emitter.isBehaviorUpdateActive(this)
+        ) {
+            return undefined;
+        }
+
+        if (this._mode === "static") {
+            return {
+                value: this._staticValue,
+                mode: "static",
+            };
+        }
+
+        if (this._mode === "list") {
+            return {
+                mode: "list",
+                listData: {
+                    list: this._list.list,
+                    isStepped: this._list.isStepped ? true : undefined,
+                },
+            };
+        }
+
         return {
-            value: 0,
-            mode: "static",
+            startRotation: this._startRotation,
+            acceleration: this._acceleration,
+            mode: "acceleration",
         };
     }
 

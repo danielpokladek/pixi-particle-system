@@ -29,8 +29,22 @@ export default function Sidebar({ emitter }: Props) {
                             style={{ flex: 1 }}
                             onClick={() => {
                                 const configObject = emitter.getConfig();
+                                const jsonConfig = JSON.stringify(
+                                    configObject,
+                                    null,
+                                    4,
+                                );
+                                // const blob = new Blob([jsonConfig], {
+                                //     type: "application/json",
+                                // });
+                                // const url = URL.createObjectURL(blob);
 
-                                console.log(configObject);
+                                // const a = document.createElement("a");
+                                // a.href = url;
+                                // a.download = "emitter-config.json";
+                                // a.click();
+
+                                console.log(jsonConfig);
                             }}
                         >
                             Download Current Config

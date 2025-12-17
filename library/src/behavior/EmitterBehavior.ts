@@ -38,7 +38,7 @@ export abstract class EmitterBehavior<ConfigType> {
      * Retrieves the current behavior properties as a configuration object.
      * @returns Behavior configuration.
      */
-    public abstract getConfig(): ConfigType;
+    public abstract getConfig(): ConfigType | undefined;
 
     /**
      * Resets the behavior to its default state.

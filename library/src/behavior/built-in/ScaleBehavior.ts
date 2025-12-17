@@ -122,10 +122,30 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public getConfig(): ScaleBehaviorConfig {
+    public getConfig(): ScaleBehaviorConfig | undefined {
+        if (
+            !this._emitter.isBehaviorInitActive(this) &&
+            !this._emitter.isBehaviorUpdateActive(this)
+        ) {
+            return undefined;
+        }
+
+        if (this._mode === "static") {
+            return {
+                value: this._staticValue,
+            };
+        }
+
         return {
-            value: { x: 1, y: 1 },
-            mode: "static",
+            xListData: {
+                list: this._xList.list,
+                isStepped: this._xList.isStepped ? true : undefined,
+            },
+            yListData: {
+                list: this._yList.list,
+                isStepped: this._xList.isStepped ? true : undefined,
+            },
+            mode: this._mode,
         };
     }
 
