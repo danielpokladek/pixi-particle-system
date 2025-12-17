@@ -80,6 +80,7 @@ export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
 
             <Toggle
                 label="Add At Back"
+                defaultValue={emitter.addAtBack}
                 onChange={(value) => {
                     emitter.addAtBack = value;
                 }}

@@ -573,9 +573,9 @@ export class Emitter {
                     particleData.oneOverLifetime = 1 / lifetime;
 
                     if (this._addAtBack) {
-                        this._parent.addParticle(particle);
-                    } else {
                         this._parent.addParticleAt(particle, 0);
+                    } else {
+                        this._parent.addParticle(particle);
                     }
 
                     newParticles.push(particle);
