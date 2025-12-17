@@ -1,4 +1,5 @@
 import { Emitter } from "pixi-particle-system";
+import { useState } from "react";
 import { AlphaPanel } from "./panels/AlphaPanel";
 import { ColorPanel } from "./panels/ColorPanel";
 import { EmitterPanel } from "./panels/EmitterPanel";
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export default function Sidebar({ emitter }: Props) {
+    const [paused, setPaused] = useState(emitter.isPaused);
+
     return (
         <aside className="sidebar">
             {emitter && (
@@ -49,10 +52,12 @@ export default function Sidebar({ emitter }: Props) {
                         >
                             Download Current Config
                         </button>
-                        <button style={{ flex: 1 }}>
+                        <button disabled style={{ flex: 1 }}>
                             Upload Custom Config
                         </button>
-                        <button style={{ flex: 1 }}>Browse Examples</button>
+                        <button disabled style={{ flex: 1 }}>
+                            Browse Examples
+                        </button>
                     </div>
 
                     <hr />
@@ -73,18 +78,32 @@ export default function Sidebar({ emitter }: Props) {
                         >
                             Play
                         </button>
+                        {!paused && (
+                            <button
+                                style={{ flex: 1 }}
+                                onClick={() => {
+                                    emitter.pause();
+                                    setPaused(true);
+                                }}
+                            >
+                                Pause
+                            </button>
+                        )}
+                        {paused && (
+                            <button
+                                style={{ flex: 1 }}
+                                onClick={() => {
+                                    emitter.resume();
+                                    setPaused(false);
+                                }}
+                            >
+                                Resume
+                            </button>
+                        )}
                         <button
                             style={{ flex: 1 }}
                             onClick={() => {
-                                // emitter.pause();
-                            }}
-                        >
-                            Pause
-                        </button>
-                        <button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                                emitter.stop();
+                                emitter.stop(!emitter.isEmitting);
                             }}
                         >
                             Stop

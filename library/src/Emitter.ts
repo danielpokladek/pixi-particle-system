@@ -47,12 +47,14 @@ export class Emitter {
 
     private _particleCount: number = 0;
 
-    private _emit: boolean = false;
-
     private _spawnTimer: number = 0;
     private _emitterLife: number = -1;
 
     private _onComplete: (() => void) | null = null;
+
+    private _isActive: boolean = false;
+    private _isEmitting: boolean = false;
+    private _isPaused: boolean = false;
 
     /**
      * Creates a new Emitter instance.
@@ -91,6 +93,20 @@ export class Emitter {
      */
     public get particleCount(): number {
         return this._particleCount;
+    }
+
+    /**
+     * Whether the emitter is currently emitting new particles.
+     */
+    public get isEmitting(): boolean {
+        return this._isEmitting;
+    }
+
+    /**
+     * Whether the emitter is currently paused.
+     */
+    public get isPaused(): boolean {
+        return this._isPaused;
     }
 
     /**
@@ -289,21 +305,48 @@ export class Emitter {
     }
 
     /**
-     * Starts the emitter.
+     * Starts the emitter and hooks into the shared ticker.
      */
     public play(): void {
-        this._emit = true;
+        this._isEmitting = true;
+
+        if (!this._isActive) {
+            this._isActive = true;
+            Ticker.shared.add(this.update, this);
+        }
+    }
+
+    /**
+     * Pauses the emitter by unhooking from the shared ticker.
+     */
+    public pause(): void {
+        if (!this._isActive || this._isPaused) return;
+
+        this._isPaused = true;
+        Ticker.shared.remove(this.update, this);
+    }
+
+    /**
+     * Resumes the emitter by rehooking into the shared ticker.
+     */
+    public resume(): void {
+        if (!this._isActive || !this._isPaused) return;
+
+        this._isPaused = false;
         Ticker.shared.add(this.update, this);
     }
 
     /**
-     * Stops the emitter.
-     * @param instant Whether to stop instantly or let existing particles die out.
+     * Stops new particles from spawning, and lets existing particles die naturally.
+     * @param instant When true, particles are removed instantly.
      */
     public stop(instant: boolean = false): void {
-        this._emit = false;
+        if (!this._isActive) return;
+
+        this._isEmitting = false;
 
         if (instant) {
+            // TODO: Move this to shared method since it's duplicated in update().
             Ticker.shared.remove(this.update, this);
 
             for (const particle of this._particles) {
@@ -316,6 +359,8 @@ export class Emitter {
             this._onComplete?.();
             this._onComplete = null;
 
+            this._isActive = false;
+
             return;
         }
     }
@@ -325,7 +370,7 @@ export class Emitter {
      * @param time Time in seconds to prewarm the emitter.
      */
     public prewarm(time: number): void {
-        if (this._emit === true) {
+        if (this._isEmitting === true) {
             // eslint-disable-next-line no-console
             console.warn(
                 "Emitter: Cannot prewarm an emitter that is already playing!",
@@ -516,7 +561,7 @@ export class Emitter {
             }
         }
 
-        if (this._emit) {
+        if (this._isEmitting) {
             this._spawnTimer -= deltaTime < 0 ? 0 : deltaTime;
 
             while (this._spawnTimer <= 0) {
@@ -526,7 +571,7 @@ export class Emitter {
                     if (this._emitterLife <= 0) {
                         this._spawnTimer = 0;
                         this._emitterLife = 0;
-                        this._emit = false;
+                        this._isEmitting = false;
 
                         break;
                     }
@@ -599,11 +644,14 @@ export class Emitter {
 
         this._parent.update();
 
-        if (!this._emit && this._particleCount === 0) {
+        if (!this._isEmitting && this._particleCount === 0) {
             this._onComplete?.();
             this._onComplete = null;
 
             Ticker.shared.remove(this.update, this);
+
+            this._isPaused = false;
+            this._isActive = false;
         }
     }
 
