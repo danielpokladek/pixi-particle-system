@@ -14,12 +14,17 @@ import {
  */
 export type RotationBehaviorConfig =
     | {
+          mode: "faceDirection";
+      }
+    | {
           value: number;
+          faceDirection?: boolean;
           mode: "static";
       }
     | { listData: ListData<number>; mode: "list" }
     | {
           startRotation: number;
+          faceDirection?: boolean;
           acceleration: number;
           mode: "acceleration";
       };
@@ -35,7 +40,8 @@ export class RotationBehavior
 {
     private readonly _list: NumberList;
 
-    private _mode: "static" | "list" | "acceleration" = "static";
+    private _mode: "static" | "list" | "acceleration" | "faceDirection" =
+        "static";
 
     private _staticValue: number = 0;
     private _startRotation: number = 0;
@@ -68,10 +74,12 @@ export class RotationBehavior
     /**
      * Behavior mode.
      */
-    public get mode(): "static" | "list" | "acceleration" {
+    public get mode(): "static" | "list" | "acceleration" | "faceDirection" {
         return this._mode;
     }
-    public set mode(value: "static" | "list" | "acceleration") {
+    public set mode(
+        value: "static" | "list" | "acceleration" | "faceDirection",
+    ) {
         this._mode = value;
     }
 
@@ -112,12 +120,15 @@ export class RotationBehavior
         super.applyConfig(config);
 
         this._emitter.addToActiveInitBehaviors(this);
+        this._mode = config.mode;
+
+        if (config.mode === "faceDirection") {
+            return;
+        }
 
         if (config.mode === "static") {
             this._staticValue = config.value;
-            this._mode = "static";
             this._list.reset();
-
             return;
         }
 
@@ -125,16 +136,12 @@ export class RotationBehavior
             this._startRotation = config.startRotation;
             this._acceleration = config.acceleration;
 
-            this._mode = "acceleration";
             this._list.reset();
-
             this._emitter.addToActiveUpdateBehaviors(this);
             return;
         }
 
         this._list.initialize(config.listData);
-        this._mode = "list";
-
         this._emitter.addToActiveUpdateBehaviors(this);
     }
 
@@ -177,13 +184,22 @@ export class RotationBehavior
      * @inheritdoc
      */
     public init(particle: EmitterParticle): void {
-        if (this._mode === "static") {
-            particle.rotation = this._staticValue;
+        if (this._mode === "list") {
+            particle.rotation = this._list.interpolate(0);
             return;
         }
 
-        if (this._mode === "list") {
-            particle.rotation = this._list.interpolate(0);
+        if (this._mode === "faceDirection") {
+            particle.rotation = Math.atan2(
+                particle.data.directionVectorY,
+                particle.data.directionVectorX,
+            );
+
+            return;
+        }
+
+        if (this._mode === "static") {
+            particle.rotation = this._staticValue;
             return;
         }
 

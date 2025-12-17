@@ -5,16 +5,24 @@ import { Select } from "../ui/inputs/Select";
 import { Toggle } from "../ui/inputs/Toggle";
 import { ValueList } from "../ui/inputs/list/ValueList";
 
-const modeLabelToType: Record<string, "static" | "list" | "acceleration"> = {
+const modeLabelToType: Record<
+    string,
+    "static" | "list" | "acceleration" | "faceDirection"
+> = {
     Static: "static",
     List: "list",
     Acceleration: "acceleration",
+    Direction: "faceDirection",
 };
 
-const modeTypeToLabel: Record<"static" | "list" | "acceleration", string> = {
+const modeTypeToLabel: Record<
+    "static" | "list" | "acceleration" | "faceDirection",
+    string
+> = {
     static: "Static",
     list: "List",
     acceleration: "Acceleration",
+    faceDirection: "Direction",
 };
 
 export function RotationPanel({ emitter, isOpen }: PanelProps) {
@@ -83,6 +91,7 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                     { label: "List"  , key: "list"   },
                     { label: "Static", key: "static" },
                     { label: "Acceleration", key: "acceleration" },
+                    { label: "Direction", key: "faceDirection" },
                 ]}
                 onChange={(value) => {
                     setMode(modeLabelToType[value]);

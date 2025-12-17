@@ -58,21 +58,22 @@ const config: EmitterConfig = {
         mode: "acceleration",
     },
 
-    // rotationBehavior: {
-    //     mode: "static",
-    //     value: Math.PI / 4,
-    // },
+    rotationBehavior: {
+        mode: "static",
+        value: 0,
+        faceDirection: true,
+    },
 
     scaleBehavior: {
         mode: "random",
-        xListData: {
+        yListData: {
             list: [
                 { value: 0, time: 0 },
                 { value: 100, time: 0.5 },
                 { value: 0, time: 1 },
             ],
         },
-        yListData: {
+        xListData: {
             list: [
                 { value: 0, time: 0 },
                 { value: 10, time: 0.2 },
