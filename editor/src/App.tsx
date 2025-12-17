@@ -1,8 +1,8 @@
 import "@picocss/pico/css/pico.pink.min.css";
-import { extend } from "@pixi/react";
+import { Application, extend } from "@pixi/react";
 import { Emitter, EmitterConfig } from "pixi-particle-system";
 import { ParticleContainer } from "pixi.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import PixiCanvas from "./components/PixiCanvas";
 import Sidebar from "./components/Sidebar";
@@ -95,6 +95,7 @@ extend({
 });
 
 export default function App() {
+    const canvasContainerRef = useRef<HTMLDivElement | null>(null);
     const [container, setContainer] = useState<ParticleContainer | null>(null);
     const [emitter, setEmitter] = useState<Emitter | null>(null);
 
@@ -154,9 +155,17 @@ export default function App() {
                     <div className="main">
                         <Sidebar emitter={emitter} />
 
-                        {container && emitter && (
-                            <PixiCanvas particleContainer={container} />
-                        )}
+                        <div
+                            ref={canvasContainerRef}
+                            className="canvas-container"
+                        >
+                            <Application resizeTo={canvasContainerRef}>
+                                <PixiCanvas
+                                    particleContainer={container}
+                                    emitter={emitter}
+                                />
+                            </Application>
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,6 +1,7 @@
-import { Application, extend, useApplication } from "@pixi/react";
+import { extend, useApplication } from "@pixi/react";
+import { Emitter } from "pixi-particle-system";
 import { Container, Graphics, ParticleContainer, Sprite } from "pixi.js";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 extend({
     ParticleContainer,
@@ -10,14 +11,23 @@ extend({
 });
 
 type Props = {
-    particleContainer: ParticleContainer | null;
+    particleContainer: ParticleContainer;
+    emitter: Emitter;
 };
 
-function EmitterContainer({ particleContainer }: Props) {
+export default function PixiCanvas({ particleContainer, emitter }: Props) {
     const { app } = useApplication();
 
     const updateFPS = () => {
         window.fps = app.ticker.FPS;
+    };
+
+    const handleFocused = () => {
+        emitter.resume();
+    };
+
+    const handleBlurred = () => {
+        emitter.pause();
     };
 
     useEffect(() => {
@@ -31,28 +41,23 @@ function EmitterContainer({ particleContainer }: Props) {
 
         app.ticker.add(updateFPS);
 
+        window.addEventListener("focus", handleFocused);
+        window.addEventListener("blur", handleBlurred);
+
         console.log("ParticleContainer added to stage");
 
         return () => {
             console.log("EmitterContainer unmounted");
 
             app.ticker.remove(updateFPS);
-            window.fps = 0;
             app.stage.removeChild(particleContainer);
+
+            window.fps = 0;
+
+            window.removeEventListener("focus", handleFocused);
+            window.removeEventListener("blur", handleBlurred);
         };
     }, [app.renderer, particleContainer]);
 
-    return <pixiContainer></pixiContainer>;
-}
-
-export default function PixiCanvas({ particleContainer }: Props) {
-    const parentRef = useRef<HTMLDivElement | null>(null);
-
-    return (
-        <div ref={parentRef} className="canvas-container">
-            <Application resizeTo={parentRef}>
-                <EmitterContainer particleContainer={particleContainer} />
-            </Application>
-        </div>
-    );
+    return <pixiContainer />;
 }
