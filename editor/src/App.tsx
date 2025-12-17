@@ -4,7 +4,7 @@ import { Emitter, EmitterConfig } from "pixi-particle-system";
 import { ParticleContainer } from "pixi.js";
 import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
-import PixiCanvas from "./components/PixiCanvas";
+import PixiStage from "./components/PixiStage";
 import Sidebar from "./components/Sidebar";
 
 const config: EmitterConfig = {
@@ -160,7 +160,7 @@ export default function App() {
                             className="canvas-container"
                         >
                             <Application resizeTo={canvasContainerRef}>
-                                <PixiCanvas
+                                <PixiStage
                                     particleContainer={container}
                                     emitter={emitter}
                                 />

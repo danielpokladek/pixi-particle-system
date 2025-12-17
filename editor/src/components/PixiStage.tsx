@@ -1,13 +1,11 @@
 import { extend, useApplication } from "@pixi/react";
 import { Emitter } from "pixi-particle-system";
-import { Container, Graphics, ParticleContainer, Sprite } from "pixi.js";
+import { Container, ParticleContainer } from "pixi.js";
 import { useEffect } from "react";
 
 extend({
     ParticleContainer,
     Container,
-    Graphics,
-    Sprite,
 });
 
 type Props = {
@@ -15,7 +13,7 @@ type Props = {
     emitter: Emitter;
 };
 
-export default function PixiCanvas({ particleContainer, emitter }: Props) {
+export default function PixiStage({ particleContainer, emitter }: Props) {
     const { app } = useApplication();
 
     const updateFPS = () => {
