@@ -3,5 +3,6 @@ node_modules
 dist
 dist-editor
 
-system/docs/.vitepress/cache
-system/docs/.vitepress/dist
+library/docs/.vitepress/cache
+library/docs/.vitepress/dist
+library/docs/api
