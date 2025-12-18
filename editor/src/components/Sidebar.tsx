@@ -37,17 +37,15 @@ export default function Sidebar({ emitter }: Props) {
                                     null,
                                     4,
                                 );
-                                // const blob = new Blob([jsonConfig], {
-                                //     type: "application/json",
-                                // });
-                                // const url = URL.createObjectURL(blob);
+                                const blob = new Blob([jsonConfig], {
+                                    type: "application/json",
+                                });
+                                const url = URL.createObjectURL(blob);
 
-                                // const a = document.createElement("a");
-                                // a.href = url;
-                                // a.download = "emitter-config.json";
-                                // a.click();
-
-                                console.log(jsonConfig);
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = "emitter-config.json";
+                                a.click();
                             }}
                         >
                             Download Current Config
