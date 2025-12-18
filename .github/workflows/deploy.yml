@@ -34,6 +34,7 @@ jobs:
 
       - name: Build Docs & Editor
         run: |
+          pnpm build:library
           pnpm build:docs
           pnpm build:editor
 
