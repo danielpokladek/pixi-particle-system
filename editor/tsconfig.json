@@ -2,7 +2,7 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "rootDir": "..",
-        "outDir": "../dist-editor",
+        "outDir": "../editor/dist",
         "noEmit": true,
         "jsx": "react-jsx"
     },

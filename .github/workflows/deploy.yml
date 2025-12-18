@@ -41,15 +41,6 @@ jobs:
       - name: Build Editor
         run: pnpm build:editor
 
-      - name: List Build Outputs
-        run: |
-          echo "Library output:"
-          ls -la library/dist || echo "No library dist"
-          echo "Docs output:"
-          ls -la library/docs/.vitepress/dist || echo "No docs dist"
-          echo "Editor output:"
-          ls -la editor/dist || echo "No editor dist"
-
       - name: Combine Artifacts
         run: |
           mkdir -p combined

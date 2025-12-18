@@ -4,7 +4,7 @@ export default defineConfig({
     base: "/pixi-particle-system/editor/",
     build: {
         target: "esnext",
-        outDir: "../dist-editor",
+        outDir: "../editor/dist",
         emptyOutDir: true,
     },
     server: {

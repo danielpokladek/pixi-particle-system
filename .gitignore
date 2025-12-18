@@ -6,3 +6,5 @@ dist-editor
 library/docs/.vitepress/cache
 library/docs/.vitepress/dist
 library/docs/api
+
+editor/dist
