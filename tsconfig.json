@@ -3,10 +3,6 @@
         "target": "ES2020",
         "module": "ESNext",
         "lib": ["ES2020", "DOM"],
-        "declaration": true,
-        "declarationMap": true,
-        "outDir": "./dist",
-        "rootDir": "./src",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
@@ -18,6 +14,5 @@
         "noImplicitReturns": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist"]
+    "exclude": ["node_modules"]
 }

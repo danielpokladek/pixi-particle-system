@@ -1,5 +1,8 @@
 node_modules
-dist
 
-docs/.vitepress/cache
-docs/.vitepress/dist
+dist
+dist-editor
+
+library/docs/.vitepress/cache
+library/docs/.vitepress/dist
+library/docs/api
