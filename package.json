@@ -11,7 +11,8 @@
 		"vite": "^5.4.11"
 	},
 	"scripts": {
-		"installDeps": "pnpm install && cd library && pnpm install && cd ../editor && pnpm install",
+		"installDep": "pnpm install && cd library && pnpm install && cd ../editor && pnpm install",
+		"action:installDep": "pnpm install --frozen-lockfile && cd library && pnpm install --frozen-lockfile && cd ../editor && pnpm install --frozen-lockfile",
 		"dev:library": "cd library && pnpm dev:lib",
 		"dev:docs": "cd library && pnpm dev:docs",
 		"dev:editor": "cd editor && pnpm dev",
