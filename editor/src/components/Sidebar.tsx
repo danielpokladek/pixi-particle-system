@@ -118,7 +118,7 @@ export default function Sidebar(): JSX.Element {
                     <MovementPanel isOpen={false} />
                     <RotationPanel isOpen={false} />
                     <ScalePanel isOpen={false} />
-                    // TODO: Add back once ready.
+                    {/* // TODO: Add back once ready. */}
                     {/* <TexturePanel isOpen={false} /> */}
                 </>
             )}

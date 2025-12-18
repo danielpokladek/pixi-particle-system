@@ -26,7 +26,7 @@ type Props = {
 export default function PixiStage({
     particleContainer,
     emitter,
-}: Props): JSX.Element {
+}: Props): JSX.Element | null {
     const { app } = useApplication();
 
     useEffect(() => {
@@ -89,5 +89,5 @@ export default function PixiStage({
         };
     }, [app, app.stage, app.renderer, emitter, particleContainer]);
 
-    return <pixiContainer />;
+    return null;
 }

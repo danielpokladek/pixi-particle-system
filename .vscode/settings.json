@@ -27,5 +27,6 @@
         "RRGGBB",
         "Tweenable",
         "webgl"
-    ]
+    ],
+    "conventionalCommits.scopes": ["editor"]
 }
