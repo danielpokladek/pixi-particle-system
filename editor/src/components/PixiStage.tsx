@@ -74,6 +74,8 @@ export default function PixiStage({
 
         window.particleEmitter.play();
 
+        window.__PIXI_APP__ = app;
+
         window.addEventListener("focus", handleFocused);
         window.addEventListener("blur", handleBlurred);
 
