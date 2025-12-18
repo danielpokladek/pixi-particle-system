@@ -15,7 +15,7 @@ export function Toggle({ label, defaultValue = false, onChange }: Props) {
             <input
                 type="checkbox"
                 role="switch"
-                // defaultValue={defaultValue}
+                checked={defaultValue}
                 onChange={(e) => {
                     const newValue = Boolean(e.currentTarget.checked);
                     if (newValue === lastValueRef.current) return;
