@@ -18,37 +18,37 @@ export type EmitterConfig = {
     /**
      * Minimum lifetime of particles emitted, in seconds.
      */
-    minParticleLifetime: number;
+    minParticleLifetime?: number;
 
     /**
      * Maximum lifetime of particles emitted, in seconds.
      */
-    maxParticleLifetime: number;
+    maxParticleLifetime?: number;
 
     /**
      * Interval between spawn waves, in seconds.
      */
-    spawnInterval: number;
+    spawnInterval?: number;
 
     /**
      * Chance of spawning particles each wave, between 0 and 1.
      */
-    spawnChance: number;
+    spawnChance?: number;
 
     /**
      * Maximum number of particles allowed alive at once.
      */
-    maxParticles: number;
+    maxParticles?: number;
 
     /**
      * Whether new particles are added to the back of the particle list (behind other particles).
      */
-    addAtBack: boolean;
+    addAtBack?: boolean;
 
     /**
      * Number of particles to spawn each wave.
      */
-    particlesPerWave: number;
+    particlesPerWave?: number;
 
     /**
      * Configuration for the AlphaBehavior.

@@ -242,13 +242,13 @@ export class Emitter {
             );
         }
 
-        this._minLifetime = config.minParticleLifetime;
-        this._maxLifetime = config.maxParticleLifetime;
-        this._spawnInterval = config.spawnInterval;
-        this._spawnChance = config.spawnChance;
-        this._maxParticles = config.maxParticles;
-        this._addAtBack = config.addAtBack;
-        this._particlesPerWave = config.particlesPerWave;
+        this._minLifetime = config.minParticleLifetime ?? 0.2;
+        this._maxLifetime = config.maxParticleLifetime ?? 0.5;
+        this._spawnInterval = config.spawnInterval ?? 0.1;
+        this._spawnChance = config.spawnChance ?? 1;
+        this._maxParticles = config.maxParticles ?? 500;
+        this._addAtBack = config.addAtBack ?? true;
+        this._particlesPerWave = config.particlesPerWave ?? 1;
 
         if (config.alphaBehavior) {
             this._alphaBehavior.applyConfig(config.alphaBehavior);
