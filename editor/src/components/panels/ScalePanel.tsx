@@ -1,25 +1,17 @@
 import { useState } from "react";
 import { PanelProps } from "../../Types";
+import { ValueList } from "../ui/controls/list/ValueList";
+import { Select } from "../ui/controls/Select";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
-import { Select } from "../ui/inputs/Select";
-import { ValueList } from "../ui/inputs/list/ValueList";
 
-const labelToType: Record<string, "static" | "list" | "random"> = {
-    Static: "static",
-    List: "list",
-    Random: "random",
-};
-
-const typeToLabel: Record<"static" | "list" | "random", string> = {
-    static: "Static",
-    list: "List",
-    random: "Random",
-};
-
-export function ScalePanel({ emitter, isOpen }: PanelProps) {
-    const [showList, setShowList] = useState(
-        emitter.scaleBehavior.mode !== "static",
-    );
+/**
+ * Scale Behavior Panel component.
+ * @param props Component props.
+ */
+export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
+    const emitter = window.particleEmitter;
+    const scaleBehavior = emitter.scaleBehavior;
+    const [showList, setShowList] = useState(scaleBehavior.mode !== "static");
 
     return (
         <details open={isOpen}>
@@ -27,9 +19,9 @@ export function ScalePanel({ emitter, isOpen }: PanelProps) {
 
             <Select
                 label="Mode"
-                defaultValue={typeToLabel[emitter.scaleBehavior.mode]}
+                defaultValue={emitter.scaleBehavior.mode}
                 onChange={(value) => {
-                    const newMode = labelToType[value];
+                    const newMode = value as "static" | "list" | "random";
                     emitter.scaleBehavior.mode = newMode;
 
                     setShowList(newMode !== "static");
@@ -44,11 +36,11 @@ export function ScalePanel({ emitter, isOpen }: PanelProps) {
             {!showList && (
                 <Vector2DControl
                     label="Static Value"
-                    xDefault={emitter.scaleBehavior.staticValue.x}
-                    yDefault={emitter.scaleBehavior.staticValue.y}
+                    xDefault={scaleBehavior.staticValue.x}
+                    yDefault={scaleBehavior.staticValue.y}
                     onChange={(x, y) => {
-                        emitter.scaleBehavior.staticValue.x = x;
-                        emitter.scaleBehavior.staticValue.y = y;
+                        scaleBehavior.staticValue.x = x;
+                        scaleBehavior.staticValue.y = y;
                     }}
                 />
             )}
@@ -57,7 +49,7 @@ export function ScalePanel({ emitter, isOpen }: PanelProps) {
                 <>
                     <ValueList
                         label="X List"
-                        defaultList={emitter.scaleBehavior.xList.list.map(
+                        defaultList={scaleBehavior.xList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -65,14 +57,14 @@ export function ScalePanel({ emitter, isOpen }: PanelProps) {
                             }),
                         )}
                         onChange={(newList) => {
-                            emitter.scaleBehavior.xList.initialize({
+                            scaleBehavior.xList.initialize({
                                 list: newList,
                             });
                         }}
                     />
                     <ValueList
                         label="Y List"
-                        defaultList={emitter.scaleBehavior.yList.list.map(
+                        defaultList={scaleBehavior.yList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -80,7 +72,7 @@ export function ScalePanel({ emitter, isOpen }: PanelProps) {
                             }),
                         )}
                         onChange={(newList) => {
-                            emitter.scaleBehavior.yList.initialize({
+                            scaleBehavior.yList.initialize({
                                 list: newList,
                             });
                         }}

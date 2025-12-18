@@ -1,4 +1,3 @@
-import { Emitter } from "pixi-particle-system";
 import { useState } from "react";
 import { AlphaPanel } from "./panels/AlphaPanel";
 import { ColorPanel } from "./panels/ColorPanel";
@@ -8,11 +7,11 @@ import { RotationPanel } from "./panels/RotationPanel";
 import { ScalePanel } from "./panels/ScalePanel";
 import { SpawnPanel } from "./panels/SpawnPanel";
 
-type Props = {
-    emitter: Emitter;
-};
-
-export default function Sidebar({ emitter }: Props) {
+/**
+ * Sidebar component containing various emitter controls and panels.
+ */
+export default function Sidebar(): JSX.Element {
+    const emitter = window.particleEmitter;
     const [paused, setPaused] = useState(emitter.isPaused);
 
     return (
@@ -112,14 +111,15 @@ export default function Sidebar({ emitter }: Props) {
 
             {emitter && (
                 <>
-                    <EmitterPanel emitter={emitter} isOpen={true} />
-                    <SpawnPanel emitter={emitter} isOpen={false} />
-                    <AlphaPanel emitter={emitter} isOpen={false} />
-                    <ColorPanel emitter={emitter} isOpen={false} />
-                    <MovementPanel emitter={emitter} isOpen={false} />
-                    <RotationPanel emitter={emitter} isOpen={false} />
-                    <ScalePanel emitter={emitter} isOpen={false} />
-                    {/* <TexturePanel emitter={emitter} isOpen={false} /> */}
+                    <EmitterPanel isOpen={true} />
+                    <SpawnPanel isOpen={false} />
+                    <AlphaPanel isOpen={false} />
+                    <ColorPanel isOpen={false} />
+                    <MovementPanel isOpen={false} />
+                    <RotationPanel isOpen={false} />
+                    <ScalePanel isOpen={false} />
+                    // TODO: Add back once ready.
+                    {/* <TexturePanel isOpen={false} /> */}
                 </>
             )}
         </aside>

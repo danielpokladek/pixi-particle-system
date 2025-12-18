@@ -5,7 +5,16 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
-export function Select({ label, defaultValue, options, onChange }: Props) {
+/**
+ * Select control with label.
+ * @param props Component props.
+ */
+export function Select({
+    label,
+    defaultValue,
+    options,
+    onChange,
+}: Props): JSX.Element {
     return (
         <div className="control">
             <label htmlFor="">{label}</label>
@@ -15,7 +24,9 @@ export function Select({ label, defaultValue, options, onChange }: Props) {
                 onChange={(e) => onChange?.(e.target.value)}
             >
                 {options.map((option) => (
-                    <option key={option.key}>{option.label}</option>
+                    <option key={option.key} value={option.key}>
+                        {option.label}
+                    </option>
                 ))}
             </select>
         </div>

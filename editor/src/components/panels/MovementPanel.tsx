@@ -1,33 +1,33 @@
-import { MovementSpace } from "pixi-particle-system";
 import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
+import { ValueList } from "../ui/controls/list/ValueList";
+import { Select } from "../ui/controls/Select";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
-import { Select } from "../ui/inputs/Select";
-import { ValueList } from "../ui/inputs/list/ValueList";
 
-const spaceOptionToType: Record<string, MovementSpace> = {
-    Local: "local",
-    Global: "global",
-};
-
-const spaceTypeToOption: Record<MovementSpace, string> = {
-    local: "Local",
-    global: "Global",
-};
-
-export function MovementPanel({ emitter, isOpen }: PanelProps) {
-    const [useList, setUseList] = useState(emitter.movementBehavior.useList);
+/**
+ * Movement Behavior Panel component.
+ * @param props Component props.
+ */
+export function MovementPanel({ isOpen }: PanelProps): JSX.Element {
+    const movementBehavior = window.particleEmitter.movementBehavior;
+    const [useList, setUseList] = useState(movementBehavior.useList);
 
     useEffect(() => {
-        // if (!emitter.colorBehavior.list.isInitialized) {
-        //     emitter.colorBehavior.list.initialize({
-        //         list: [
-        //             { time: 0, value: "#000000" },
-        //             { time: 1, value: "#ffffff" },
-        //         ],
-        //     });
-        // }
-    }, [emitter]);
+        if (!movementBehavior.xList.isInitialized) {
+            const listStops = [
+                { time: 0, value: 0 },
+                { time: 1, value: 0 },
+            ];
+
+            movementBehavior.xList.initialize({
+                list: listStops,
+            });
+
+            movementBehavior.yList.initialize({
+                list: listStops,
+            });
+        }
+    }, [movementBehavior]);
 
     return (
         <details open={isOpen}>
@@ -35,29 +35,27 @@ export function MovementPanel({ emitter, isOpen }: PanelProps) {
 
             <Select
                 label="Space"
-                defaultValue={spaceTypeToOption[emitter.movementBehavior.space]}
-                // prettier-ignore
+                defaultValue={movementBehavior.space}
                 options={[
                     { label: "Global", key: "global" },
-                    { label: "Local" , key: "local"  },
+                    { label: "Local", key: "local" },
                 ]}
                 onChange={(value) => {
-                    emitter.movementBehavior.space = spaceOptionToType[value];
+                    movementBehavior.space = value as "global" | "local";
                 }}
             />
 
             <Select
                 label="Mode"
                 defaultValue={useList ? "List" : "Static"}
-                // prettier-ignore
                 options={[
-                    { label: "List"  , key: "list"   },
+                    { label: "List", key: "list" },
                     { label: "Static", key: "static" },
                 ]}
                 onChange={(value) => {
-                    const newUseList = value === "List";
-                    emitter.movementBehavior.useList = newUseList;
+                    const newUseList = value === "list";
 
+                    movementBehavior.useList = newUseList;
                     setUseList(newUseList);
                 }}
             />
@@ -68,20 +66,20 @@ export function MovementPanel({ emitter, isOpen }: PanelProps) {
                 <>
                     <Vector2DControl
                         label="Min Speed"
-                        xDefault={emitter.movementBehavior.minMoveSpeed.x}
-                        yDefault={emitter.movementBehavior.minMoveSpeed.y}
+                        xDefault={movementBehavior.minMoveSpeed.x}
+                        yDefault={movementBehavior.minMoveSpeed.y}
                         onChange={(x, y) => {
-                            emitter.movementBehavior.minMoveSpeed.x = x;
-                            emitter.movementBehavior.minMoveSpeed.y = y;
+                            movementBehavior.minMoveSpeed.x = x;
+                            movementBehavior.minMoveSpeed.y = y;
                         }}
                     />
                     <Vector2DControl
                         label="Max Speed"
-                        xDefault={emitter.movementBehavior.maxMoveSpeed.x}
-                        yDefault={emitter.movementBehavior.maxMoveSpeed.y}
+                        xDefault={movementBehavior.maxMoveSpeed.x}
+                        yDefault={movementBehavior.maxMoveSpeed.y}
                         onChange={(x, y) => {
-                            emitter.movementBehavior.maxMoveSpeed.x = x;
-                            emitter.movementBehavior.maxMoveSpeed.y = y;
+                            movementBehavior.maxMoveSpeed.x = x;
+                            movementBehavior.maxMoveSpeed.y = y;
                         }}
                     />
                 </>
@@ -91,7 +89,7 @@ export function MovementPanel({ emitter, isOpen }: PanelProps) {
                 <>
                     <ValueList
                         label="X List"
-                        defaultList={emitter.movementBehavior.xList.list.map(
+                        defaultList={movementBehavior.xList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -99,14 +97,14 @@ export function MovementPanel({ emitter, isOpen }: PanelProps) {
                             }),
                         )}
                         onChange={(newList) => {
-                            emitter.movementBehavior.xList.initialize({
+                            movementBehavior.xList.initialize({
                                 list: newList,
                             });
                         }}
                     />
                     <ValueList
                         label="Y List"
-                        defaultList={emitter.movementBehavior.yList.list.map(
+                        defaultList={movementBehavior.yList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -114,7 +112,7 @@ export function MovementPanel({ emitter, isOpen }: PanelProps) {
                             }),
                         )}
                         onChange={(newList) => {
-                            emitter.movementBehavior.yList.initialize({
+                            movementBehavior.yList.initialize({
                                 list: newList,
                             });
                         }}

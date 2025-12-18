@@ -6,11 +6,15 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
+/**
+ * Color control with label.
+ * @param props Component props.
+ */
 export function ColorControl({
     label,
     defaultValue = "#ffffff",
     onChange,
-}: Props) {
+}: Props): JSX.Element {
     return (
         <div className="control">
             <label htmlFor="">{label}</label>

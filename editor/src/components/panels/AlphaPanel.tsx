@@ -1,37 +1,29 @@
 import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
+import { ValueList } from "../ui/controls/list/ValueList";
 import { NumberControl } from "../ui/controls/NumberControl";
-import { Select } from "../ui/inputs/Select";
-import { ValueList } from "../ui/inputs/list/ValueList";
+import { Select } from "../ui/controls/Select";
 
-const alphaLabelToType: Record<string, "static" | "list" | "random"> = {
-    Static: "static",
-    List: "list",
-    Random: "random",
-};
+let idCounter = 0;
 
-const alphaTypeToLabel: Record<"static" | "list" | "random", string> = {
-    static: "Static",
-    list: "List",
-    random: "Random",
-};
-
-export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
-    const [useList, setUseList] = useState(
-        emitter.alphaBehavior.mode !== "static",
-    );
+/**
+ * Alpha Behavior Panel component.
+ * @param props Component props.
+ */
+export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
+    const alphaBehavior = window.particleEmitter.alphaBehavior;
+    const [useList, setUseList] = useState(alphaBehavior.mode !== "static");
 
     useEffect(() => {
-        // TODO: Fix this initialization logic.
-        // if (!emitter.colorBehavior.list.isInitialized) {
-        //     emitter.alphaBehavior.list.initialize({
-        //         list: [
-        //             { time: 0, value: 1 },
-        //             { time: 1, value: 0 },
-        //         ],
-        //     });
-        // }
-    }, [emitter]);
+        if (!alphaBehavior.list.isInitialized) {
+            alphaBehavior.list.initialize({
+                list: [
+                    { time: 0, value: 1 },
+                    { time: 1, value: 0 },
+                ],
+            });
+        }
+    }, [alphaBehavior]);
 
     return (
         <details open={isOpen}>
@@ -39,12 +31,10 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
 
             <Select
                 label="Behavior Mode"
-                defaultValue={alphaTypeToLabel[emitter.alphaBehavior.mode]}
+                defaultValue={alphaBehavior.mode}
                 onChange={(value) => {
-                    const newMode = alphaLabelToType[value];
-                    emitter.alphaBehavior.mode = newMode;
-
-                    setUseList(newMode !== "static");
+                    alphaBehavior.mode = value as "static" | "list" | "random";
+                    setUseList(value !== "static");
                 }}
                 options={[
                     { label: "Static", key: "static" },
@@ -58,9 +48,10 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
             {!useList && (
                 <NumberControl
                     label="Static Value"
-                    defaultValue={emitter.alphaBehavior.staticValue}
+                    defaultValue={alphaBehavior.staticValue}
                     onChange={(value) => {
-                        emitter.alphaBehavior.staticValue = value;
+                        window.particleEmitter.alphaBehavior.staticValue =
+                            value;
                     }}
                 />
             )}
@@ -68,15 +59,13 @@ export function AlphaPanel({ emitter, isOpen = true }: PanelProps) {
             {useList && (
                 <ValueList
                     label="Alpha List"
-                    defaultList={emitter.alphaBehavior.list.list.map(
-                        (step, index) => ({
-                            time: step.time,
-                            value: step.value,
-                            ID: Date.now() + index,
-                        }),
-                    )}
+                    defaultList={alphaBehavior.list.list.map((step) => ({
+                        time: step.time,
+                        value: step.value,
+                        ID: idCounter++,
+                    }))}
                     onChange={(newList) => {
-                        emitter.alphaBehavior.list.initialize({
+                        alphaBehavior.list.initialize({
                             list: newList,
                         });
                     }}

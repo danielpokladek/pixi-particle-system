@@ -24,6 +24,49 @@ export function ValueList({
 }: Props): JSX.Element {
     const [list, setList] = useState<ListStepData[]>(defaultList);
 
+    const changeTimeAtIndex = (index: number, value: number): void => {
+        const newList = [...list];
+        newList[index].time = value;
+
+        setList(newList);
+        onChange?.(newList);
+    };
+
+    const changeValueAtIndex = (index: number, value: number): void => {
+        const newList = [...list];
+        newList[index].value = value;
+
+        setList(newList);
+        onChange?.(newList);
+    };
+
+    const addListEntry = (): void => {
+        const newStep: ListStepData = {
+            ID: Date.now(),
+            time: 0,
+            value: defaultList[0].value,
+        };
+
+        const newList = [...list, newStep];
+        setList(newList);
+        onChange?.(newList);
+    };
+
+    const removeListEntryAtIndex = (index: number): void => {
+        const newList = [...list];
+        newList.splice(index, 1);
+
+        setList(newList);
+        onChange?.(newList);
+    };
+
+    const sortList = (): void => {
+        const newList = [...list].sort((a, b) => a.time - b.time);
+
+        setList(newList);
+        onChange?.(newList);
+    };
+
     return (
         <>
             <details open>
@@ -51,64 +94,28 @@ export function ValueList({
                             <Input
                                 inputType="text"
                                 defaultValue={step.time.toString()}
-                                onChange={(value) => {
-                                    list[index].time = Number(value);
-                                    onChange?.(list);
-                                }}
+                                onChange={(value) =>
+                                    changeTimeAtIndex(index, Number(value))
+                                }
                             />
                             <Input
                                 inputType="text"
                                 defaultValue={step.value.toString()}
-                                onChange={(value) => {
-                                    list[index].value = Number(value);
-                                    onChange?.(list);
-                                }}
+                                onChange={(value) =>
+                                    changeValueAtIndex(index, Number(value))
+                                }
                             />
                             <button
                                 disabled={list.length <= 2}
-                                onClick={() => {
-                                    const newList = [...list];
-                                    newList.splice(index, 1);
-
-                                    setList(newList);
-                                    onChange?.(newList);
-                                }}
+                                onClick={() => removeListEntryAtIndex(index)}
                             >
                                 X
                             </button>
                         </div>
                     ))}
                     <div role="group">
-                        <button
-                            onClick={() => {
-                                const newStep: ListStepData = {
-                                    ID: Date.now(),
-                                    time: 0,
-                                    value: defaultList[0].value,
-                                };
-
-                                const newList = [...list, newStep];
-                                setList(newList);
-                                onChange?.(newList);
-                            }}
-                        >
-                            New
-                        </button>
-
-                        {/* <hr /> */}
-
-                        <button
-                            onClick={() => {
-                                const newList = [...list].sort(
-                                    (a, b) => a.time - b.time,
-                                );
-
-                                setList(newList);
-                                onChange?.(newList);
-                            }}
-                        >
-                            Sort
-                        </button>
+                        <button onClick={() => addListEntry()}>New</button>
+                        <button onClick={() => sortList()}>Sort</button>
                     </div>
                 </div>
             </details>

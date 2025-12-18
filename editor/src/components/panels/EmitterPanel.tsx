@@ -1,10 +1,15 @@
 import { BLEND_MODES } from "pixi.js";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
+import { Select } from "../ui/controls/Select";
+import { Toggle } from "../ui/controls/Toggle";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
-import { Select } from "../ui/inputs/Select";
-import { Toggle } from "../ui/inputs/Toggle";
 
+// TODO: Add remaining blend modes.
+
+/**
+ * Blend mode options for the emitter panel.
+ */
 const blendModeOptions: { label: string; key: BLEND_MODES }[] = [
     { label: "Normal", key: "normal" },
     { label: "Add", key: "add" },
@@ -12,7 +17,13 @@ const blendModeOptions: { label: string; key: BLEND_MODES }[] = [
     { label: "Screen", key: "screen" },
 ];
 
-export function EmitterPanel({ emitter, isOpen = true }: PanelProps) {
+/**
+ * EmitterPanel component props.
+ * @param props Component props.
+ */
+export function EmitterPanel({ isOpen = true }: PanelProps): JSX.Element {
+    const emitter = window.particleEmitter;
+
     return (
         <details open={isOpen}>
             <summary>Emitter</summary>

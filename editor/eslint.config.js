@@ -11,5 +11,21 @@ export default defineConfig([
             reactHooks.configs.flat.recommended,
             reactRefresh.configs.vite,
         ],
+        rules: {
+            "jsdoc/require-jsdoc": [
+                "warn",
+                {
+                    require: {
+                        FunctionDeclaration: true,
+                        MethodDefinition: true,
+                        ClassDeclaration: true,
+                        ArrowFunctionExpression: false,
+                        FunctionExpression: false,
+                    },
+                },
+            ],
+            "jsdoc/require-param": "off",
+            "jsdoc/require-returns": "off",
+        },
     },
 ]);

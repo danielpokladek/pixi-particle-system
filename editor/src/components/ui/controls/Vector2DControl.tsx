@@ -8,12 +8,16 @@ type Props = {
     onChange?: (xValue: number, yValue: number) => void;
 };
 
+/**
+ * Vector2D control with label.
+ * @param props Component props.
+ */
 export function Vector2DControl({
     label,
     xDefault = 0,
     yDefault = 0,
     onChange,
-}: Props) {
+}: Props): JSX.Element {
     const xValueRef = useRef<number>(xDefault);
     const yValueRef = useRef<number>(yDefault);
 

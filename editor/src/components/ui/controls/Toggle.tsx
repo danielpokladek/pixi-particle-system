@@ -6,7 +6,15 @@ type Props = {
     onChange?: (value: boolean) => void;
 };
 
-export function Toggle({ label, defaultValue = false, onChange }: Props) {
+/**
+ * Toggle control with label.
+ * @param props Component props.
+ */
+export function Toggle({
+    label,
+    defaultValue = false,
+    onChange,
+}: Props): JSX.Element {
     const lastValueRef = useRef<boolean>(defaultValue);
 
     return (

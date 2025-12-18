@@ -1,10 +1,13 @@
 import { Emitter } from "pixi-particle-system";
+import { ParticleContainer } from "pixi.js";
 
 declare global {
     interface Window {
         fps: number;
         error: false | { message: string };
-        emitter: Emitter | null;
+
+        particleContainer: ParticleContainer;
+        particleEmitter: Emitter;
     }
 }
 

@@ -3,7 +3,7 @@ import { Texture } from "pixi.js";
 import { useState } from "react";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
-import { Toggle } from "../ui/inputs/Toggle";
+import { Toggle } from "../ui/controls/Toggle";
 
 type TextureObjectProps = {
     label: string;
@@ -13,13 +13,17 @@ type TextureObjectProps = {
     loop?: boolean;
 };
 
+/**
+ * Texture Object component.
+ * @param props Component props.
+ */
 export function TextureObject({
     label,
     onRemove,
     framerate = -1,
     duration = -1,
     loop = false,
-}: TextureObjectProps) {
+}: TextureObjectProps): JSX.Element {
     return (
         <>
             <details open>
@@ -63,7 +67,11 @@ export function TextureObject({
     );
 }
 
-export function TexturePanel({ emitter, isOpen }: PanelProps) {
+/**
+ * Texture Panel component.
+ * @param props Component props.
+ */
+export function TexturePanel({ isOpen }: PanelProps): JSX.Element {
     const [textureConfigs, setTextureConfigs] = useState<TextureConfig[]>([
         { textures: [Texture.WHITE] },
     ]);
@@ -75,7 +83,7 @@ export function TexturePanel({ emitter, isOpen }: PanelProps) {
 
                 <hr />
 
-                {textureConfigs.map((config, index) => (
+                {textureConfigs.map((_, index) => (
                     <>
                         <TextureObject
                             key={index}

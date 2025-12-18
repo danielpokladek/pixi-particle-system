@@ -10,6 +10,10 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
+/**
+ * Basic input component.
+ * @param props Component props.
+ */
 export function Input({
     onChange,
     inputType,
@@ -18,7 +22,7 @@ export function Input({
     min,
     max,
     step,
-}: Props) {
+}: Props): JSX.Element {
     const lastValueRef = useRef<string>(defaultValue);
 
     return (

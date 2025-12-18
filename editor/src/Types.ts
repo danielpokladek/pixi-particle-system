@@ -1,6 +1,6 @@
-import { Emitter } from "pixi-particle-system";
-
+/**
+ * Type describing the props for a panel component.
+ */
 export type PanelProps = {
-    emitter: Emitter;
     isOpen?: boolean;
 };

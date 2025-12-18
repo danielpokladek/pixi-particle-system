@@ -2,26 +2,17 @@ import { SpawnShape } from "pixi-particle-system";
 import { useState } from "react";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
+import { Select } from "../ui/controls/Select";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
-import { Select } from "../ui/inputs/Select";
 
-const spawnOptionToType: Record<string, SpawnShape> = {
-    Point: "point",
-    Rectangle: "rectangle",
-    Circle: "circle",
-    Line: "line",
-};
-
-const spawnTypeToOption: Record<SpawnShape, string> = {
-    point: "Point",
-    rectangle: "Rectangle",
-    circle: "Circle",
-    line: "Line",
-};
-
-export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
+/**
+ * Spawn Behavior Panel component.
+ * @param props Component props.
+ */
+export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
+    const spawnBehavior = window.particleEmitter.spawnBehavior;
     const [spawnShape, setSpawnShape] = useState<SpawnShape>(
-        emitter.spawnBehavior.shape,
+        spawnBehavior.shape,
     );
 
     return (
@@ -30,18 +21,17 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
 
             <Vector2DControl
                 label="Direction"
-                xDefault={emitter.spawnBehavior.direction.x}
-                yDefault={emitter.spawnBehavior.direction.y}
+                xDefault={spawnBehavior.direction.x}
+                yDefault={spawnBehavior.direction.y}
                 onChange={(x, y) => {
-                    console.log(x, y);
-                    emitter.spawnBehavior.direction.x = x;
-                    emitter.spawnBehavior.direction.y = y;
+                    spawnBehavior.direction.x = x;
+                    spawnBehavior.direction.y = y;
                 }}
             />
 
             <Select
                 label="Shape"
-                defaultValue={spawnTypeToOption[emitter.spawnBehavior.shape]}
+                defaultValue={spawnBehavior.shape}
                 // prettier-ignore
                 options={[
                     { label: "Point"    , key: "point"     },
@@ -50,10 +40,10 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
                     { label: "Line"     , key: "line"      },
                 ]}
                 onChange={(shape) => {
-                    const newShape = spawnOptionToType[shape];
-                    setSpawnShape(newShape);
+                    const newShape = shape as SpawnShape;
 
-                    emitter.spawnBehavior.shape = newShape;
+                    spawnBehavior.shape = newShape;
+                    setSpawnShape(newShape);
                 }}
             />
 
@@ -61,11 +51,11 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
                 <>
                     <Vector2DControl
                         label="Size"
-                        xDefault={emitter.spawnBehavior.width}
-                        yDefault={emitter.spawnBehavior.height}
+                        xDefault={spawnBehavior.width}
+                        yDefault={spawnBehavior.height}
                         onChange={(width, height) => {
-                            emitter.spawnBehavior.width = width;
-                            emitter.spawnBehavior.height = height;
+                            spawnBehavior.width = width;
+                            spawnBehavior.height = height;
                         }}
                     />
                 </>
@@ -75,11 +65,11 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
                 <>
                     <Vector2DControl
                         label="Radius"
-                        xDefault={emitter.spawnBehavior.outerRadius}
-                        yDefault={emitter.spawnBehavior.innerRadius}
+                        xDefault={spawnBehavior.outerRadius}
+                        yDefault={spawnBehavior.innerRadius}
                         onChange={(outer, inner) => {
-                            emitter.spawnBehavior.outerRadius = outer;
-                            emitter.spawnBehavior.innerRadius = inner;
+                            spawnBehavior.outerRadius = outer;
+                            spawnBehavior.innerRadius = inner;
                         }}
                     />
                 </>
@@ -88,9 +78,9 @@ export function SpawnPanel({ emitter, isOpen = true }: PanelProps) {
             {spawnShape === "line" && (
                 <NumberControl
                     label="Width"
-                    defaultValue={emitter.spawnBehavior.width}
+                    defaultValue={spawnBehavior.width}
                     onChange={(value) => {
-                        emitter.spawnBehavior.width = value;
+                        spawnBehavior.width = value;
                     }}
                 />
             )}

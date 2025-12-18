@@ -1,45 +1,32 @@
 import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
+import { ValueList } from "../ui/controls/list/ValueList";
 import { NumberControl } from "../ui/controls/NumberControl";
-import { Select } from "../ui/inputs/Select";
-import { Toggle } from "../ui/inputs/Toggle";
-import { ValueList } from "../ui/inputs/list/ValueList";
+import { Select } from "../ui/controls/Select";
+import { Toggle } from "../ui/controls/Toggle";
 
-const modeLabelToType: Record<
-    string,
-    "static" | "list" | "acceleration" | "direction"
-> = {
-    Static: "static",
-    List: "list",
-    Acceleration: "acceleration",
-    Direction: "direction",
-};
+/**
+ * Rotation Behavior Panel component.
+ * @param props Component props.
+ */
+export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
+    const emitter = window.particleEmitter;
+    const rotationBehavior = emitter.rotationBehavior;
 
-const modeTypeToLabel: Record<
-    "static" | "list" | "acceleration" | "direction",
-    string
-> = {
-    static: "Static",
-    list: "List",
-    acceleration: "Acceleration",
-    direction: "Direction",
-};
-
-export function RotationPanel({ emitter, isOpen }: PanelProps) {
-    const [mode, setMode] = useState(emitter.rotationBehavior.mode);
+    const [mode, setMode] = useState(rotationBehavior.mode);
     const [initializeEnabled, setInitializeEnabled] = useState(false);
     const [updateEnabled, setUpdateEnabled] = useState(false);
 
     useEffect(() => {
-        if (!emitter.rotationBehavior.list.isInitialized) {
-            emitter.rotationBehavior.list.initialize({
+        if (!rotationBehavior.list.isInitialized) {
+            rotationBehavior.list.initialize({
                 list: [
                     { time: 0, value: 0 },
                     { time: 1, value: Math.PI * 2 },
                 ],
             });
         }
-    }, [emitter]);
+    }, [rotationBehavior]);
 
     return (
         <details open={isOpen}>
@@ -52,13 +39,9 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                     setInitializeEnabled(value);
 
                     if (value) {
-                        emitter.addToActiveInitBehaviors(
-                            emitter.rotationBehavior,
-                        );
+                        emitter.addToActiveInitBehaviors(rotationBehavior);
                     } else {
-                        emitter.removeFromActiveInitBehaviors(
-                            emitter.rotationBehavior,
-                        );
+                        emitter.removeFromActiveInitBehaviors(rotationBehavior);
                     }
                 }}
             />
@@ -70,12 +53,10 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                     setUpdateEnabled(value);
 
                     if (value) {
-                        emitter.addToActiveUpdateBehaviors(
-                            emitter.rotationBehavior,
-                        );
+                        emitter.addToActiveUpdateBehaviors(rotationBehavior);
                     } else {
                         emitter.removeFromActiveUpdateBehaviors(
-                            emitter.rotationBehavior,
+                            rotationBehavior,
                         );
                     }
                 }}
@@ -85,17 +66,22 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
 
             <Select
                 label="Mode"
-                defaultValue={modeTypeToLabel[emitter.rotationBehavior.mode]}
-                // prettier-ignore
+                defaultValue={rotationBehavior.mode}
                 options={[
-                    { label: "List"  , key: "list"   },
+                    { label: "List", key: "list" },
                     { label: "Static", key: "static" },
                     { label: "Acceleration", key: "acceleration" },
                     { label: "Direction", key: "faceDirection" },
                 ]}
                 onChange={(value) => {
-                    setMode(modeLabelToType[value]);
-                    emitter.rotationBehavior.mode = modeLabelToType[value];
+                    const newMode = value as
+                        | "static"
+                        | "list"
+                        | "acceleration"
+                        | "direction";
+
+                    setMode(newMode);
+                    rotationBehavior.mode = newMode;
                 }}
             />
 
@@ -105,9 +91,9 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                 <NumberControl
                     label="Static Value"
                     disabled={!initializeEnabled}
-                    defaultValue={emitter.rotationBehavior.staticValue}
+                    defaultValue={rotationBehavior.staticValue}
                     onChange={(value) => {
-                        emitter.rotationBehavior.staticValue = value;
+                        rotationBehavior.staticValue = value;
                     }}
                 />
             )}
@@ -117,17 +103,17 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                     <NumberControl
                         label="Start Rotation"
                         disabled={!initializeEnabled}
-                        defaultValue={emitter.rotationBehavior.startRotation}
+                        defaultValue={rotationBehavior.startRotation}
                         onChange={(value) => {
-                            emitter.rotationBehavior.startRotation = value;
+                            rotationBehavior.startRotation = value;
                         }}
                     />
                     <NumberControl
                         label="Acceleration"
                         disabled={!updateEnabled}
-                        defaultValue={emitter.rotationBehavior.acceleration}
+                        defaultValue={rotationBehavior.acceleration}
                         onChange={(value) => {
-                            emitter.rotationBehavior.acceleration = value;
+                            rotationBehavior.acceleration = value;
                         }}
                     />
                 </>
@@ -136,7 +122,7 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
             {mode === "list" && (
                 <ValueList
                     label="Rotation List"
-                    defaultList={emitter.rotationBehavior.list.list.map(
+                    defaultList={rotationBehavior.list.list.map(
                         (step, index) => ({
                             time: step.time,
                             value: step.value,
@@ -144,7 +130,7 @@ export function RotationPanel({ emitter, isOpen }: PanelProps) {
                         }),
                     )}
                     onChange={(newList) => {
-                        emitter.rotationBehavior.list.initialize({
+                        rotationBehavior.list.initialize({
                             list: newList,
                         });
                     }}

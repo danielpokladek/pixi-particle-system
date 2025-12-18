@@ -7,12 +7,16 @@ type Props = {
     onChange?: (value: number) => void;
 };
 
+/**
+ * Number control with label.
+ * @param props Component props.
+ */
 export function NumberControl({
     label,
     onChange,
     defaultValue = 1,
     disabled = false,
-}: Props) {
+}: Props): JSX.Element {
     return (
         <div className="control">
             <label htmlFor="">{label}</label>

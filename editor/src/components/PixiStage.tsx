@@ -8,61 +8,86 @@ extend({
     Container,
 });
 
+/**
+ * Props for the PixiStage component.
+ */
 type Props = {
     particleContainer: ParticleContainer;
     emitter: Emitter;
 };
 
-export default function PixiStage({ particleContainer, emitter }: Props) {
+/**
+ * PixiStage component that integrates a ParticleContainer and Emitter into the PixiJS application.
+ * @param props Component props.
+ * @param props.particleContainer ParticleContainer instance.
+ * @param props.emitter Emitter instance.
+ * @returns JSX.Element
+ */
+export default function PixiStage({
+    particleContainer,
+    emitter,
+}: Props): JSX.Element {
     const { app } = useApplication();
 
-    const updateFPS = () => {
-        window.fps = app.ticker.FPS;
-    };
-
-    const handleFocused = () => {
-        emitter.resume();
-    };
-
-    const handleBlurred = () => {
-        emitter.pause();
-    };
-
-    const handleResize = () => {
-        particleContainer.x = app.renderer.width / 2;
-        particleContainer.y = app.renderer.height / 2;
-    };
-
     useEffect(() => {
-        console.log(`EmitterContainer mounted - ${particleContainer}`);
-
         if (!particleContainer || !app.renderer) return;
 
+        /**
+         * Repositions the particle container accordingly.
+         */
+        const handleResize = (): void => {
+            particleContainer.position.set(
+                app.renderer.width / 2,
+                app.renderer.height / 2,
+            );
+        };
+
+        /**
+         * Updates the FPS value on the window object.
+         */
+        const updateFPS = (): void => {
+            window.fps = app.ticker.FPS;
+        };
+
+        /**
+         * Handles the window gaining focus.
+         */
+        const handleFocused = (): void => {
+            emitter.resume();
+        };
+
+        /**
+         * Handles the window losing focus.
+         */
+        const handleBlurred = (): void => {
+            emitter.pause();
+        };
+
         app.stage.addChild(particleContainer);
-        particleContainer.x = app.renderer.width / 2;
-        particleContainer.y = app.renderer.height / 2;
+        particleContainer.position.set(
+            app.renderer.width / 2,
+            app.renderer.height / 2,
+        );
 
         app.ticker.add(updateFPS);
         app.renderer.on("resize", handleResize);
 
+        window.particleEmitter.play();
+
         window.addEventListener("focus", handleFocused);
         window.addEventListener("blur", handleBlurred);
 
-        console.log("ParticleContainer added to stage");
-
-        return () => {
-            console.log("EmitterContainer unmounted");
-
+        return (): void => {
             app.ticker.remove(updateFPS);
             app.stage.removeChild(particleContainer);
             app.renderer.off("resize", handleResize);
 
-            window.fps = 0;
-
             window.removeEventListener("focus", handleFocused);
             window.removeEventListener("blur", handleBlurred);
+
+            window.fps = 0;
         };
-    }, [app.renderer, particleContainer]);
+    }, [app, app.stage, app.renderer, emitter, particleContainer]);
 
     return <pixiContainer />;
 }
