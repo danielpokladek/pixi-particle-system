@@ -1,5 +1,6 @@
 import reactHooks from "eslint-plugin-react-hooks";
-import { defineConfig } from "vite";
+import reactRefresh from "eslint-plugin-react-refresh";
+import { defineConfig } from "eslint/config";
 import rootConfig from "../eslint.config.js";
 
 export default defineConfig([

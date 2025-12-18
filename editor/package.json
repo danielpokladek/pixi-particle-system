@@ -8,6 +8,8 @@
     },
     "dependencies": {
         "@pixi/react": "^8.0.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.4.26",
         "pixi-particle-system": "link:../system",
         "pixi.js": "^8.14.3",
         "react": "^19.2.3",
