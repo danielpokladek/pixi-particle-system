@@ -17,74 +17,49 @@ const config: EmitterConfig = {
     addAtBack: true,
     particlesPerWave: 1,
 
-    // alphaBehavior: {
-    //     listData: {
-    //         list: [
-    //             { value: 1.0, time: 0.0 },
-    //             // { value: 0.0, time: 0.2 },
-    //             { value: 1.0, time: 0.5 },
-    //             // { value: 0.0, time: 0.8 },
-    //             { value: 1.0, time: 1.0 },
-    //         ],
-    //     },
-    //     mode: "list",
-    // },
-
-    colorBehavior: {
+    alphaBehavior: {
         listData: {
             list: [
-                { value: "#ff0000", time: 0 },
-                { value: "#00ff00", time: 0.5 },
-                { value: "#0000ff", time: 1 },
+                { value: 0.0, time: 0.0 },
+                { value: 1.0, time: 0.2 },
+                { value: 0.0, time: 1.0 },
             ],
         },
+        mode: "list",
+    },
+
+    colorBehavior: {
         mode: "random",
+        listData: {
+            list: [
+                { value: "#AEEBFF", time: 0 },
+                { value: "#4FA3E3", time: 0.5 },
+                { value: "#1B2A4A", time: 1 },
+            ],
+        },
     },
 
     movementBehavior: {
-        xListData: {
-            list: [
-                { value: 0, time: 0 },
-                { value: 0, time: 1 },
-            ],
-        },
-        yListData: {
-            list: [
-                { value: -50, time: 0 },
-                { value: -50, time: 1 },
-            ],
-        },
-        space: "local",
-        mode: "acceleration",
-    },
-
-    rotationBehavior: {
-        mode: "direction",
+        minMoveSpeed: { x: -50, y: -100 },
+        maxMoveSpeed: { x: 50, y: -100 },
+        mode: "linear",
     },
 
     scaleBehavior: {
-        mode: "random",
-        yListData: {
-            list: [
-                { value: 0, time: 0 },
-                { value: 100, time: 0.5 },
-                { value: 0, time: 1 },
-            ],
-        },
+        mode: "list",
         xListData: {
             list: [
-                { value: 0, time: 0 },
-                { value: 10, time: 0.2 },
-                { value: 10, time: 0.8 },
-                { value: 0, time: 1 },
+                { value: 0.5, time: 0.0 },
+                { value: 3.0, time: 0.5 },
+                { value: 0.5, time: 1.0 },
             ],
         },
     },
 
     spawnBehavior: {
-        shape: "point",
-        // width: 300,
-        // height: 300,
+        shape: "circle",
+        outerRadius: 100,
+        innerRadius: 50,
         direction: { x: 0, y: 1 },
     },
 };
