@@ -59,9 +59,7 @@ const config: EmitterConfig = {
     },
 
     rotationBehavior: {
-        mode: "static",
-        value: 0,
-        faceDirection: true,
+        mode: "direction",
     },
 
     scaleBehavior: {

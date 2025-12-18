@@ -14,17 +14,15 @@ import {
  */
 export type RotationBehaviorConfig =
     | {
-          mode: "faceDirection";
+          mode: "direction";
       }
     | {
           value: number;
-          faceDirection?: boolean;
           mode: "static";
       }
     | { listData: ListData<number>; mode: "list" }
     | {
           startRotation: number;
-          faceDirection?: boolean;
           acceleration: number;
           mode: "acceleration";
       };
@@ -40,8 +38,7 @@ export class RotationBehavior
 {
     private readonly _list: NumberList;
 
-    private _mode: "static" | "list" | "acceleration" | "faceDirection" =
-        "static";
+    private _mode: "static" | "list" | "acceleration" | "direction" = "static";
 
     private _staticValue: number = 0;
     private _startRotation: number = 0;
@@ -74,12 +71,10 @@ export class RotationBehavior
     /**
      * Behavior mode.
      */
-    public get mode(): "static" | "list" | "acceleration" | "faceDirection" {
+    public get mode(): "static" | "list" | "acceleration" | "direction" {
         return this._mode;
     }
-    public set mode(
-        value: "static" | "list" | "acceleration" | "faceDirection",
-    ) {
+    public set mode(value: "static" | "list" | "acceleration" | "direction") {
         this._mode = value;
     }
 
@@ -122,7 +117,7 @@ export class RotationBehavior
         this._emitter.addToActiveInitBehaviors(this);
         this._mode = config.mode;
 
-        if (config.mode === "faceDirection") {
+        if (config.mode === "direction") {
             return;
         }
 
@@ -154,6 +149,10 @@ export class RotationBehavior
             !this._emitter.isBehaviorUpdateActive(this)
         ) {
             return undefined;
+        }
+
+        if (this._mode === "direction") {
+            return { mode: "direction" };
         }
 
         if (this._mode === "static") {
@@ -189,7 +188,7 @@ export class RotationBehavior
             return;
         }
 
-        if (this._mode === "faceDirection") {
+        if (this._mode === "direction") {
             particle.rotation = Math.atan2(
                 particle.data.directionVectorY,
                 particle.data.directionVectorX,

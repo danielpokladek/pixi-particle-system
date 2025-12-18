@@ -7,22 +7,22 @@ import { ValueList } from "../ui/inputs/list/ValueList";
 
 const modeLabelToType: Record<
     string,
-    "static" | "list" | "acceleration" | "faceDirection"
+    "static" | "list" | "acceleration" | "direction"
 > = {
     Static: "static",
     List: "list",
     Acceleration: "acceleration",
-    Direction: "faceDirection",
+    Direction: "direction",
 };
 
 const modeTypeToLabel: Record<
-    "static" | "list" | "acceleration" | "faceDirection",
+    "static" | "list" | "acceleration" | "direction",
     string
 > = {
     static: "Static",
     list: "List",
     acceleration: "Acceleration",
-    faceDirection: "Direction",
+    direction: "Direction",
 };
 
 export function RotationPanel({ emitter, isOpen }: PanelProps) {
