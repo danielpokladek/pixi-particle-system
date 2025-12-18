@@ -8,6 +8,10 @@ export default {
         nav: [
             { text: "Home", link: "/" },
             { text: "API", link: "/api" },
+            {
+                text: "Editor",
+                link: "https://danielpokladek.github.io/pixi-particle-system/editor/",
+            },
         ],
         sidebar: [
             {
