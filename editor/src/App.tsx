@@ -1,19 +1,10 @@
 import "@picocss/pico/css/pico.pink.min.css";
 import { Application, extend } from "@pixi/react";
-import { Emitter } from "pixi-particle-system";
 import { ParticleContainer } from "pixi.js";
 import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import PixiStage from "./components/PixiStage";
 import Sidebar from "./components/Sidebar";
-
-/**
- * Props for the main App component.
- */
-type Props = {
-    particleContainer: ParticleContainer;
-    emitter: Emitter;
-};
 
 extend({
     ParticleContainer,
@@ -21,33 +12,28 @@ extend({
 
 /**
  * Main application component.
- * @param props Component props.
- * @param props.emitter Emitter instance.
- * @param props.particleContainer Particle container instance.
  * @returns JSX.Element
  */
-export default function App({
-    emitter,
-    particleContainer,
-}: Props): JSX.Element {
+export default function App(): JSX.Element {
     const canvasContainerRef = useRef<HTMLDivElement | null>(null);
 
     const [particleCount, setParticleCount] = useState(0);
     const [maxParticleCount, setMaxParticleCount] = useState(0);
 
-    useEffect(() => {
-        window.particleEmitter = emitter;
+    const particleEmitter = window.particleEmitter;
+    const particleContainer = window.particleContainer;
 
+    useEffect(() => {
         const updateIntervalId = setInterval(() => {
-            setParticleCount(emitter.particleCount);
-            setMaxParticleCount(emitter.maxParticles);
+            setParticleCount(particleEmitter.particleCount);
+            setMaxParticleCount(particleEmitter.maxParticles);
         }, 100);
 
         return (): void => {
-            emitter.stop(true);
+            particleEmitter.stop(true);
             clearInterval(updateIntervalId);
         };
-    }, [emitter, particleContainer]);
+    }, [particleEmitter]);
 
     return (
         <>
@@ -69,7 +55,7 @@ export default function App({
             )}
             <Header />
 
-            {emitter && particleContainer && (
+            {particleEmitter && particleContainer && (
                 <div className="editor">
                     <div className="main">
                         <Sidebar />
@@ -81,7 +67,7 @@ export default function App({
                             <Application resizeTo={canvasContainerRef}>
                                 <PixiStage
                                     particleContainer={particleContainer}
-                                    emitter={emitter}
+                                    emitter={particleEmitter}
                                 />
                             </Application>
                         </div>
@@ -89,7 +75,7 @@ export default function App({
                 </div>
             )}
 
-            {emitter && (
+            {particleEmitter && (
                 <div className="stats">
                     <span>FPS: {Math.round(window.fps)}</span>
                     <span>

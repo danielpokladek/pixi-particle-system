@@ -3,6 +3,7 @@ import { ParticleContainer } from "pixi.js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import { EditorError } from "./error/EditorError";
 import "./style.css";
 
 /**
@@ -71,8 +72,14 @@ const particleEmitter = new Emitter(particleContainer, defaultConfig);
 window.particleContainer = particleContainer;
 window.particleEmitter = particleEmitter;
 
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+
+if (!root) {
+    throw new EditorError("Root element not found!");
+}
+
+createRoot(root).render(
     <StrictMode>
-        <App emitter={particleEmitter} particleContainer={particleContainer} />
+        <App />
     </StrictMode>,
 );
