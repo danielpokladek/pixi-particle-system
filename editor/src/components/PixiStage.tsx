@@ -28,6 +28,11 @@ export default function PixiStage({ particleContainer, emitter }: Props) {
         emitter.pause();
     };
 
+    const handleResize = () => {
+        particleContainer.x = app.renderer.width / 2;
+        particleContainer.y = app.renderer.height / 2;
+    };
+
     useEffect(() => {
         console.log(`EmitterContainer mounted - ${particleContainer}`);
 
@@ -38,6 +43,7 @@ export default function PixiStage({ particleContainer, emitter }: Props) {
         particleContainer.y = app.renderer.height / 2;
 
         app.ticker.add(updateFPS);
+        app.renderer.on("resize", handleResize);
 
         window.addEventListener("focus", handleFocused);
         window.addEventListener("blur", handleBlurred);
@@ -49,6 +55,7 @@ export default function PixiStage({ particleContainer, emitter }: Props) {
 
             app.ticker.remove(updateFPS);
             app.stage.removeChild(particleContainer);
+            app.renderer.off("resize", handleResize);
 
             window.fps = 0;
 
