@@ -32,11 +32,23 @@ jobs:
       - name: Install Dependencies
         run: pnpm action:installDep
 
-      - name: Build Docs & Editor
+      - name: Build Library
+        run: pnpm build:library
+
+      - name: Build Docs
+        run: pnpm build:docs
+
+      - name: Build Editor
+        run: pnpm build:editor
+
+      - name: List Build Outputs
         run: |
-          pnpm build:library
-          pnpm build:docs
-          pnpm build:editor
+          echo "Library output:"
+          ls -la library/dist || echo "No library dist"
+          echo "Docs output:"
+          ls -la library/docs/.vitepress/dist || echo "No docs dist"
+          echo "Editor output:"
+          ls -la editor/dist || echo "No editor dist"
 
       - name: Combine Artifacts
         run: |
