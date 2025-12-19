@@ -37,9 +37,7 @@ export type MovementBehaviorConfig =
  */
 export class MovementBehavior
     extends EmitterBehavior<MovementBehaviorConfig>
-    implements
-        InitBehavior<MovementBehaviorConfig>,
-        UpdateBehavior<MovementBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;

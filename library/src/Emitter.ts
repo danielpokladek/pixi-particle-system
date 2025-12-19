@@ -21,8 +21,8 @@ export class Emitter {
     private readonly _particles: EmitterParticle[] = [];
     private readonly _pooledParticles: EmitterParticle[] = [];
 
-    private readonly _initBehaviors: InitBehavior<unknown>[] = [];
-    private readonly _updateBehaviors: UpdateBehavior<unknown>[] = [];
+    private readonly _initBehaviors: InitBehavior[] = [];
+    private readonly _updateBehaviors: UpdateBehavior[] = [];
 
     // *** Built-In Behaviors *** //
     private readonly _alphaBehavior: AlphaBehavior;
@@ -444,7 +444,7 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorInitActive(behavior: InitBehavior<unknown>): boolean {
+    public isBehaviorInitActive(behavior: InitBehavior): boolean {
         return this._initBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -453,7 +453,7 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorUpdateActive(behavior: UpdateBehavior<unknown>): boolean {
+    public isBehaviorUpdateActive(behavior: UpdateBehavior): boolean {
         return this._updateBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -461,7 +461,7 @@ export class Emitter {
      * Adds a behavior to the active init behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveInitBehaviors(behavior: InitBehavior<unknown>): void {
+    public addToActiveInitBehaviors(behavior: InitBehavior): void {
         this._initBehaviors.push(behavior);
 
         this._initBehaviors.sort((a, b) => {
@@ -482,7 +482,7 @@ export class Emitter {
      * Adds a behavior to the active update behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveUpdateBehaviors(behavior: UpdateBehavior<unknown>): void {
+    public addToActiveUpdateBehaviors(behavior: UpdateBehavior): void {
         this._updateBehaviors.push(behavior);
 
         this._updateBehaviors.sort((a, b) => {
@@ -503,9 +503,7 @@ export class Emitter {
      * Removes a behavior from the active init behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveInitBehaviors(
-        behavior: InitBehavior<unknown>,
-    ): void {
+    public removeFromActiveInitBehaviors(behavior: InitBehavior): void {
         const index = this._initBehaviors.indexOf(behavior);
 
         if (index !== -1) {
@@ -517,9 +515,7 @@ export class Emitter {
      * Removes a behavior from the active update behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveUpdateBehaviors(
-        behavior: UpdateBehavior<unknown>,
-    ): void {
+    public removeFromActiveUpdateBehaviors(behavior: UpdateBehavior): void {
         const index = this._updateBehaviors.indexOf(behavior);
 
         if (index !== -1) {

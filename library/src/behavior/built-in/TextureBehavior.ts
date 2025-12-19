@@ -39,9 +39,7 @@ export type TextureBehaviorConfig = {
  */
 export class TextureBehavior
     extends EmitterBehavior<TextureBehaviorConfig>
-    implements
-        InitBehavior<TextureBehaviorConfig>,
-        UpdateBehavior<TextureBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private _textureConfigs: TextureConfig[] = [];
     private _mode: TextureBehaviorMode = "static";

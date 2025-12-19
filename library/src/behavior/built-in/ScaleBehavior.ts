@@ -29,9 +29,7 @@ export type ScaleBehaviorConfig =
  */
 export class ScaleBehavior
     extends EmitterBehavior<ScaleBehaviorConfig>
-    implements
-        InitBehavior<ScaleBehaviorConfig>,
-        UpdateBehavior<ScaleBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;

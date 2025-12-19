@@ -28,9 +28,7 @@ export type ColorBehaviorConfig =
  */
 export class ColorBehavior
     extends EmitterBehavior<ColorBehaviorConfig>
-    implements
-        InitBehavior<ColorBehaviorConfig>,
-        UpdateBehavior<ColorBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: ColorList;
 

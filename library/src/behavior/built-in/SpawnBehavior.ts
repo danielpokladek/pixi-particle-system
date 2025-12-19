@@ -40,7 +40,7 @@ export type SpawnBehaviorConfig = {
  */
 export class SpawnBehavior
     extends EmitterBehavior<SpawnBehaviorConfig>
-    implements InitBehavior<SpawnBehaviorConfig>
+    implements InitBehavior
 {
     private _shape: "point" | "line" | "rectangle" | "circle" = "point";
 

@@ -32,9 +32,7 @@ export type RotationBehaviorConfig =
  */
 export class RotationBehavior
     extends EmitterBehavior<RotationBehaviorConfig>
-    implements
-        InitBehavior<RotationBehaviorConfig>,
-        UpdateBehavior<RotationBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: NumberList;
 

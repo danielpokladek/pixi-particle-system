@@ -50,7 +50,7 @@ export abstract class EmitterBehavior<ConfigType> {
  * Interface defining behaviors which update particles on initialization.
  * @template Config Type defining the configuration for the behavior.
  */
-export interface InitBehavior<ConfigType> extends EmitterBehavior<ConfigType> {
+export interface InitBehavior extends EmitterBehavior<unknown> {
     /**
      * Initializes the particle.
      * @param particle Particle to initialize.
@@ -62,7 +62,7 @@ export interface InitBehavior<ConfigType> extends EmitterBehavior<ConfigType> {
  * Interface defining behaviors which update particles on each update cycle.
  * @template Config Type defining the configuration for the behavior.
  */
-export interface UpdateBehavior<Config> extends EmitterBehavior<Config> {
+export interface UpdateBehavior extends EmitterBehavior<unknown> {
     /**
      * Updates the particle.
      * @param particle Particle to update.

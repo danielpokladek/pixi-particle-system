@@ -40,9 +40,7 @@ export type AlphaBehaviorConfig =
  */
 export class AlphaBehavior
     extends EmitterBehavior<AlphaBehaviorConfig>
-    implements
-        InitBehavior<AlphaBehaviorConfig>,
-        UpdateBehavior<AlphaBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: NumberList;
 
