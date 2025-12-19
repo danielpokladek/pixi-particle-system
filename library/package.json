@@ -32,8 +32,10 @@
     "scripts": {
         "build:lib": "tsc && vite build",
         "build:docs": "typedoc && vitepress build docs",
+        "build:typedoc": "typedoc",
         "dev:lib": "vite build --watch --mode development",
-        "dev:docs": "typedoc && vitepress dev docs"
+        "dev:docs": "typedoc && vitepress dev docs",
+        "dev:vitepress": "vitepress dev docs"
     },
     "peerDependencies": {
         "pixi.js": "^8.0.0"

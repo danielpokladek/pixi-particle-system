@@ -1,10 +1,10 @@
 {
     "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
-    
+
     "entryPoints": ["src/index.ts"],
     "entryPointStrategy": "resolve",
     "entryFileName": "index",
-    
+
     "out": "./docs/api",
     "docsRoot": "./docs",
 
@@ -25,7 +25,7 @@
     },
 
     "formatWithPrettier": true,
-    
+
     "categorizeByGroup": false,
     "disableSources": true,
     "searchInDocuments": true,
@@ -39,6 +39,6 @@
     "sidebar": {
         "pretty": true,
         "format": "vitepress",
-        "collapsed": false,
+        "collapsed": true
     }
 }
