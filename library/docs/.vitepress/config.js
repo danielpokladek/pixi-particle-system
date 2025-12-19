@@ -18,7 +18,19 @@ export default {
                 text: "PixiJS Particle System",
                 link: "/",
                 items: [
-                    { text: "Overview", link: "/" },
+                    {
+                        text: "Introduction",
+                        items: [
+                            {
+                                text: "What is Particle System?",
+                                link: "/first-steps/what-is-it",
+                            },
+                            {
+                                text: "Behavior System",
+                                link: "/first-steps/behavior-system",
+                            },
+                        ],
+                    },
                     {
                         text: "Customization",
                         items: [
