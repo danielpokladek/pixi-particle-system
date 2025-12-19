@@ -15,7 +15,24 @@ export default {
         ],
         sidebar: [
             {
-                text: "API",
+                text: "PixiJS Particle System",
+                link: "/",
+                items: [
+                    { text: "Overview", link: "/" },
+                    {
+                        text: "Customization",
+                        items: [
+                            {
+                                text: "Custom Behaviors",
+                                link: "/custom-behavior",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                text: "API Reference",
+                link: "/api",
                 items: typedocSidebar,
             },
         ],
