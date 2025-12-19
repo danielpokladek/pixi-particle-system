@@ -1,5 +1,5 @@
 import { Emitter, EmitterConfig } from "pixi-particle-system";
-import { ParticleContainer } from "pixi.js";
+import { ParticleContainer, Texture } from "pixi.js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -63,6 +63,15 @@ const defaultConfig: EmitterConfig = {
         outerRadius: 100,
         innerRadius: 50,
         direction: { x: 0, y: 1 },
+    },
+
+    textureBehavior: {
+        mode: "static",
+        textureConfigs: [
+            {
+                textures: [Texture.WHITE],
+            },
+        ],
     },
 };
 
