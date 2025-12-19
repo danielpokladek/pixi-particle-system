@@ -5,6 +5,9 @@ export default {
     title: "PixiJS Particle System",
     description: "Fast, powerful and intuitive particle system for PixiJS.",
     themeConfig: {
+        search: {
+            provider: "local",
+        },
         nav: [
             { text: "Home", link: "/" },
             {

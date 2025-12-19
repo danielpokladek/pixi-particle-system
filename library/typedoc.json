@@ -28,7 +28,7 @@
 
     "categorizeByGroup": false,
     "disableSources": true,
-    "searchInDocuments": true,
+    "searchInDocuments": false,
     "navigation": {
         "includeCategories": true,
         "includeGroups": true,
