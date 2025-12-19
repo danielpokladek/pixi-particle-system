@@ -7,7 +7,6 @@ export default {
     themeConfig: {
         nav: [
             { text: "Home", link: "/" },
-            { text: "API", link: "/api" },
             {
                 text: "Editor",
                 link: "https://danielpokladek.github.io/pixi-particle-system/editor/",
@@ -15,40 +14,36 @@ export default {
         ],
         sidebar: [
             {
-                text: "PixiJS Particle System",
-                link: "/",
+                text: "Introduction",
+                collapsed: false,
                 items: [
                     {
-                        text: "Introduction",
-                        items: [
-                            {
-                                text: "What is Particle System?",
-                                link: "/first-steps/what-is-it",
-                            },
-                            {
-                                text: "Getting Started",
-                                link: "/first-steps/getting-started",
-                            },
-                            {
-                                text: "Behavior System",
-                                link: "/first-steps/behavior-system",
-                            },
-                        ],
+                        text: "What is Particle System?",
+                        link: "/first-steps/what-is-it",
                     },
                     {
-                        text: "Customization",
-                        items: [
-                            {
-                                text: "Custom Behaviors",
-                                link: "/custom-behavior",
-                            },
-                        ],
+                        text: "Getting Started",
+                        link: "/first-steps/getting-started",
+                    },
+                    {
+                        text: "Behavior System",
+                        link: "/first-steps/behavior-system",
+                    },
+                ],
+            },
+            {
+                text: "Customization",
+                collapsed: true,
+                items: [
+                    {
+                        text: "Custom Behaviors",
+                        link: "/custom-behavior",
                     },
                 ],
             },
             {
                 text: "API Reference",
-                link: "/api",
+                collapsed: true,
                 items: typedocSidebar,
             },
         ],
