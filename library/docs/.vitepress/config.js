@@ -26,6 +26,10 @@ export default {
                                 link: "/first-steps/what-is-it",
                             },
                             {
+                                text: "Getting Started",
+                                link: "/first-steps/getting-started",
+                            },
+                            {
                                 text: "Behavior System",
                                 link: "/first-steps/behavior-system",
                             },
