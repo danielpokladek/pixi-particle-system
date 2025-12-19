@@ -26,6 +26,7 @@
         "rehooking",
         "RRGGBB",
         "Tweenable",
+        "vitepress",
         "webgl"
     ],
     "conventionalCommits.scopes": ["editor"]

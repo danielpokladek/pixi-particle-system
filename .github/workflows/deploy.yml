@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -35,11 +35,11 @@ jobs:
       - name: Build Library
         run: pnpm build:library
 
-      - name: Build Docs
-        run: pnpm build:docs
-
-      - name: Build Editor
-        run: pnpm build:editor
+      - name: Build Extras
+        run: |
+          pnpm build:docs &
+          pnpm build:editor &
+          wait
 
       - name: Combine Artifacts
         run: |
