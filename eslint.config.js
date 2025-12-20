@@ -84,5 +84,11 @@ export default defineConfig({
                 checkSetters: false,
             },
         ],
+        "jsdoc/check-tag-names": [
+            "warn",
+            {
+                definedTags: ["hidden"],
+            },
+        ],
     },
 });

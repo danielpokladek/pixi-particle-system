@@ -34,7 +34,7 @@
         "build:docs": "typedoc && vitepress build docs",
         "build:typedoc": "typedoc",
         "dev:lib": "vite build --watch --mode development",
-        "dev:docs": "typedoc && vitepress dev docs",
+        "dev:typedoc": "typedoc --watch",
         "dev:vitepress": "vitepress dev docs"
     },
     "peerDependencies": {
