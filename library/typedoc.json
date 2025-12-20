@@ -12,6 +12,12 @@
 
     "indexFormat": "table",
     "parametersFormat": "table",
+    "interfacePropertiesFormat": "table",
+    "classPropertiesFormat": "table",
+    "typeAliasPropertiesFormat": "table",
+    "enumMembersFormat": "table",
+    "propertyMembersFormat": "table",
+    "typeDeclarationFormat": "table",
 
     "includeHierarchySummary": false,
 
