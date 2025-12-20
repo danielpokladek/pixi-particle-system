@@ -127,7 +127,6 @@ export default {
             },
             {
                 text: "API Reference",
-                collapsed: true,
                 items: groupedSidebar,
             },
         ],
