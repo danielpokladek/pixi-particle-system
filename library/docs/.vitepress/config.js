@@ -128,33 +128,6 @@ export default {
             {
                 text: "API Reference",
                 collapsed: true,
-                items: [
-                    {
-                        text: "Behavior",
-                        collapsed: true,
-                        items: [
-                            {
-                                text: "Built In",
-                                collapsed: true,
-                                items: [
-                                    {
-                                        text: "AlphaBehavior",
-                                        link: "/api/classes/AlphaBehavior.md",
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                text: "Typedoc Sidebar",
-                collapsed: true,
-                items: typedocSidebar,
-            },
-            {
-                text: "Grouped Sidebar",
-                collapsed: true,
                 items: groupedSidebar,
             },
         ],

@@ -11,7 +11,7 @@ import {
 
 /**
  * Type defining static configuration for {@link AlphaBehavior}.
- * @group Emitter/Behavior/AlphaBehavior
+ * @group Behavior/AlphaBehavior
  */
 export type AlphaStaticConfig = {
     /**
@@ -27,7 +27,7 @@ export type AlphaStaticConfig = {
 
 /**
  * Type defining list-based configuration for {@link AlphaBehavior}.
- * @group Emitter/Behavior/AlphaBehavior
+ * @group Behavior/AlphaBehavior
  */
 export type AlphaListConfig = {
     /**
@@ -59,7 +59,7 @@ export type AlphaBehaviorConfig = AlphaStaticConfig | AlphaListConfig;
  * and a `random` mode where a random value from the list is applied to the particle upon initialization.
  * @see {@link AlphaStaticConfig} for static configuration options.
  * @see {@link AlphaListConfig} for list configuration options.
- * @group Emitter/Behavior/AlphaBehavior
+ * @group Behavior/AlphaBehavior
  * @example
  * ```typescript
  * // Apply a static alpha value of 0.5 to all particles.
