@@ -12,7 +12,7 @@ import { BehaviorOrder } from "../util/Types";
  * for behaviors that initialize particles ({@link InitBehavior}) and
  * those that update particles ({@link UpdateBehavior}) during the emitter's update cycle.
  * @template ConfigType Type defining the configuration used by the behavior.
- * @group Emitter/Behavior
+ * @group Emitter/Behavior/EmitterBehavior
  */
 export abstract class EmitterBehavior<ConfigType> {
     /**
@@ -62,7 +62,7 @@ export abstract class EmitterBehavior<ConfigType> {
 
 /**
  * Interface defining behaviors which update particles when they are first created.
- * @group Emitter/Behavior
+ * @group Emitter/Behavior/EmitterBehavior
  */
 export interface InitBehavior extends EmitterBehavior<unknown> {
     /**
@@ -74,7 +74,7 @@ export interface InitBehavior extends EmitterBehavior<unknown> {
 
 /**
  * Interface defining behaviors which update particles on each update cycle.
- * @group Emitter/Behavior
+ * @group Emitter/Behavior/EmitterBehavior
  */
 export interface UpdateBehavior extends EmitterBehavior<unknown> {
     /**
