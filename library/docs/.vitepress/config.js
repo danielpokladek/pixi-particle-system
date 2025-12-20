@@ -1,5 +1,86 @@
 import typedocSidebar from "../api/typedoc-sidebar.json";
 
+/**
+ * Parses TypeDoc sidebar and groups items by their group tags.
+ * @param {Array} sidebar - The TypeDoc sidebar array
+ * @returns {Array} Restructured sidebar with grouped items
+ */
+function parseGroupedSidebar(sidebar) {
+    const groups = {};
+    const standardCategories = [
+        "Classes",
+        "Interfaces",
+        "Type Aliases",
+        "Functions",
+    ];
+
+    // Process each sidebar item
+    sidebar.forEach((category) => {
+        // Skip standard categories
+        if (standardCategories.includes(category.text)) {
+            return;
+        }
+
+        // Extract group hierarchy from category text (e.g., "Behavior/AlphaBehavior")
+        const parts = category.text.split("/");
+
+        if (parts.length === 0) return;
+
+        // Build nested structure
+        let current = groups;
+        parts.forEach((part, index) => {
+            if (!current[part]) {
+                current[part] = {
+                    text: formatGroupName(part),
+                    collapsed: true,
+                    items: index === parts.length - 1 ? category.items : [],
+                };
+            }
+
+            if (index < parts.length - 1) {
+                if (!current[part].children) {
+                    current[part].children = {};
+                }
+                current = current[part].children;
+            }
+        });
+    });
+
+    // Convert nested object to array structure
+    return convertGroupsToArray(groups);
+}
+
+/**
+ * Formats group names (e.g., "AlphaBehavior" -> "Alpha Behavior")
+ */
+function formatGroupName(name) {
+    return name
+        .replace(/([A-Z])/g, " $1")
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+/**
+ * Recursively converts group object structure to VitePress sidebar array
+ */
+function convertGroupsToArray(groups) {
+    return Object.values(groups).map((group) => {
+        const item = {
+            text: group.text,
+            collapsed: group.collapsed,
+            items: [...group.items],
+        };
+
+        if (group.children) {
+            item.items.push(...convertGroupsToArray(group.children));
+        }
+
+        return item;
+    });
+}
+
+const groupedSidebar = parseGroupedSidebar(typedocSidebar);
+
 export default {
     base: "/pixi-particle-system/",
     title: "PixiJS Particle System",
@@ -47,7 +128,34 @@ export default {
             {
                 text: "API Reference",
                 collapsed: true,
+                items: [
+                    {
+                        text: "Behavior",
+                        collapsed: true,
+                        items: [
+                            {
+                                text: "Built In",
+                                collapsed: true,
+                                items: [
+                                    {
+                                        text: "AlphaBehavior",
+                                        link: "/api/classes/AlphaBehavior.md",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                text: "Typedoc Sidebar",
+                collapsed: true,
                 items: typedocSidebar,
+            },
+            {
+                text: "Grouped Sidebar",
+                collapsed: true,
+                items: groupedSidebar,
             },
         ],
         socialLinks: [

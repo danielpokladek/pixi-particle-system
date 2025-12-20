@@ -87,7 +87,7 @@ export default defineConfig({
         "jsdoc/check-tag-names": [
             "warn",
             {
-                definedTags: ["hidden"],
+                definedTags: ["hidden", "group"],
             },
         ],
     },
