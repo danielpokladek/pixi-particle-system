@@ -21,8 +21,14 @@ function parseGroupedSidebar(sidebar) {
             return;
         }
 
-        // Extract group hierarchy from category text (e.g., "Behavior/AlphaBehavior")
-        const parts = category.text.split("/");
+        // Check if this has a trailing slash in original text
+        const hasTrailingSlash = category.text.endsWith("/");
+
+        // Remove trailing slash if present (treats "Group/" same as "Group")
+        const normalizedText = category.text.replace(/\/$/, "");
+
+        // Extract group hierarchy from category text (e.g., "Emitter/Behavior/Alpha Behavior")
+        const parts = normalizedText.split("/").filter((p) => p.length > 0);
 
         if (parts.length === 0) return;
 
@@ -31,16 +37,26 @@ function parseGroupedSidebar(sidebar) {
         parts.forEach((part, index) => {
             if (!current[part]) {
                 current[part] = {
-                    text: formatGroupName(part),
+                    text: part,
                     collapsed: true,
-                    items: index === parts.length - 1 ? category.items : [],
+                    link: null,
+                    parentItems: [],
+                    childItems: [],
+                    children: {},
                 };
             }
 
-            if (index < parts.length - 1) {
-                if (!current[part].children) {
-                    current[part].children = {};
+            // If this is the last part
+            if (index === parts.length - 1) {
+                if (hasTrailingSlash) {
+                    // Trailing slash means these are children items
+                    current[part].childItems.push(...category.items);
+                } else {
+                    // No trailing slash means these are parent-level items (becomes the link)
+                    current[part].parentItems.push(...category.items);
                 }
+            } else {
+                // Otherwise, move deeper into the hierarchy
                 current = current[part].children;
             }
         });
@@ -51,16 +67,6 @@ function parseGroupedSidebar(sidebar) {
 }
 
 /**
- * Formats group names (e.g., "AlphaBehavior" -> "Alpha Behavior")
- */
-function formatGroupName(name) {
-    return name
-        .replace(/([A-Z])/g, " $1")
-        .trim()
-        .replace(/\s+/g, " ");
-}
-
-/**
  * Recursively converts group object structure to VitePress sidebar array
  */
 function convertGroupsToArray(groups) {
@@ -68,10 +74,22 @@ function convertGroupsToArray(groups) {
         const item = {
             text: group.text,
             collapsed: group.collapsed,
-            items: [...group.items],
         };
 
-        if (group.children) {
+        // If there's a single parent item, use it as the link for this group
+        if (group.parentItems.length === 1) {
+            item.link = group.parentItems[0].link;
+            item.items = [...group.childItems];
+        } else if (group.parentItems.length > 1) {
+            // Multiple parent items - show them all as children
+            item.items = [...group.parentItems, ...group.childItems];
+        } else {
+            // No parent items, just children
+            item.items = [...group.childItems];
+        }
+
+        // Add nested children groups if they exist
+        if (Object.keys(group.children).length > 0) {
             item.items.push(...convertGroupsToArray(group.children));
         }
 
