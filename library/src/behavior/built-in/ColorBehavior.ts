@@ -82,9 +82,9 @@ export class ColorBehavior
     }
 
     /**
-     * Color list use to interpolate tint values over particle lifetime.
+     * Color list used to interpolate tint values over particle lifetime.
      *
-     * A behavior will always have a list, even when in `static` mode,
+     * A behavior will always have a list, even when not using list-based configuration,
      * but the list might not be initialized and will be empty in that case.
      */
     public get list(): ColorList {
