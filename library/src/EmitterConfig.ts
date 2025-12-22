@@ -14,7 +14,7 @@ export type EmitterConfig = {
     /**
      * Emitter version this config was made for.
      */
-    emitterVersion: number;
+    emitterVersion: string;
 
     /**
      * Minimum lifetime of particles emitted, in seconds.

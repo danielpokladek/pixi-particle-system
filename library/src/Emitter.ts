@@ -1,4 +1,5 @@
 import { ParticleContainer, Ticker } from "pixi.js";
+import pkg from "../package.json";
 import { AlphaBehavior } from "./behavior/built-in/AlphaBehavior";
 import { ColorBehavior } from "./behavior/built-in/ColorBehavior";
 import { MovementBehavior } from "./behavior/built-in/MovementBehavior";
@@ -40,7 +41,7 @@ import { EmitterParticle } from "./particle/EmitterParticle";
  * @group Emitter
  */
 export class Emitter {
-    private readonly _emitterVersion: number = 0;
+    private readonly _version: string = pkg.version;
 
     private readonly _parent: ParticleContainer;
 
@@ -107,6 +108,13 @@ export class Emitter {
     }
 
     //#region Getters and Setters
+    /**
+     * Current version of the emitter.
+     */
+    public get version(): string {
+        return this._version;
+    }
+
     /**
      * Parent ParticleContainer of the emitter.
      */
@@ -260,13 +268,7 @@ export class Emitter {
      * @param config Configuration to apply.
      */
     public applyConfig(config: EmitterConfig): void {
-        if (config.emitterVersion !== this._emitterVersion) {
-            // eslint-disable-next-line no-console
-            console.warn(
-                `Emitter config version (${config.emitterVersion}) does not match emitter version (${this._emitterVersion}).`,
-                "This may result in unexpected behavior.",
-            );
-        }
+        this.checkCompatibility(config.emitterVersion);
 
         this._minLifetime = config.minParticleLifetime ?? 0.2;
         this._maxLifetime = config.maxParticleLifetime ?? 0.5;
@@ -311,7 +313,7 @@ export class Emitter {
      */
     public getConfig(): EmitterConfig {
         return {
-            emitterVersion: this._emitterVersion,
+            emitterVersion: this._version,
             minParticleLifetime: this._minLifetime,
             maxParticleLifetime: this._maxLifetime,
             spawnInterval: this._spawnInterval,
@@ -687,5 +689,56 @@ export class Emitter {
         particle.reset();
 
         this._pooledParticles.push(particle);
+    }
+
+    /**
+     * Parses a version string into major/minor/patch components.
+     * @param version Version string to parse.
+     * @returns Parsed version components.
+     */
+    private parseVersionString(version: string): {
+        major: number;
+        minor: number;
+        patch: number;
+    } {
+        const parts = version.split(".").map((part) => parseInt(part, 10));
+
+        return {
+            major: parts[0] || 0,
+            minor: parts[1] || 0,
+            patch: parts[2] || 0,
+        };
+    }
+
+    /**
+     * Checks compatibility between the emitter version and config version.
+     * @param configVersion Config version to check.
+     */
+    private checkCompatibility(configVersion: string): void {
+        if (this._version === "dev") return;
+
+        const current = this.parseVersionString(this._version);
+        const config = this.parseVersionString(configVersion);
+
+        if (current.major !== config.major) {
+            // eslint-disable-next-line no-console
+            console.error(
+                `Emitter config major version (${config.major}) does not match emitter major version (${current.major}).`,
+                "This will most likely result in unexpected behavior, or outright failure.",
+            );
+
+            return;
+        }
+
+        if (current.minor !== config.minor) {
+            // eslint-disable-next-line no-console
+            console.warn(
+                `Emitter config minor version (${config.minor}) does not match emitter minor version (${current.minor}).`,
+                "This may result in unexpected behavior.",
+            );
+        }
+
+        // Patch version differences are ignored, as they should only contain bug fixes.
+        // ? If needed, a log can be added here for patch version differences.
     }
 }

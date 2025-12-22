@@ -10,7 +10,7 @@ import "./style.css";
  * Default emitter configuration.
  */
 const defaultConfig: EmitterConfig = {
-    emitterVersion: 0,
+    emitterVersion: "dev",
     minParticleLifetime: 2,
     maxParticleLifetime: 2,
     spawnInterval: 0.01,

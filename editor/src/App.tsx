@@ -81,7 +81,7 @@ export default function App(): JSX.Element {
                     <span>
                         Particles: {particleCount} / {maxParticleCount}
                     </span>
-                    <span>Version: 0.0.0</span>
+                    <span>Version: {window.particleEmitter.version}</span>
                 </div>
             )}
         </>
