@@ -11,7 +11,33 @@ import { EmitterConfig } from "./EmitterConfig";
 import { EmitterParticle } from "./particle/EmitterParticle";
 
 /**
- * Emitter class which handles particle spawning and updating.
+ * Class responsible for spawning and managing particles using various behaviors.
+ *
+ * Emitter is the core class of the particle system, handling particle creation, updating,
+ * and recycling. It utilizes a set of behaviors to define how particles are initialized
+ * and updated over their lifetime.
+ * @example
+ * ```ts
+ * const emitter = new Emitter(particleContainer, {
+ *   emitterVersion: 0,
+ *   minParticleLifetime: 1,
+ *   maxParticleLifetime: 3,
+ *   spawnInterval: 0.1,
+ *   maxParticles: 500,
+ *   alphaBehavior: {
+ *     mode: "list",
+ *     list: [1, 0]
+ *   },
+ *   scaleBehavior: {
+ *     mode: "random",
+ *     xList: [0.5, 1],
+ *     yList: [0.5, 1]
+ *   }
+ * });
+ *
+ * emitter.play();
+ * ```
+ * @group Emitter
  */
 export class Emitter {
     private readonly _emitterVersion: number = 0;
@@ -57,8 +83,8 @@ export class Emitter {
     private _isPaused: boolean = false;
 
     /**
-     * Creates a new Emitter instance.
-     * @param parent Parent ParticleContainer for the emitter.
+     * Creates a new Emitter.
+     * @param parent Parent ParticleContainer to which particles will be added.
      * @param initialConfig Optional initial configuration for the emitter.
      */
     constructor(parent: ParticleContainer, initialConfig?: EmitterConfig) {
@@ -75,7 +101,7 @@ export class Emitter {
         // Spawn behavior is always active.
         this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
 
-        if (initialConfig) {
+        if (initialConfig != null) {
             this.applyConfig(initialConfig);
         }
     }
@@ -89,7 +115,7 @@ export class Emitter {
     }
 
     /**
-     * Current number of active particles in the emitter.
+     * Number of active particles in the emitter.
      */
     public get particleCount(): number {
         return this._particleCount;
@@ -215,7 +241,7 @@ export class Emitter {
     }
 
     /**
-     *
+     * Spawn behavior of the emitter.
      */
     public get spawnBehavior(): SpawnBehavior {
         return this._spawnBehavior;

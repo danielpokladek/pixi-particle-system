@@ -7,7 +7,8 @@ import { SpawnBehaviorConfig } from "./behavior/built-in/SpawnBehavior";
 import { TextureBehaviorConfig } from "./behavior/built-in/TextureBehavior";
 
 /**
- * Type defining the configuration for an Emitter.
+ * Type describing the configuration options for an Emitter.
+ * @group Emitter/
  */
 export type EmitterConfig = {
     /**
