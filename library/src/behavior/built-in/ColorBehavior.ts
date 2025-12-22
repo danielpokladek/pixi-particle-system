@@ -4,8 +4,8 @@ import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
-    CommonListConfig,
-    CommonStaticConfig,
+    BehaviorSingleListConfig,
+    BehaviorStaticConfig,
 } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -17,8 +17,8 @@ import {
  * Type defining the configuration for ColorBehavior.
  */
 export type ColorBehaviorConfig =
-    | CommonStaticConfig<string>
-    | CommonListConfig<string>;
+    | BehaviorStaticConfig<string>
+    | BehaviorSingleListConfig<string>;
 
 /**
  * Behavior used to control the color tint of particles over their lifetime.
@@ -26,8 +26,8 @@ export type ColorBehaviorConfig =
  * Behavior supports three modes, a `static` mode where a single value is applied to all particles,
  * a `list` mode where values are interpolated over the particle's lifetime based on a provided list,
  * and a `random` mode where a random value from the list is applied to the particle upon initialization.
- * @see {@link CommonStaticConfig} for static configuration options.
- * @see {@link CommonListConfig} for list configuration options.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorSingleListConfig} for list configuration options.
  * @group Behavior/ColorBehavior
  * @example
  * ```ts

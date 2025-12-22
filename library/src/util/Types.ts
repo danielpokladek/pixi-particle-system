@@ -15,7 +15,7 @@ export type BehaviorOrder = "initial" | "normal" | "late";
  * @template DataType Type of data used for the static value.
  * @group Behavior/Shared/
  */
-export type CommonStaticConfig<DataType> = {
+export type BehaviorStaticConfig<DataType> = {
     /**
      * Static value applied to all particles.
      */
@@ -32,12 +32,40 @@ export type CommonStaticConfig<DataType> = {
  * @template DataType Type of data contained within the list.
  * @group Behavior/Shared/
  */
-export type CommonListConfig<DataType> = {
+export type BehaviorSingleListConfig<DataType> = {
     /**
      * List data defining all properties required for list-based behavior.
      * @see {@link ListData}
      */
     listData: ListData<DataType>;
+
+    /**
+     * Behavior mode.
+     *
+     * `List` mode will interpolate values over the particle's lifetime based on the provided list.
+     *
+     * `Random` mode will assign a random value from the list upon particle initialization.
+     */
+    mode: "list" | "random";
+};
+
+/**
+ * Common type defining XY list-based configuration for various behaviors.
+ * @template DataType Type of data contained within the lists.
+ * @group Behavior/Shared/
+ */
+export type BehaviorXYListConfig<DataType> = {
+    /**
+     * List data defining X-axis values.
+     * @see {@link ListData}
+     */
+    xListData: ListData<DataType>;
+
+    /**
+     * List data defining Y-axis values.
+     * @see {@link ListData}
+     */
+    yListData?: ListData<DataType>;
 
     /**
      * Behavior mode.

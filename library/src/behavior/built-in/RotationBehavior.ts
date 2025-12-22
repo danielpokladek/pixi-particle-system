@@ -78,6 +78,7 @@ export type RotationBehaviorConfig =
  *    ],
  *   mode: "list"
  * });
+ * ```
  */
 export class RotationBehavior
     extends EmitterBehavior<RotationBehaviorConfig>
