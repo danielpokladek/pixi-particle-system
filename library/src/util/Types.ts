@@ -24,7 +24,7 @@ export type CommonStaticConfig<DataType> = {
     /**
      * Behavior mode - can only be "static" in this configuration.
      */
-    mode?: "static";
+    mode: "static";
 };
 
 /**
