@@ -1,8 +1,11 @@
-import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { BehaviorOrder } from "../../util/Types";
+import {
+    BehaviorOrder,
+    BehaviorSingleListConfig,
+    BehaviorStaticConfig,
+} from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -10,31 +13,76 @@ import {
 } from "../EmitterBehavior";
 
 /**
+ * Type defining the configuration for direction mode.
+ * @group Behavior/RotationBehavior/
+ */
+export type DirectionConfigType = {
+    /**
+     * Particles will have their rotation set on initialization based on their movement direction.
+     */
+    mode: "direction";
+};
+
+/**
+ * Type defining the configuration for acceleration mode.
+ * @group Behavior/RotationBehavior/
+ */
+export type AccelerationConfigType = {
+    /**
+     * Initial rotation value for the particle.
+     */
+    startRotation: number;
+    /**
+     * Rotation acceleration applied over time.
+     */
+    acceleration: number;
+    /**
+     * Acceleration mode will rotate particles over time based on the acceleration value.
+     */
+    mode: "acceleration";
+};
+
+/**
  * Type defining the configuration for RotationBehavior.
  */
 export type RotationBehaviorConfig =
-    | {
-          mode: "direction";
-      }
-    | {
-          value: number;
-          mode: "static";
-      }
-    | { listData: ListData<number>; mode: "list" }
-    | {
-          startRotation: number;
-          acceleration: number;
-          mode: "acceleration";
-      };
+    | DirectionConfigType
+    | BehaviorStaticConfig<number>
+    | BehaviorSingleListConfig<number>
+    | AccelerationConfigType;
 
 /**
- * Behavior which handles particle rotation.
+ * Behavior used to control the rotation of particles over their lifetime.
+ *
+ * Behavior supports four modes, a `static` mode where a single value is applied to all particles,
+ * a `list` mode where values are interpolated over the particle's lifetime based on a provided list,
+ * a `direction` mode where the rotation is set based on the particle's movement direction,
+ * and an `acceleration` mode where the rotation changes over time based on an acceleration value.
+ * @see {@link DirectionConfigType} for direction configuration options.
+ * @see {@link AccelerationConfigType} for acceleration configuration options.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @group Behavior/RotationBehavior
+ * @example
+ * ```ts
+ * // Apply a static rotation of 45 degrees to all particles.
+ * rotationBehavior.applyConfig({
+ *     value: Math.PI / 4
+ * });
+ *
+ * // Interpolate particle rotation from 0 to 360 degrees over lifetime.
+ * rotationBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: 0 },
+ *         { time: 1.0, value: Math.PI * 2 }
+ *    ],
+ *   mode: "list"
+ * });
+ * ```
  */
 export class RotationBehavior
     extends EmitterBehavior<RotationBehaviorConfig>
-    implements
-        InitBehavior<RotationBehaviorConfig>,
-        UpdateBehavior<RotationBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: NumberList;
 
@@ -62,14 +110,17 @@ export class RotationBehavior
     }
 
     /**
-     * List used to set rotation at different points in the particle's life.
+     * Number list used to interpolate rotation values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get list(): NumberList {
         return this._list;
     }
 
     /**
-     * Behavior mode.
+     * Current mode used by the behavior.
      */
     public get mode(): "static" | "list" | "acceleration" | "direction" {
         return this._mode;
@@ -79,7 +130,7 @@ export class RotationBehavior
     }
 
     /**
-     * Static rotation value.
+     * Static rotation value applied to all particles.
      */
     public get staticValue(): number {
         return this._staticValue;
@@ -89,7 +140,7 @@ export class RotationBehavior
     }
 
     /**
-     * Rotation acceleration value.
+     * Rotation acceleration applied over time (used for acceleration mode).
      */
     public get acceleration(): number {
         return this._acceleration;
@@ -99,7 +150,7 @@ export class RotationBehavior
     }
 
     /**
-     * Starting rotation value (used for acceleration mode).
+     * Initial rotation value for the particle (used for acceleration mode).
      */
     public get startRotation(): number {
         return this._startRotation;
@@ -115,19 +166,21 @@ export class RotationBehavior
         super.applyConfig(config);
 
         this._emitter.addToActiveInitBehaviors(this);
-        this._mode = config.mode;
 
         if (config.mode === "direction") {
+            this._mode = "direction";
             return;
         }
 
         if (config.mode === "static") {
+            this._mode = "static";
             this._staticValue = config.value;
             this._list.reset();
             return;
         }
 
         if (config.mode === "acceleration") {
+            this._mode = "acceleration";
             this._startRotation = config.startRotation;
             this._acceleration = config.acceleration;
 

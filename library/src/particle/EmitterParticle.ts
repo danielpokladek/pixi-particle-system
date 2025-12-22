@@ -1,50 +1,108 @@
 import { Particle, Texture } from "pixi.js";
 
 /**
- * Type defining the data stored in each particle.
+ * Base data structure for emitter particles.
+ * @group Particle/
  */
 export type BaseParticleData = {
+    /**
+     * Maximum lifetime of the particle in milliseconds.
+     */
     maxLifetime: number;
+    /**
+     * Current age of the particle in milliseconds.
+     */
     age: number;
+    /**
+     * Age percent of the particle's lifetime (0.0 to 1.0).
+     */
     agePercent: number;
+    /**
+     * One over the lifetime of the particle (1.0 / maxLifetime).
+     */
     oneOverLifetime: number;
 
+    /**
+     * Direction vector components of the particle.
+     */
     directionVectorX: number;
+    /**
+     * Direction vector Y component of the particle.
+     */
     directionVectorY: number;
 
+    /**
+     * Acceleration components of the particle.
+     */
     accelerationX: number;
+    /**
+     * Acceleration Y component of the particle.
+     */
     accelerationY: number;
 
+    /**
+     * Velocity components of the particle.
+     */
     velocityX: number;
+    /**
+     *
+     */
     velocityY: number;
 
+    /**
+     * Texture animation configuration for the particle.
+     */
     textureConfig: {
+        /**
+         * Array of textures used for the particle.
+         */
         textures: Texture[];
+        /**
+         * Duration of the texture animation in milliseconds.
+         */
         duration: number;
+        /**
+         * Elapsed time of the texture animation in milliseconds.
+         */
         elapsed: number;
+        /**
+         * Frame rate of the texture animation (frames per second).
+         */
         framerate: number;
+        /**
+         * Whether the texture animation should loop.
+         */
         loop: boolean;
     };
 };
 
 /**
- * Interface defining an emitter particle.
+ * Base interface for particles used by the Emitter.
+ * @group Particle/
  */
 export interface IEmitterParticle extends Particle {
+    /**
+     * Particle data used by emitter behaviors.
+     * @see {@link BaseParticleData} for the structure of the data.
+     */
     data: BaseParticleData;
 
     /**
-     * Resets the particle data.
+     * Resets the particle to its initial state.
      */
     reset(): void;
 }
 
 /**
- * Particle class used by the Emitter.
+ * Default implementation of a particle used by the Emitter.
+ * @group Particle
  */
 export class EmitterParticle extends Particle implements IEmitterParticle {
     public data: BaseParticleData;
 
+    /**
+     * Creates a new EmitterParticle instance.
+     */
     constructor() {
         super(Texture.EMPTY);
 

@@ -11,7 +11,33 @@ import { EmitterConfig } from "./EmitterConfig";
 import { EmitterParticle } from "./particle/EmitterParticle";
 
 /**
- * Emitter class which handles particle spawning and updating.
+ * Class responsible for spawning and managing particles using various behaviors.
+ *
+ * Emitter is the core class of the particle system, handling particle creation, updating,
+ * and recycling. It utilizes a set of behaviors to define how particles are initialized
+ * and updated over their lifetime.
+ * @example
+ * ```ts
+ * const emitter = new Emitter(particleContainer, {
+ *   emitterVersion: 0,
+ *   minParticleLifetime: 1,
+ *   maxParticleLifetime: 3,
+ *   spawnInterval: 0.1,
+ *   maxParticles: 500,
+ *   alphaBehavior: {
+ *     mode: "list",
+ *     list: [1, 0]
+ *   },
+ *   scaleBehavior: {
+ *     mode: "random",
+ *     xList: [0.5, 1],
+ *     yList: [0.5, 1]
+ *   }
+ * });
+ *
+ * emitter.play();
+ * ```
+ * @group Emitter
  */
 export class Emitter {
     private readonly _emitterVersion: number = 0;
@@ -21,8 +47,8 @@ export class Emitter {
     private readonly _particles: EmitterParticle[] = [];
     private readonly _pooledParticles: EmitterParticle[] = [];
 
-    private readonly _initBehaviors: InitBehavior<unknown>[] = [];
-    private readonly _updateBehaviors: UpdateBehavior<unknown>[] = [];
+    private readonly _initBehaviors: InitBehavior[] = [];
+    private readonly _updateBehaviors: UpdateBehavior[] = [];
 
     // *** Built-In Behaviors *** //
     private readonly _alphaBehavior: AlphaBehavior;
@@ -57,8 +83,8 @@ export class Emitter {
     private _isPaused: boolean = false;
 
     /**
-     * Creates a new Emitter instance.
-     * @param parent Parent ParticleContainer for the emitter.
+     * Creates a new Emitter.
+     * @param parent Parent ParticleContainer to which particles will be added.
      * @param initialConfig Optional initial configuration for the emitter.
      */
     constructor(parent: ParticleContainer, initialConfig?: EmitterConfig) {
@@ -75,7 +101,7 @@ export class Emitter {
         // Spawn behavior is always active.
         this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
 
-        if (initialConfig) {
+        if (initialConfig != null) {
             this.applyConfig(initialConfig);
         }
     }
@@ -89,7 +115,7 @@ export class Emitter {
     }
 
     /**
-     * Current number of active particles in the emitter.
+     * Number of active particles in the emitter.
      */
     public get particleCount(): number {
         return this._particleCount;
@@ -215,7 +241,7 @@ export class Emitter {
     }
 
     /**
-     *
+     * Spawn behavior of the emitter.
      */
     public get spawnBehavior(): SpawnBehavior {
         return this._spawnBehavior;
@@ -444,7 +470,7 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorInitActive(behavior: InitBehavior<unknown>): boolean {
+    public isBehaviorInitActive(behavior: InitBehavior): boolean {
         return this._initBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -453,7 +479,7 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorUpdateActive(behavior: UpdateBehavior<unknown>): boolean {
+    public isBehaviorUpdateActive(behavior: UpdateBehavior): boolean {
         return this._updateBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -461,7 +487,7 @@ export class Emitter {
      * Adds a behavior to the active init behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveInitBehaviors(behavior: InitBehavior<unknown>): void {
+    public addToActiveInitBehaviors(behavior: InitBehavior): void {
         this._initBehaviors.push(behavior);
 
         this._initBehaviors.sort((a, b) => {
@@ -482,7 +508,7 @@ export class Emitter {
      * Adds a behavior to the active update behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveUpdateBehaviors(behavior: UpdateBehavior<unknown>): void {
+    public addToActiveUpdateBehaviors(behavior: UpdateBehavior): void {
         this._updateBehaviors.push(behavior);
 
         this._updateBehaviors.sort((a, b) => {
@@ -503,9 +529,7 @@ export class Emitter {
      * Removes a behavior from the active init behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveInitBehaviors(
-        behavior: InitBehavior<unknown>,
-    ): void {
+    public removeFromActiveInitBehaviors(behavior: InitBehavior): void {
         const index = this._initBehaviors.indexOf(behavior);
 
         if (index !== -1) {
@@ -517,9 +541,7 @@ export class Emitter {
      * Removes a behavior from the active update behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveUpdateBehaviors(
-        behavior: UpdateBehavior<unknown>,
-    ): void {
+    public removeFromActiveUpdateBehaviors(behavior: UpdateBehavior): void {
         const index = this._updateBehaviors.indexOf(behavior);
 
         if (index !== -1) {

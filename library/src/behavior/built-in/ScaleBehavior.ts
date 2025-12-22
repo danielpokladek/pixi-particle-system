@@ -1,9 +1,12 @@
 import { PointData } from "pixi.js";
-import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { BehaviorOrder } from "../../util/Types";
+import {
+    BehaviorOrder,
+    BehaviorStaticConfig,
+    BehaviorXYListConfig,
+} from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -14,24 +17,55 @@ import {
  * Type defining the configuration for ScaleBehavior.
  */
 export type ScaleBehaviorConfig =
-    | {
-          value: PointData;
-          mode?: "static";
-      }
-    | {
-          xListData: ListData<number>;
-          yListData?: ListData<number>;
-          mode: "list" | "random";
-      };
+    | BehaviorStaticConfig<PointData>
+    | BehaviorXYListConfig<number>;
 
 /**
- * Behavior which scales particles over their lifetime.
+ * Behavior used to control the scale of particles over their lifetime.
+ *
+ * Behavior supports three modes, a `static` mode where a single value is applied to all particles,
+ * a `list` mode where values are interpolated over the particle's lifetime based on provided lists,
+ * and a `random` mode where random values from the lists are applied to the particle upon initialization.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorXYListConfig} for list configuration options.
+ * @group Behavior/ScaleBehavior
+ * @example
+ * ```ts
+ * // Apply a static scale of 2x on both axes to all particles.
+ * scaleBehavior.applyConfig({
+ *     value: { x: 2, y: 2 }
+ * });
+ *
+ * // Interpolate particle scale from 0.5x to 1.5x on X axis and 1.0x to 2.0x on Y axis over lifetime.
+ * scaleBehavior.applyConfig({
+ *    xListData: [
+ *         { time: 0.0, value: 0.5 },
+ *         { time: 1.0, value: 1.5 }
+ *    ],
+ *    yListData: [
+ *         { time: 0.0, value: 1.0 },
+ *         { time: 1.0, value: 2.0 }
+ *    ],
+ *   mode: "list"
+ * });
+ *
+ * // Assign a random scale between 1.0x and 3.0x on X axis and between 0.5x and 2.5x on Y axis.
+ * scaleBehavior.applyConfig({
+ *    xListData: [
+ *         { time: 0.0, value: 1.0 },
+ *         { time: 1.0, value: 3.0 }
+ *    ],
+ *    yListData: [
+ *         { time: 0.0, value: 0.5 },
+ *         { time: 1.0, value: 2.5 }
+ *    ],
+ *   mode: "random"
+ * });
+ * ```
  */
 export class ScaleBehavior
     extends EmitterBehavior<ScaleBehaviorConfig>
-    implements
-        InitBehavior<ScaleBehaviorConfig>,
-        UpdateBehavior<ScaleBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;
@@ -58,28 +92,34 @@ export class ScaleBehavior
     }
 
     /**
-     * Static scale value.
+     * Static scale value applied to all particles.
      */
     public get staticValue(): PointData {
         return this._staticValue;
     }
 
     /**
-     * List used for the X scale values.
+     * Number list used to interpolate X-axis scale values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get xList(): NumberList {
         return this._xList;
     }
 
     /**
-     * List used for the Y scale values.
+     * Number list used to interpolate Y-axis scale values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get yList(): NumberList {
         return this._yList;
     }
 
     /**
-     * Behavior mode.
+     * Current mode used by the behavior.
      */
     public get mode(): "static" | "list" | "random" {
         return this._mode;
@@ -133,6 +173,7 @@ export class ScaleBehavior
         if (this._mode === "static") {
             return {
                 value: this._staticValue,
+                mode: "static",
             };
         }
 

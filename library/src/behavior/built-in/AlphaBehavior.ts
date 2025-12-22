@@ -1,8 +1,11 @@
-import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { BehaviorOrder } from "../../util/Types";
+import {
+    BehaviorOrder,
+    BehaviorSingleListConfig,
+    BehaviorStaticConfig,
+} from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -13,36 +16,47 @@ import {
  * Type defining the configuration for AlphaBehavior.
  */
 export type AlphaBehaviorConfig =
-    | {
-          value: number;
-          mode?: "static";
-      }
-    | {
-          listData: ListData<number>;
-          mode: "list" | "random";
-      };
+    | BehaviorStaticConfig<number>
+    | BehaviorSingleListConfig<number>;
 
 /**
- * Behavior used to control the opacity of particles over their lifetime.
- * Behavior can be configured using a static value, a list of values to interpolate over time, or a random value from a list.
+ * Behavior used to control the transparency of particles over their lifetime.
+ *
+ * Behavior supports three modes, a `static` mode where a single value is applied to all particles,
+ * a `list` mode where values are interpolated over the particle's lifetime based on a provided list,
+ * and a `random` mode where a random value from the list is applied to the particle upon initialization.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @group Behavior/AlphaBehavior
  * @example
- * ```typescript
- * // Interpolate alpha from 0 to 1 and back to 0 over the particle's lifetime.
+ * ```ts
+ * // Apply a static alpha value of 0.5 to all particles.
+ * alphaBehavior.applyConfig({
+ *     value: 0.5
+ * });
+ *
+ * // Interpolate particle alpha from 0.0 to 1.0 over lifetime.
  * alphaBehavior.applyConfig({
  *    listData: [
  *         { time: 0.0, value: 0.0 },
- *         { time: 0.5, value: 1.0 },
- *         { time: 1.0, value: 0.0 }
+ *         { time: 1.0, value: 1.0 }
  *    ],
  *   mode: "list"
+ * });
+ *
+ * // Assign a random alpha value between 0.2 and 0.8.
+ * alphaBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: 0.2 },
+ *         { time: 1.0, value: 0.8 }
+ *    ],
+ *   mode: "random"
  * });
  * ```
  */
 export class AlphaBehavior
     extends EmitterBehavior<AlphaBehaviorConfig>
-    implements
-        InitBehavior<AlphaBehaviorConfig>,
-        UpdateBehavior<AlphaBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: NumberList;
 
@@ -67,14 +81,17 @@ export class AlphaBehavior
     }
 
     /**
-     * List used for value interpolation.
+     * Number list used to interpolate alpha values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get list(): NumberList {
         return this._list;
     }
 
     /**
-     * Behavior mode determining how alpha is applied.
+     * Mode currently used by the behavior.
      */
     public get mode(): "static" | "list" | "random" {
         return this._mode;
@@ -90,7 +107,7 @@ export class AlphaBehavior
     }
 
     /**
-     * Value used when in "static" mode.
+     * Alpha value applied to all particles in `static` mode.
      */
     public get staticValue(): number {
         return this._staticValue;

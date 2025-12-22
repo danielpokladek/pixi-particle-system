@@ -16,30 +16,105 @@ import {
 export type MovementSpace = "local" | "global";
 
 /**
- * Type defining the configuration for MovementBehavior.
+ * Type defining the configuration for movement behavior using min/max speeds.
+ * @group Behavior/MovementBehavior/
  */
-export type MovementBehaviorConfig =
-    | {
-          minMoveSpeed: PointData;
-          maxMoveSpeed: PointData;
-          mode?: "linear" | "acceleration";
-          space?: MovementSpace;
-      }
-    | {
-          xListData: ListData<number>;
-          yListData?: ListData<number>;
-          mode?: "linear" | "acceleration";
-          space?: MovementSpace;
-      };
+export type MinMaxConfigType = {
+    /**
+     * Minimum movement speed for X and Y axes.
+     */
+    minMoveSpeed: PointData;
+    /**
+     * Maximum movement speed for X and Y axes.
+     */
+    maxMoveSpeed: PointData;
+    /**
+     * Movement mode. In `linear` mode particles move at a constant speed, while in
+     * `acceleration` mode particles accelerate over time based on initial speed.
+     */
+    mode?: "linear" | "acceleration";
+
+    /**
+     * Space in which movement is applied. In `local` space, movement is relative to the particle's
+     * initial direction, while in `global` space movement is applied relative to the container.
+     */
+    space?: MovementSpace;
+};
 
 /**
- * Behavior used to control the movement of particles over their lifetime.
+ * Type defining the configuration for movement behavior using lists.
+ * @group Behavior/MovementBehavior/
+ */
+export type ListConfigType = {
+    /**
+     * X axis list data defining all properties required for list-based behavior.
+     * @see {@link ListData}
+     */
+    xListData: ListData<number>;
+    /**
+     * Y axis list data defining all properties required for list-based behavior.
+     * If not provided, `xListData` will be used for both axes.
+     * @see {@link ListData}
+     */
+    yListData?: ListData<number>;
+    /**
+     * Movement mode. In `linear` mode particles move at a constant speed, while in
+     * `acceleration` mode particles accelerate over time based on initial speed.
+     */
+    mode?: "linear" | "acceleration";
+    /**
+     * Space in which movement is applied. In `local` space, movement is relative to the particle's
+     * initial direction, while in `global` space movement is applied relative to the container.
+     */
+    space?: MovementSpace;
+};
+
+/**
+ * Type defining the configuration for MovementBehavior.
+ */
+export type MovementBehaviorConfig = MinMaxConfigType | ListConfigType;
+
+/**
+ * Behavior used to control particle movement over their lifetime.
+ *
+ * This behavior supports two configuration modes, either by specifying minimum and maximum
+ * movement speeds for the X and Y axes, or by providing list data to define movement values
+ * over the particle's lifetime.
+ * @see {@link MinMaxConfigType} for min/max speed configuration options.
+ * @see {@link ListConfigType} for list-based configuration options.
+ * @group Behavior/MovementBehavior
+ * @example
+ * ```ts
+ * // Configure movement using min/max speeds.
+ * movementBehavior.applyConfig({
+ *     minMoveSpeed: { x: -50, y: -100 },
+ *     maxMoveSpeed: { x: 50, y: 100 },
+ *     mode: "linear",
+ *     space: "global"
+ * });
+ *
+ * // Configure movement using lists.
+ * movementBehavior.applyConfig({
+ *     xListData: {
+ *         list: [
+ *             { time: 0.0, value: 0 },
+ *             { time: 1.0, value: 100 }
+ *         ]
+ *     },
+ *     yListData: {
+ *         list: [
+ *             { time: 0.0, value: 0 },
+ *             { time: 1.0, value: -100 }
+ *         ]
+ *     },
+ *     mode: "acceleration",
+ *     space: "local"
+ * });
+ * ```
  */
 export class MovementBehavior
     extends EmitterBehavior<MovementBehaviorConfig>
-    implements
-        InitBehavior<MovementBehaviorConfig>,
-        UpdateBehavior<MovementBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;
@@ -71,14 +146,20 @@ export class MovementBehavior
     }
 
     /**
-     * X-axis movement list.
+     * Number list used to interpolate X-axis movement values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get xList(): NumberList {
         return this._xList;
     }
 
     /**
-     * Y-axis movement list.
+     * Number list used to interpolate Y-axis movement values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get yList(): NumberList {
         return this._yList;
@@ -95,7 +176,7 @@ export class MovementBehavior
     }
 
     /**
-     * Movement mode.
+     * Movement mode currently used by the behavior.
      */
     public get mode(): "acceleration" | "linear" {
         return this._mode;
@@ -105,7 +186,7 @@ export class MovementBehavior
     }
 
     /**
-     * Whether to use lists for movement values.
+     * Whether to use list-based movement configuration.
      */
     public get useList(): boolean {
         return this._useList;

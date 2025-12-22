@@ -1,9 +1,12 @@
-import { ColorSource } from "pixi.js";
+import { Color, ColorSource } from "pixi.js";
 import { ColorList } from "../../data/list/ColorList";
-import { ListData } from "../../data/list/List";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
-import { BehaviorOrder } from "../../util/Types";
+import {
+    BehaviorOrder,
+    BehaviorSingleListConfig,
+    BehaviorStaticConfig,
+} from "../../util/Types";
 import {
     EmitterBehavior,
     InitBehavior,
@@ -14,23 +17,47 @@ import {
  * Type defining the configuration for ColorBehavior.
  */
 export type ColorBehaviorConfig =
-    | {
-          value: ColorSource;
-          mode?: "static";
-      }
-    | {
-          listData: ListData<string>;
-          mode: "list" | "random";
-      };
+    | BehaviorStaticConfig<string>
+    | BehaviorSingleListConfig<string>;
 
 /**
- * Behavior which manages particle color over their lifetime.
+ * Behavior used to control the color tint of particles over their lifetime.
+ *
+ * Behavior supports three modes, a `static` mode where a single value is applied to all particles,
+ * a `list` mode where values are interpolated over the particle's lifetime based on a provided list,
+ * and a `random` mode where a random value from the list is applied to the particle upon initialization.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @group Behavior/ColorBehavior
+ * @example
+ * ```ts
+ * // Apply a static tint to all particles.
+ * alphaBehavior.applyConfig({
+ *     value: "#ff00ff"
+ * });
+ *
+ * // Interpolate particle tint from white to black over lifetime.
+ * alphaBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: "#ffffff" },
+ *         { time: 1.0, value: "#000000" }
+ *    ],
+ *   mode: "list"
+ * });
+ *
+ * // Assign a random tint value between the two stops.
+ * alphaBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: "#ff00ff" },
+ *         { time: 1.0, value: "#00ff00" }
+ *    ],
+ *   mode: "random"
+ * });
+ * ```
  */
 export class ColorBehavior
     extends EmitterBehavior<ColorBehaviorConfig>
-    implements
-        InitBehavior<ColorBehaviorConfig>,
-        UpdateBehavior<ColorBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private readonly _list: ColorList;
 
@@ -55,14 +82,17 @@ export class ColorBehavior
     }
 
     /**
-     * List used for color interpolation.
+     * Color list used to interpolate tint values over particle lifetime.
+     *
+     * A behavior will always have a list, even when not using list-based configuration,
+     * but the list might not be initialized and will be empty in that case.
      */
     public get list(): ColorList {
         return this._list;
     }
 
     /**
-     * Behavior mode determining how color is applied.
+     * Mode currently used by the behavior.
      */
     public get mode(): "static" | "list" | "random" {
         return this._mode;
@@ -78,7 +108,7 @@ export class ColorBehavior
     }
 
     /**
-     * Static color value used in "static" mode.
+     * Tint value applied to all particles in `static` mode.
      */
     public get staticValue(): ColorSource {
         return this._staticValue;
@@ -124,7 +154,7 @@ export class ColorBehavior
 
         if (this._mode === "static") {
             return {
-                value: this._staticValue,
+                value: Color.shared.setValue(this._staticValue).toHex(),
                 mode: "static",
             };
         }

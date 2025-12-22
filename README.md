@@ -1,5 +1,18 @@
 # PixiJS Particle System
 
+
+<p align="center">
+    <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" />
+    <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" />
+    <img src="https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220" />
+</p>
+
+<p align="center">
+      <a href="https://danielpokladek.github.io/pixi-particle-system/first-steps/what-is-it.html">Documentation</a> 
+    | <a href="https://danielpokladek.github.io/pixi-particle-system/editor/">Interactive Editor</a> 
+    | <a href="https://danielpokladek.github.io/pixi-particle-system/api/classes/Emitter.html">API Reference</a>
+</p>
+
 A modern, flexible particle system for **PixiJS** - inspired by the original [Particle Emitter](https://github.com/pixijs-userland/particle-emitter/tree/master), but rebuilt with a clean TypeScript-first architecture and more expressive API.
 
 ## Features
@@ -19,7 +32,7 @@ A modern, flexible particle system for **PixiJS** - inspired by the original [Pa
 
 ### Installation
 
-> ⚠️ This library is still under active development and not yet published to NPM.
+> This library is still under active early development and not yet published to NPM.
 
 You can clone the repo and install it locally:
 
@@ -53,7 +66,7 @@ const emitter = new Emitter(container);
 emitter.play();
 ```
 
-> ⚠️ Particles default to a 1x1 white texture.
+> Particles default to a 1x1 white texture.
 > If you don't see anything, assign a custom texture using `TextureBehavior` or custom scale using `ScaleBehavior`.
 
 ### Configuration Example

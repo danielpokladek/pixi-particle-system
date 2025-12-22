@@ -89,7 +89,9 @@ function steppedColor(this: List<RGBAColor>, lerp: number): number {
 }
 
 /**
- * List used to interpolate through numeric values.
+ * Implementation of `List` specifically for managing colors.
+ * @see {@link List} for the base `List` implementation.
+ * @group Data/List/
  */
 export class ColorList extends List<number, string, RGBAColor> {
     /**

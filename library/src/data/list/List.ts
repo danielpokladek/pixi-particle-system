@@ -2,7 +2,8 @@ import { EmitterError } from "../../error";
 import { SimpleEase } from "../../util";
 
 /**
- * Default interpolate function that throws an error.
+ * Default interpolate function that throws an error indicating it has not been set.
+ * @throws {EmitterError} Indicates that the interpolate method has not been set.
  */
 export function defaultInterpolateFunction<ValueType>(): ValueType {
     throw new EmitterError(
@@ -11,7 +12,7 @@ export function defaultInterpolateFunction<ValueType>(): ValueType {
 }
 
 /**
- * Type describing a value step in a list.
+ * Type defining a step in a list.
  */
 export type ListStep<ValueType> = {
     value: ValueType;
@@ -28,7 +29,7 @@ export type ListData<ValueType> = {
 };
 
 /**
- * Type defining a node in a list.
+ * Type defining a node in a linked list.
  */
 export type ListNode<ValueType> = {
     value: ValueType;
@@ -37,8 +38,11 @@ export type ListNode<ValueType> = {
 };
 
 /**
- * Abstract base class for lists that provide value interpolation over time.
- * @template ValueType The type of values stored in the list.
+ * Abstract base class for lists used in particle behaviors.
+ * @template OutputValue Type of value produced by the list.
+ * @template InputValue Type of value used to initialize the list.
+ * @template ListDataType Type of data contained within the list nodes.
+ * @group Data/List
  */
 export abstract class List<
     OutputValue,
@@ -52,7 +56,8 @@ export abstract class List<
     protected _isStepped = false;
 
     /**
-     * Gets the first node in the list.
+     * First node in the list.
+     * @throws {EmitterError} If the list has not been initialized.
      */
     public get first(): ListNode<ListDataType> {
         if (this._first === null) {
@@ -65,7 +70,7 @@ export abstract class List<
     }
 
     /**
-     * Nodes in the list.
+     * Gets the list steps.
      */
     public get list(): ListStep<InputValue>[] {
         return this._list;
@@ -79,7 +84,7 @@ export abstract class List<
     }
 
     /**
-     * Gets the ease function for the list.
+     * Ease function applied to the list.
      */
     public get ease(): SimpleEase | null {
         return this._ease;
@@ -89,7 +94,7 @@ export abstract class List<
     }
 
     /**
-     * Gets whether the list uses stepped interpolation.
+     * Indicates whether the list uses stepped interpolation.
      */
     public get isStepped(): boolean {
         return this._isStepped;
@@ -99,14 +104,15 @@ export abstract class List<
     }
 
     /**
-     * Calculates the interpolated value for the list.
-     * @returns The interpolated value.
+     * Function to interpolate values from the list.
+     * @throws {EmitterError} If the interpolate method has not been set.
+     * @returns Interpolated value.
      */
     public interpolate: (time: number) => OutputValue = () =>
         defaultInterpolateFunction<OutputValue>();
 
     /**
-     * Initializes the list with data.
+     * Initializes the list from data.
      * @param data Data to initialize the list with.
      */
     public initialize(data: ListData<InputValue>): void {
@@ -119,7 +125,7 @@ export abstract class List<
     }
 
     /**
-     * Resets the list to its default uninitialized state.
+     * Resets the list to an uninitialized state.
      */
     public reset(): void {
         this._first = null;
@@ -131,7 +137,7 @@ export abstract class List<
     }
 
     /**
-     * Initializes the list nodes from data.
+     * Initializes the list from data.
      * @param data Data to initialize the list with.
      */
     protected abstract initializeList(data: ListData<InputValue>): void;

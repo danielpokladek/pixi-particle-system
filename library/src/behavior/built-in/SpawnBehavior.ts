@@ -5,42 +5,140 @@ import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
 /**
- * Type defining the possible spawn shapes.
+ * Type defining the possible spawn shapes for SpawnBehavior.
+ *
+ * - `point`: Particles spawn from a single point at the origin position.
+ * - `line`: Particles spawn along a line centered at the origin position.
+ * - `rectangle`: Particles spawn within a rectangle centered at the origin position.
+ * - `circle`: Particles spawn within a circle centered at the origin position.
+ * @group Behavior/SpawnBehavior/
  */
 export type SpawnShape = "point" | "line" | "rectangle" | "circle";
+
+/**
+ * Type defining the point spawn configuration.
+ * @group Behavior/SpawnBehavior/
+ */
+export type PointConfig = {
+    /**
+     * Particles spawn from single point at the origin position.
+     */
+    shape: "point";
+};
+
+/**
+ * Type defining the line spawn configuration.
+ * @group Behavior/SpawnBehavior/
+ */
+export type LineConfig = {
+    /**
+     * Particles spawn along a line centered at the origin position.
+     */
+    shape: "line";
+    /**
+     * Length of the line along which particles will spawn.
+     */
+    length: number;
+};
+
+/**
+ * Type defining the rectangle spawn configuration.
+ * @group Behavior/SpawnBehavior/
+ */
+export type RectangleConfig = {
+    /**
+     * Particles spawn within a rectangle centered at the origin position.
+     */
+    shape: "rectangle";
+    /**
+     * Width of the rectangle.
+     */
+    width: number;
+    /**
+     * Height of the rectangle. If not provided, the height will be equal to the width.
+     */
+    height?: number;
+};
+
+/**
+ * Type defining the circle spawn configuration.
+ * @group Behavior/SpawnBehavior/
+ */
+export type CircleConfig = {
+    /**
+     * Particles spawn within a circle centered at the origin position.
+     */
+    shape: "circle";
+    /**
+     * Outer radius of the circle.
+     */
+    outerRadius: number;
+    /**
+     * Inner radius of the circle. If not provided, the inner radius will be 0.
+     */
+    innerRadius?: number;
+};
 
 /**
  * Type defining the configuration for SpawnBehavior.
  */
 export type SpawnBehaviorConfig = {
-    shape: SpawnShape;
     direction?: PointData;
-} & (
-    | {
-          shape: "point";
-      }
-    | {
-          shape: "line";
-          length: number;
-      }
-    | {
-          shape: "rectangle";
-          width: number;
-          height?: number;
-      }
-    | {
-          shape: "circle";
-          outerRadius: number;
-          innerRadius?: number;
-      }
-);
+} & (PointConfig | LineConfig | RectangleConfig | CircleConfig);
 
 /**
- * Behavior which spawns particles within a defined shape.
+ * Behavior used to control the spawning shape and initial direction of particles.
+ *
+ * Behavior supports four shapes, a `point` shape where particles spawn from a single point,
+ * a `line` shape where particles spawn along a line,
+ * a `rectangle` shape where particles spawn within a rectangle area,
+ * and a `circle` shape where particles spawn within a circular area.
+ * @see {@link SpawnBehaviorConfig} for configuration options.
+ * @group Behavior/SpawnBehavior
+ * @example
+ * ```ts
+ * // Spawn particles from a point with an initial upward direction.
+ * spawnBehavior.applyConfig({
+ *     shape: "point",
+ *     direction: { x: 0, y: -1 }
+ * });
+ * ```
+ * @example
+ * ```ts
+ * // Spawn particles along a horizontal line of
+ * //  length 200 with no initial direction.
+ * spawnBehavior.applyConfig({
+ *     shape: "line",
+ *     length: 200,
+ *     direction: { x: 0, y: 0 }
+ * });
+ * ```
+ * @example
+ * ```ts
+ * // Spawn particles within a rectangle of width 100 and
+ * //  height 50 with an initial rightward direction.
+ * spawnBehavior.applyConfig({
+ *     shape: "rectangle",
+ *     width: 100,
+ *     height: 50,
+ *     direction: { x: 1, y: 0 }
+ * });
+ * ```
+ * @example
+ * ```ts
+ * // Spawn particles within a circle of outer radius 75 and
+ * //  inner radius 25 with no initial direction.
+ * spawnBehavior.applyConfig({
+ *     shape: "circle",
+ *     outerRadius: 75,
+ *     innerRadius: 25,
+ *     direction: { x: 0, y: 0 }
+ * });
+ * ```
  */
 export class SpawnBehavior
     extends EmitterBehavior<SpawnBehaviorConfig>
-    implements InitBehavior<SpawnBehaviorConfig>
+    implements InitBehavior
 {
     private _shape: "point" | "line" | "rectangle" | "circle" = "point";
 
@@ -60,7 +158,7 @@ export class SpawnBehavior
     }
 
     /**
-     * Direction vector applied to spawned particles.
+     * Initial direction vector for spawned particles.
      */
     public get direction(): PointData {
         return this._directionVector;
@@ -71,7 +169,7 @@ export class SpawnBehavior
     }
 
     /**
-     * Shape used for spawning particles.
+     * Current spawn shape used by the behavior.
      */
     public get shape(): SpawnShape {
         return this._shape;

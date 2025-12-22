@@ -77,7 +77,9 @@ function steppedValue(this: List<number>, lerp: number): number {
 }
 
 /**
- * List used to interpolate through numeric values.
+ * Implementation of a `List` specifically for managing number values.
+ * @see {@link List} for the base `List` implementation.
+ * @group Data/List/
  */
 export class NumberList extends List<number> {
     /**

@@ -9,7 +9,7 @@ import {
 } from "../EmitterBehavior";
 
 /**
- * Type describing the texture behavior modes.
+ * Type defining the configuration mode for TextureBehavior.
  */
 type TextureBehaviorMode = Extract<
     BehaviorMode,
@@ -17,7 +17,8 @@ type TextureBehaviorMode = Extract<
 >;
 
 /**
- * Type defining the configuration for TextureBehavior.
+ * Type defining the texture animation configuration for particles.
+ * @group Behavior/TextureBehavior/
  */
 export type TextureConfig = {
     textures: Texture[];
@@ -28,6 +29,7 @@ export type TextureConfig = {
 
 /**
  * Type defining the configuration for TextureBehavior.
+ * @group Behavior/TextureBehavior/
  */
 export type TextureBehaviorConfig = {
     textureConfigs: TextureConfig[];
@@ -35,13 +37,27 @@ export type TextureBehaviorConfig = {
 };
 
 /**
- * Behavior which handles particle textures.
+ * Behavior used to control the texture of particles over their lifetime.
+ *
+ * Behavior supports three modes, a `static` mode where a single texture is applied to all particles,
+ * a `random` mode where a random texture from the provided textures is applied to the particle upon initialization,
+ * and an `animated` mode where textures are animated over the particle's lifetime based on the provided configuration.
+ * @see {@link TextureBehaviorConfig} for configuration options.
+ * @group Behavior/TextureBehavior
+ * @example
+ * ```ts
+ * // Apply a static texture to all particles.
+ * textureBehavior.applyConfig({
+ *     textureConfigs: [
+ *         { textures: [PIXI.Texture.from("particle.png")] }
+ *     ],
+ *     mode: "static"
+ * });
+ * ```
  */
 export class TextureBehavior
     extends EmitterBehavior<TextureBehaviorConfig>
-    implements
-        InitBehavior<TextureBehaviorConfig>,
-        UpdateBehavior<TextureBehaviorConfig>
+    implements InitBehavior, UpdateBehavior
 {
     private _textureConfigs: TextureConfig[] = [];
     private _mode: TextureBehaviorMode = "static";
