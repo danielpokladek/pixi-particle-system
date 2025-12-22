@@ -3,8 +3,8 @@ import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
-    CommonListConfig,
-    CommonStaticConfig,
+    BehaviorSingleListConfig,
+    BehaviorStaticConfig,
 } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -47,8 +47,8 @@ export type AccelerationConfigType = {
  */
 export type RotationBehaviorConfig =
     | DirectionConfigType
-    | CommonStaticConfig<number>
-    | CommonListConfig<number>
+    | BehaviorStaticConfig<number>
+    | BehaviorSingleListConfig<number>
     | AccelerationConfigType;
 
 /**
@@ -60,9 +60,24 @@ export type RotationBehaviorConfig =
  * and an `acceleration` mode where the rotation changes over time based on an acceleration value.
  * @see {@link DirectionConfigType} for direction configuration options.
  * @see {@link AccelerationConfigType} for acceleration configuration options.
- * @see {@link CommonStaticConfig} for static configuration options.
- * @see {@link CommonListConfig} for list configuration options.
+ * @see {@link BehaviorStaticConfig} for static configuration options.
+ * @see {@link BehaviorSingleListConfig} for list configuration options.
  * @group Behavior/RotationBehavior
+ * @example
+ * ```ts
+ * // Apply a static rotation of 45 degrees to all particles.
+ * rotationBehavior.applyConfig({
+ *     value: Math.PI / 4
+ * });
+ *
+ * // Interpolate particle rotation from 0 to 360 degrees over lifetime.
+ * rotationBehavior.applyConfig({
+ *    listData: [
+ *         { time: 0.0, value: 0 },
+ *         { time: 1.0, value: Math.PI * 2 }
+ *    ],
+ *   mode: "list"
+ * });
  */
 export class RotationBehavior
     extends EmitterBehavior<RotationBehaviorConfig>
