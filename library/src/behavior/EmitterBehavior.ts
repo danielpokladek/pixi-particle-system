@@ -62,7 +62,7 @@ export abstract class EmitterBehavior<ConfigType> {
 
 /**
  * Interface defining behaviors which update particles when they are first created.
- * @group Behavior/EmitterBehavior
+ * @group Behavior/EmitterBehavior/
  */
 export interface InitBehavior extends EmitterBehavior<unknown> {
     /**
@@ -74,7 +74,7 @@ export interface InitBehavior extends EmitterBehavior<unknown> {
 
 /**
  * Interface defining behaviors which update particles on each update cycle.
- * @group Behavior/EmitterBehavior
+ * @group Behavior/EmitterBehavior/
  */
 export interface UpdateBehavior extends EmitterBehavior<unknown> {
     /**

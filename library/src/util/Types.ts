@@ -13,7 +13,7 @@ export type BehaviorOrder = "initial" | "normal" | "late";
 /**
  * Common type defining static configuration for various behaviors.
  * @template DataType Type of data used for the static value.
- * @group Behavior/Shared
+ * @group Behavior/Shared/
  */
 export type CommonStaticConfig<DataType> = {
     /**
@@ -30,7 +30,7 @@ export type CommonStaticConfig<DataType> = {
 /**
  * Common type defining list-based configuration for various behaviors.
  * @template DataType Type of data contained within the list.
- * @group Behavior/Shared
+ * @group Behavior/Shared/
  */
 export type CommonListConfig<DataType> = {
     /**
