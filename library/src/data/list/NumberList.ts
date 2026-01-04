@@ -16,6 +16,9 @@ function simpleValue(this: List<number>, lerp: number): number {
 
     if (this.ease) lerp = this.ease(lerp);
 
+    if (lerp <= 0) return this.first.value;
+    if (lerp >= 1) return this.first.next.value;
+
     return (this.first.next.value - this.first.value) * lerp + this.first.value;
 }
 
@@ -37,19 +40,22 @@ function complexValue(this: List<number>, lerp: number): number {
         );
     }
 
-    let next = current.next;
+    if (lerp <= current.time) return current.value;
 
-    while (lerp > next.time) {
-        current = next;
-
-        // TODO: Handle error better?
-        next = next.next!;
+    while (current.next && lerp > current.next.time) {
+        current = current.next;
     }
 
-    // Convert the lerp value to the segment range.
-    lerp = (lerp - current.time) / (next.time - current.time);
+    if (!current.next) return current.value;
 
-    return (next.value - current.value) * lerp + current.value;
+    const next = current.next;
+    const denom = next.time - current.time;
+
+    if (denom === 0) return current.value;
+
+    // Convert the lerp value to the segment range.
+    const t = (lerp - current.time) / denom;
+    return (next.value - current.value) * t + current.value;
 }
 
 /**
@@ -69,7 +75,7 @@ function steppedValue(this: List<number>, lerp: number): number {
         );
     }
 
-    while (current.next && lerp > current.next.time) {
+    while (current.next && lerp >= current.next.time) {
         current = current.next;
     }
 
