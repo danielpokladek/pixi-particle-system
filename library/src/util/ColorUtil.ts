@@ -47,3 +47,22 @@ export function convertHexToRGB(color: string, output?: RGBAColor): RGBAColor {
 
     return output;
 }
+
+/**
+ * Converts a uint color (0xRRGGBB) to a hex string ("#RRGGBB").
+ * @param color The color in the form of `0xRRGGBB`
+ * @returns The color as a hex string.
+ */
+export function convertUintToHex(color: number): string {
+    return `#${color.toString(16).padStart(6, "0")}`;
+}
+
+/**
+ * Converts a hex string ("#RRGGBB") to a uint color (0xRRGGBB).
+ * @param color The color as a hex string.
+ * @returns The color in the form of `0xRRGGBB`
+ */
+export function convertHexToUint(color: string): number {
+    const rgb = convertHexToRGB(color);
+    return convertRgbToUint(rgb.r, rgb.g, rgb.b);
+}
