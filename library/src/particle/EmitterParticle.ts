@@ -78,14 +78,17 @@ export type BaseParticleData = {
 
 /**
  * Base interface for particles used by the Emitter.
+ * @template Data Type describing the particle data structure.
  * @group Particle/
  */
-export interface IEmitterParticle extends Particle {
+export interface IEmitterParticle<
+    Data extends BaseParticleData = BaseParticleData,
+> extends Particle {
     /**
      * Particle data used by emitter behaviors.
      * @see {@link BaseParticleData} for the structure of the data.
      */
-    data: BaseParticleData;
+    data: Data;
 
     /**
      * Resets the particle to its initial state.
@@ -94,20 +97,52 @@ export interface IEmitterParticle extends Particle {
 }
 
 /**
+ * Creates a new instance of BaseParticleData with default values.
+ * @returns A new BaseParticleData object with default values.
+ * @group Particle/
+ */
+export function createBaseParticleData(): BaseParticleData {
+    return {
+        age: 0,
+        agePercent: 0,
+        maxLifetime: 0,
+        oneOverLifetime: 0,
+        directionVectorX: 0,
+        directionVectorY: 0,
+        accelerationX: 0,
+        accelerationY: 0,
+        velocityX: 0,
+        velocityY: 0,
+        textureConfig: {
+            textures: [],
+            duration: 0,
+            elapsed: 0,
+            framerate: 0,
+            loop: false,
+        },
+    };
+}
+
+/**
  * Default implementation of a particle used by the Emitter.
+ * @template Data Type describing the particle data structure. Any custom data structure must extend {@link BaseParticleData}.
+ * Any custom data will also need to be manually reset, as the default particle will only reset the base data.
  * @group Particle
  */
-export class EmitterParticle extends Particle implements IEmitterParticle {
-    public data: BaseParticleData;
+export class EmitterParticle<Data extends BaseParticleData = BaseParticleData>
+    extends Particle
+    implements IEmitterParticle
+{
+    public data: Data;
 
     /**
      * Creates a new EmitterParticle instance.
+     * @param data Particle data used by emitter behaviors.
      */
-    constructor() {
+    constructor(data: Data) {
         super(Texture.EMPTY);
 
-        this.data = {} as BaseParticleData;
-        this.data.textureConfig = {} as BaseParticleData["textureConfig"];
+        this.data = data;
         this.reset();
     }
 
