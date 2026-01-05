@@ -1,6 +1,6 @@
 import { ParticleContainer } from "pixi.js";
 import { describe, expect, it, vi } from "vitest";
-import { AlphaBehavior, Emitter } from "../../../src";
+import { ColorBehavior, Emitter } from "../../../src";
 
 vi.mock("pixi.js", () => {
     class ParticleContainer {
@@ -72,32 +72,32 @@ describe("AlphaBehavior config application/retrieving", () => {
     const emitter = new Emitter(container);
 
     it("retrieves undefined by default", () => {
-        const behavior = new AlphaBehavior(emitter);
+        const behavior = new ColorBehavior(emitter);
         const config = behavior.getConfig();
 
         expect(config).toBeUndefined();
     });
 
     it("applies and retrieves static config", () => {
-        const behavior = new AlphaBehavior(emitter);
-        behavior.applyConfig({ mode: "static", value: 0.5 });
+        const behavior = new ColorBehavior(emitter);
+        behavior.applyConfig({ mode: "static", value: "#ff00ff" });
 
         const config = behavior.getConfig();
-        expect(config).toEqual({ mode: "static", value: 0.5 });
+        expect(config).toEqual({ mode: "static", value: "#ff00ff" });
 
         expect(emitter.isBehaviorInitActive(behavior)).toBe(true);
         expect(emitter.isBehaviorUpdateActive(behavior)).toBe(false);
     });
 
     it("applies and retrieves list config", () => {
-        const behavior = new AlphaBehavior(emitter);
+        const behavior = new ColorBehavior(emitter);
         behavior.applyConfig({
             mode: "list",
             listData: {
                 list: [
-                    { time: 0, value: 0 },
-                    { time: 0.5, value: 1 },
-                    { time: 1, value: 0 },
+                    { time: 0, value: "#000000" },
+                    { time: 0.5, value: "#ffffff" },
+                    { time: 1, value: "#000000" },
                 ],
             },
         });
@@ -107,9 +107,9 @@ describe("AlphaBehavior config application/retrieving", () => {
             mode: "list",
             listData: {
                 list: [
-                    { time: 0, value: 0 },
-                    { time: 0.5, value: 1 },
-                    { time: 1, value: 0 },
+                    { time: 0, value: "#000000" },
+                    { time: 0.5, value: "#ffffff" },
+                    { time: 1, value: "#000000" },
                 ],
             },
         });
@@ -119,14 +119,14 @@ describe("AlphaBehavior config application/retrieving", () => {
     });
 
     it("applies and retrieves random config", () => {
-        const behavior = new AlphaBehavior(emitter);
+        const behavior = new ColorBehavior(emitter);
         behavior.applyConfig({
             mode: "random",
             listData: {
                 list: [
-                    { time: 0, value: 0 },
-                    { time: 0.5, value: 1 },
-                    { time: 1, value: 0 },
+                    { time: 0, value: "#000000" },
+                    { time: 0.5, value: "#ffffff" },
+                    { time: 1, value: "#000000" },
                 ],
             },
         });
@@ -136,9 +136,9 @@ describe("AlphaBehavior config application/retrieving", () => {
             mode: "random",
             listData: {
                 list: [
-                    { time: 0, value: 0 },
-                    { time: 0.5, value: 1 },
-                    { time: 1, value: 0 },
+                    { time: 0, value: "#000000" },
+                    { time: 0.5, value: "#ffffff" },
+                    { time: 1, value: "#000000" },
                 ],
             },
         });
