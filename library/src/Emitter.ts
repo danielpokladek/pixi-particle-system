@@ -25,9 +25,27 @@ export type EmitterOptions<
     ParticleType extends IEmitterParticle<DataType> =
         IEmitterParticle<DataType>,
 > = {
+    /**
+     * Creates and returns object containing particle data. By default,
+     * uses {@link BaseParticleData} object to store particle data.
+     * @returns New particle data object.
+     */
     dataFactory?: () => DataType;
+
+    /**
+     * Creates and returns new instance of a particle. By default,
+     * uses {@link EmitterParticle} as the base particle class.
+     * @param data Data used by the particle.
+     * @returns New particle instance.
+     */
     particleFactory?: (data: DataType) => ParticleType;
-    dataInitializer?: (data: DataType) => void;
+
+    /**
+     * Initializes any custom data for the particles. By default,
+     * does nothing, as there is no custom data.
+     * @param data Data used by the particle.
+     */
+    customDataInitializer?: (data: DataType) => void;
 };
 
 /**
@@ -57,6 +75,8 @@ export type EmitterOptions<
  *
  * emitter.play();
  * ```
+ * @template DataType Type describing the data stored on particles.
+ * @template ParticleType Type describing the particle class used in emitter.
  * @group Emitter
  */
 export class Emitter<
@@ -67,7 +87,7 @@ export class Emitter<
 
     private readonly _dataFactory: () => DataType;
     private readonly _particleFactory: (data: DataType) => ParticleType;
-    private readonly _dataInitializer: (data: DataType) => void;
+    private readonly _customDataInitializer: (data: DataType) => void;
 
     private readonly _parent: ParticleContainer;
 
@@ -138,8 +158,8 @@ export class Emitter<
             ((data: DataType): ParticleType =>
                 new EmitterParticle<DataType>(data) as ParticleType);
 
-        this._dataInitializer =
-            options?.dataInitializer ?? ((): void => undefined);
+        this._customDataInitializer =
+            options?.customDataInitializer ?? ((): void => undefined);
 
         this._alphaBehavior = new AlphaBehavior(this);
         this._colorBehavior = new ColorBehavior(this);
@@ -149,7 +169,7 @@ export class Emitter<
         this._spawnBehavior = new SpawnBehavior(this);
         this._textureBehavior = new TextureBehavior(this);
 
-        // Spawn behavior is always active.
+        // ! These are always active.
         this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
 
         if (initialConfig != null) {
@@ -489,7 +509,7 @@ export class Emitter<
                 particle = this._particleFactory(particleData);
             }
 
-            this._dataInitializer(particle.data);
+            this._customDataInitializer(particle.data);
 
             const particleData = particle.data;
             particleData.maxLifetime = lifetime;
@@ -703,7 +723,7 @@ export class Emitter<
                         particle = this._particleFactory(particleData);
                     }
 
-                    this._dataInitializer(particle.data);
+                    this._customDataInitializer(particle.data);
 
                     const particleData = particle.data;
                     particleData.maxLifetime = lifetime;
