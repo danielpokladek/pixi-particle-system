@@ -3,23 +3,13 @@ import { describe, expect, it, vi } from "vitest";
 import { EmitterParticle } from "../../src";
 
 vi.mock("pixi.js", () => {
-    /**
-     * Mock Texture class
-     */
     class Texture {
         static EMPTY = new Texture("EMPTY");
         static WHITE = new Texture("WHITE");
 
-        /**
-         * Creates a new Texture.
-         * @param id Texture identifier.
-         */
         constructor(public readonly id: string = "TEX") {}
     }
 
-    /**
-     * Mock Particle class
-     */
     class Particle {
         public texture: Texture;
 
@@ -33,10 +23,6 @@ vi.mock("pixi.js", () => {
 
         public rotation = 0;
 
-        /**
-         * Creates a new Particle.
-         * @param texture The texture of the particle.
-         */
         constructor(texture: Texture) {
             this.texture = texture;
         }

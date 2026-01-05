@@ -4,6 +4,7 @@ import { defineConfig } from "eslint/config";
 import tseslint, { parser } from "typescript-eslint";
 
 export default defineConfig({
+    ignores: ["**/*.test.ts"],
     extends: [
         js.configs.recommended,
         tseslint.configs.recommended,
