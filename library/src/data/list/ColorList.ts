@@ -17,11 +17,28 @@ function simpleColor(this: List<RGBAColor>, lerp: number): number {
 
     if (this.ease) lerp = this.ease(lerp);
 
+    if (lerp <= 0) {
+        return convertRgbToUint(
+            this.first.value.r,
+            this.first.value.g,
+            this.first.value.b,
+        );
+    }
+
+    if (lerp >= 1) {
+        return convertRgbToUint(
+            this.first.next.value.r,
+            this.first.next.value.g,
+            this.first.next.value.b,
+        );
+    }
+
     const curVal = this.first.value;
     const nextVal = this.first.next.value;
-    const r = (nextVal.r - curVal.r) * lerp + curVal.r;
-    const g = (nextVal.g - curVal.g) * lerp + curVal.g;
-    const b = (nextVal.b - curVal.b) * lerp + curVal.b;
+
+    const r = Math.round((nextVal.r - curVal.r) * lerp + curVal.r);
+    const g = Math.round((nextVal.g - curVal.g) * lerp + curVal.g);
+    const b = Math.round((nextVal.b - curVal.b) * lerp + curVal.b);
 
     return convertRgbToUint(r, g, b);
 }
@@ -44,21 +61,46 @@ function complexColor(this: List<RGBAColor>, lerp: number): number {
         );
     }
 
-    let next = current.next;
+    if (lerp <= current.time) {
+        return convertRgbToUint(
+            current.value.r,
+            current.value.g,
+            current.value.b,
+        );
+    }
 
-    while (next.next && lerp > next.time) {
-        current = next;
-        next = next.next;
+    while (current.next && lerp > current.next.time) {
+        current = current.next;
+    }
+
+    if (!current.next) {
+        return convertRgbToUint(
+            current.value.r,
+            current.value.g,
+            current.value.b,
+        );
+    }
+
+    const next = current.next;
+    const denom = next.time - current.time;
+
+    if (denom === 0) {
+        return convertRgbToUint(
+            current.value.r,
+            current.value.g,
+            current.value.b,
+        );
     }
 
     // Convert the lerp value to the segment range.
-    lerp = (lerp - current.time) / (next.time - current.time);
+    const t = (lerp - current.time) / denom;
 
     const curVal = current.value;
     const nextVal = next.value;
-    const r = (nextVal.r - curVal.r) * lerp + curVal.r;
-    const g = (nextVal.g - curVal.g) * lerp + curVal.g;
-    const b = (nextVal.b - curVal.b) * lerp + curVal.b;
+
+    const r = Math.round((nextVal.r - curVal.r) * t + curVal.r);
+    const g = Math.round((nextVal.g - curVal.g) * t + curVal.g);
+    const b = Math.round((nextVal.b - curVal.b) * t + curVal.b);
 
     return convertRgbToUint(r, g, b);
 }
@@ -80,12 +122,12 @@ function steppedColor(this: List<RGBAColor>, lerp: number): number {
         );
     }
 
-    while (current.next && lerp > current.next.time) {
+    while (current.next && lerp >= current.next.time) {
         current = current.next;
     }
-    const curVal = current.value;
+    const currentValue = current.value;
 
-    return convertRgbToUint(curVal.r, curVal.g, curVal.b);
+    return convertRgbToUint(currentValue.r, currentValue.g, currentValue.b);
 }
 
 /**
