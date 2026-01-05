@@ -1,7 +1,7 @@
-import { Color, ColorSource } from "pixi.js";
 import { ColorList } from "../../data/list/ColorList";
 import { Emitter } from "../../Emitter";
 import { EmitterParticle } from "../../particle/EmitterParticle";
+import { convertHexToUint, convertUintToHex } from "../../util";
 import {
     BehaviorOrder,
     BehaviorSingleListConfig,
@@ -61,7 +61,7 @@ export class ColorBehavior
 {
     private readonly _list: ColorList;
 
-    private _staticValue: ColorSource = "#FFFFFF";
+    private _staticValue: number = 0xffffff;
     private _mode: "static" | "list" | "random" = "static";
 
     /**
@@ -110,11 +110,11 @@ export class ColorBehavior
     /**
      * Tint value applied to all particles in `static` mode.
      */
-    public get staticValue(): ColorSource {
-        return this._staticValue;
+    public get staticValue(): string {
+        return convertUintToHex(this._staticValue);
     }
-    public set staticValue(value: ColorSource) {
-        this._staticValue = value;
+    public set staticValue(value: string) {
+        this._staticValue = convertHexToUint(value);
     }
 
     /**
@@ -126,7 +126,7 @@ export class ColorBehavior
         this._emitter.addToActiveInitBehaviors(this);
 
         if ("value" in config) {
-            this._staticValue = config.value;
+            this._staticValue = convertHexToUint(config.value);
             this._mode = "static";
             this._list.reset();
 
@@ -154,7 +154,7 @@ export class ColorBehavior
 
         if (this._mode === "static") {
             return {
-                value: Color.shared.setValue(this._staticValue).toHex(),
+                value: convertUintToHex(this._staticValue),
                 mode: "static",
             };
         }
@@ -196,7 +196,7 @@ export class ColorBehavior
      * @inheritdoc
      */
     protected reset(): void {
-        this._staticValue = "#FFFFFF";
+        this._staticValue = 0xffffff;
         this._mode = "static";
 
         this._emitter.removeFromActiveInitBehaviors(this);
