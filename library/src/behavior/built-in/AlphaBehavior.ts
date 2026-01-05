@@ -1,6 +1,6 @@
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorSingleListConfig,
@@ -170,7 +170,7 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         if (this._mode === "static") {
             particle.alpha = this._staticValue;
             return;
@@ -187,7 +187,7 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: IEmitterParticle): void {
         particle.alpha = this._list.interpolate(particle.data.agePercent);
     }
 

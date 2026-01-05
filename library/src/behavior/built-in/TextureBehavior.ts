@@ -1,6 +1,6 @@
 import { Texture } from "pixi.js";
 import { EmitterError } from "../../error";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorMode, BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -96,7 +96,7 @@ export class TextureBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         if (this._textureConfigs.length === 0) {
             particle.texture = Texture.WHITE;
             return;
@@ -142,7 +142,7 @@ export class TextureBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle, deltaTime: number): void {
+    public update(particle: IEmitterParticle, deltaTime: number): void {
         const config = particle.data.textureConfig;
         config.elapsed += deltaTime;
 

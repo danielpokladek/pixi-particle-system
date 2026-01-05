@@ -1,7 +1,7 @@
 import { PointData } from "pixi.js";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorStaticConfig,
@@ -193,7 +193,7 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         if (this._mode === "static") {
             particle.scaleX = this._staticValue.x;
             particle.scaleY = this._staticValue.y;
@@ -211,7 +211,7 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: IEmitterParticle): void {
         const xScale = this._xList.interpolate(particle.data.agePercent);
         const yScale = this._yList.interpolate(particle.data.agePercent);
 

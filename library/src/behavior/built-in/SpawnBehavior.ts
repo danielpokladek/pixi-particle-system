@@ -1,6 +1,6 @@
 import { PointData } from "pixi.js";
 import { EmitterError } from "../../error";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
@@ -298,7 +298,7 @@ export class SpawnBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         const particleData = particle.data;
 
         particleData.directionVectorX = this._directionVector.x;

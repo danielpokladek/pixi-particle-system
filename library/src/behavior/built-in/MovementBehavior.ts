@@ -2,7 +2,7 @@ import { PointData } from "pixi.js";
 import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -277,7 +277,7 @@ export class MovementBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         const particleData = particle.data;
 
         let xVelocity: number;
@@ -329,7 +329,7 @@ export class MovementBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle, deltaTime: number): void {
+    public update(particle: IEmitterParticle, deltaTime: number): void {
         const particleData = particle.data;
 
         if (this._mode === "acceleration") {

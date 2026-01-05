@@ -1,6 +1,6 @@
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorSingleListConfig,
@@ -245,7 +245,7 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         if (this._mode === "list") {
             particle.rotation = this._list.interpolate(0);
             return;
@@ -276,7 +276,7 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle, deltaTime: number): void {
+    public update(particle: IEmitterParticle, deltaTime: number): void {
         if (this._mode === "list") {
             particle.rotation = this._list.interpolate(
                 particle.data.agePercent,

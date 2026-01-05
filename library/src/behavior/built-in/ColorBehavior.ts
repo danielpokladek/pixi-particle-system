@@ -1,6 +1,6 @@
 import { ColorList } from "../../data/list/ColorList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import { IEmitterParticle } from "../../particle/EmitterParticle";
 import { convertHexToUint, convertUintToHex } from "../../util";
 import {
     BehaviorOrder,
@@ -171,7 +171,7 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: IEmitterParticle): void {
         if (this._mode === "static") {
             particle.tint = this._staticValue;
             return;
@@ -188,7 +188,7 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: IEmitterParticle): void {
         particle.tint = this._list.interpolate(particle.data.agePercent);
     }
 
