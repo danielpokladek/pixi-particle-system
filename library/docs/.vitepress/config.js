@@ -139,7 +139,15 @@ export default {
                 items: [
                     {
                         text: "Custom Behaviors",
-                        link: "/custom-behavior",
+                        link: "/customization/custom-behavior",
+                    },
+                    {
+                        text: "Custom Particle Data",
+                        link: "/customization/custom-particle-data",
+                    },
+                    {
+                        text: "Custom Particle",
+                        link: "/customization/custom-particle",
                     },
                 ],
             },
