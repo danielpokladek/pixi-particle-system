@@ -86,7 +86,8 @@ export class RotationBehavior
 {
     private readonly _list: NumberList;
 
-    private _mode: "static" | "list" | "acceleration" | "direction" = "static";
+    private _mode: "static" | "list" | "random" | "acceleration" | "direction" =
+        "static";
 
     private _staticValue: number = 0;
     private _startRotation: number = 0;
@@ -122,7 +123,12 @@ export class RotationBehavior
     /**
      * Current mode used by the behavior.
      */
-    public get mode(): "static" | "list" | "acceleration" | "direction" {
+    public get mode():
+        | "static"
+        | "list"
+        | "random"
+        | "acceleration"
+        | "direction" {
         return this._mode;
     }
     public set mode(value: "static" | "list" | "acceleration" | "direction") {
@@ -189,8 +195,12 @@ export class RotationBehavior
             return;
         }
 
+        this._mode = config.mode;
         this._list.initialize(config.listData);
-        this._emitter.addToActiveUpdateBehaviors(this);
+
+        if (this._mode === "list") {
+            this._emitter.addToActiveUpdateBehaviors(this);
+        }
     }
 
     /**
@@ -215,9 +225,9 @@ export class RotationBehavior
             };
         }
 
-        if (this._mode === "list") {
+        if (this._mode === "list" || this._mode === "random") {
             return {
-                mode: "list",
+                mode: this._mode,
                 listData: {
                     list: this._list.list,
                     isStepped: this._list.isStepped ? true : undefined,
@@ -238,6 +248,11 @@ export class RotationBehavior
     public init(particle: EmitterParticle): void {
         if (this._mode === "list") {
             particle.rotation = this._list.interpolate(0);
+            return;
+        }
+
+        if (this._mode === "random") {
+            particle.rotation = this._list.interpolate(Math.random());
             return;
         }
 
