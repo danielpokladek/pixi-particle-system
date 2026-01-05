@@ -1,6 +1,9 @@
 import { PointData } from "pixi.js";
 import { EmitterError } from "../../error";
-import { IEmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
 import { EmitterBehavior, InitBehavior } from "../EmitterBehavior";
 
@@ -94,6 +97,8 @@ export type SpawnBehaviorConfig = {
  * a `rectangle` shape where particles spawn within a rectangle area,
  * and a `circle` shape where particles spawn within a circular area.
  * @see {@link SpawnBehaviorConfig} for configuration options.
+ * @template DataType Type of particle data used in the particle system.
+ * @template ParticleType Type of particle used in the particle system.
  * @group Behavior/SpawnBehavior
  * @example
  * ```ts
@@ -136,9 +141,13 @@ export type SpawnBehaviorConfig = {
  * });
  * ```
  */
-export class SpawnBehavior
-    extends EmitterBehavior<SpawnBehaviorConfig>
-    implements InitBehavior
+export class SpawnBehavior<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<SpawnBehaviorConfig, DataType, ParticleType>
+    implements InitBehavior<DataType, ParticleType>
 {
     private _shape: "point" | "line" | "rectangle" | "circle" = "point";
 
@@ -298,7 +307,7 @@ export class SpawnBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: IEmitterParticle): void {
+    public init(particle: ParticleType): void {
         const particleData = particle.data;
 
         particleData.directionVectorX = this._directionVector.x;

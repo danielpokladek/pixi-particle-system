@@ -1,5 +1,8 @@
 import { Emitter } from "../Emitter";
-import { EmitterParticle } from "../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../particle/EmitterParticle";
 import { BehaviorOrder } from "../util/Types";
 
 /**
@@ -11,20 +14,24 @@ import { BehaviorOrder } from "../util/Types";
  * In addition to the core functionality, this class also defines interfaces
  * for behaviors that initialize particles ({@link InitBehavior}) and
  * those that update particles ({@link UpdateBehavior}) during the emitter's update cycle.
- * @template ConfigType Type defining the configuration used by the behavior.
  * @group Behavior/EmitterBehavior
  */
-export abstract class EmitterBehavior<ConfigType> {
+export abstract class EmitterBehavior<
+    ConfigType,
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+> {
     /**
      * @hidden
      */
-    protected readonly _emitter: Emitter;
+    protected readonly _emitter: Emitter<DataType, ParticleType>;
 
     /**
      * Creates a new instance of the behavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         this._emitter = emitter;
     }
 
@@ -62,25 +69,37 @@ export abstract class EmitterBehavior<ConfigType> {
 
 /**
  * Interface defining behaviors which update particles when they are first created.
+ * @template DataType Type of particle data used in the particle system.
+ * @template ParticleType Type of particle used in the particle system.
  * @group Behavior/EmitterBehavior/
  */
-export interface InitBehavior extends EmitterBehavior<unknown> {
+export interface InitBehavior<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+> extends EmitterBehavior<unknown, DataType, ParticleType> {
     /**
      * Initialize the particle.
      * @param particle Particle to initialize.
      */
-    init(particle: EmitterParticle): void;
+    init(particle: ParticleType): void;
 }
 
 /**
  * Interface defining behaviors which update particles on each update cycle.
+ * @template DataType Type of particle data used in the particle system.
+ * @template ParticleType Type of particle used in the particle system.
  * @group Behavior/EmitterBehavior/
  */
-export interface UpdateBehavior extends EmitterBehavior<unknown> {
+export interface UpdateBehavior<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+> extends EmitterBehavior<unknown, DataType, ParticleType> {
     /**
      * Updates the particle.
      * @param particle Particle to update.
      * @param deltaTime Time elapsed since the last update, in seconds.
      */
-    update(particle: EmitterParticle, deltaTime: number): void;
+    update(particle: ParticleType, deltaTime: number): void;
 }

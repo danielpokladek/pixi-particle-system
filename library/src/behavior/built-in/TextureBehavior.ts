@@ -1,6 +1,9 @@
 import { Texture } from "pixi.js";
 import { EmitterError } from "../../error";
-import { IEmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import { BehaviorMode, BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -43,6 +46,8 @@ export type TextureBehaviorConfig = {
  * a `random` mode where a random texture from the provided textures is applied to the particle upon initialization,
  * and an `animated` mode where textures are animated over the particle's lifetime based on the provided configuration.
  * @see {@link TextureBehaviorConfig} for configuration options.
+ * @template DataType Type of particle data used in the particle system.
+ * @template ParticleType Type of particle used in the particle system.
  * @group Behavior/TextureBehavior
  * @example
  * ```ts
@@ -55,9 +60,15 @@ export type TextureBehaviorConfig = {
  * });
  * ```
  */
-export class TextureBehavior
-    extends EmitterBehavior<TextureBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class TextureBehavior<
+    DataType extends BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<TextureBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private _textureConfigs: TextureConfig[] = [];
     private _mode: TextureBehaviorMode = "static";
@@ -96,7 +107,7 @@ export class TextureBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: IEmitterParticle): void {
+    public init(particle: ParticleType): void {
         if (this._textureConfigs.length === 0) {
             particle.texture = Texture.WHITE;
             return;
@@ -142,7 +153,7 @@ export class TextureBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: IEmitterParticle, deltaTime: number): void {
+    public update(particle: ParticleType, deltaTime: number): void {
         const config = particle.data.textureConfig;
         config.elapsed += deltaTime;
 
