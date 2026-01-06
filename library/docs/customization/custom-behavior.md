@@ -17,7 +17,7 @@ You generally only need to create a custom behavior when:
 To get started, we will need two things:
 
 - A type or interface that describes the configuration our behavior will accept and return.
-- Our custom class which extends the abstract [`EmitterBehavior`](./api/classes/EmitterBehavior.md) - it provides the structure for all behaviors used by the emitter.
+- Our custom class which extends the abstract [`EmitterBehavior`](../api/classes/EmitterBehavior) - it provides the structure for all behaviors used by the emitter.
 
 ```ts
 type CustomBehaviorConfig = { };
@@ -66,7 +66,7 @@ Each behavior defines what its configuration object should look like. In the abo
 Each behavior can return it's current state using `getConfig()` function, which is later combined into the main emitter config, or it can have a config applied to it to update it's current state using `applyConfig()`.
 
 ::: warning
-When we call `getConfig()` on the [`Emitter`](./api/classes/Emitter.md), it will not return any custom behavior configs as it isn't aware of them. This means that any custom behavior will need to have it's config retrieved/applied manually.
+When we call `getConfig()` on the [`Emitter`](../api/classes/Emitter.md), it will not return any custom behavior configs as it isn't aware of them. This means that any custom behavior will need to have it's config retrieved/applied manually.
 :::
 
 ### Reset Method
@@ -77,7 +77,7 @@ As the name suggests, this is a reset method for the behavior - currently this i
 
 Now we need to define whether our behavior will initialize or update (or both) the particles.
 
-If we want to set something on the particle when its first created, we can do that using the [`InitBehavior`](./api/interfaces/InitBehavior.md) interface. On the other hand, if we want to set something on the particle each frame when the emitter updates, we can do that using the [`UpdateBehavior`](./api/interfaces/UpdateBehavior.md) interface.
+If we want to set something on the particle when its first created, we can do that using the [`InitBehavior`](./api/interfaces/InitBehavior.md) interface. On the other hand, if we want to set something on the particle each frame when the emitter updates, we can do that using the [`UpdateBehavior`](../api/interfaces/UpdateBehavior.md) interface.
 
 In our case, we will both set the scale during initialization and update, so we want to implement both interfaces and their functions.
 

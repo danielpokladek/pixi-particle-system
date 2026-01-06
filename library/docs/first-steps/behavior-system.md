@@ -25,5 +25,5 @@ An emitter typically uses several behaviors at once — for example, one to cont
 Each one of those behaviors controls only one aspect of the particle, this means that behaviors never cross-contaminate properties and never get in each other's way (and also means the system is much easier to debug).
 
 ::: tip
-Built-in behaviors cover most common effects. If you eventually need custom logic, you can implement your own behaviors — see [Custom Behaviors](/custom-behavior.md) for more information.
+Built-in behaviors cover most common effects. If you eventually need custom logic, you can implement your own behaviors — see [Custom Behaviors](../customization/custom-behavior.md) for more information.
 :::
