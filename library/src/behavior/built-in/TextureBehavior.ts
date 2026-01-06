@@ -46,8 +46,8 @@ export type TextureBehaviorConfig = {
  * a `random` mode where a random texture from the provided textures is applied to the particle upon initialization,
  * and an `animated` mode where textures are animated over the particle's lifetime based on the provided configuration.
  * @see {@link TextureBehaviorConfig} for configuration options.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/TextureBehavior
  * @example
  * ```ts

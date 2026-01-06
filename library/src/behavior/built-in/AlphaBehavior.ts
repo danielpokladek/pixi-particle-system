@@ -30,8 +30,8 @@ export type AlphaBehaviorConfig =
  * and a `random` mode where a random value from the list is applied to the particle upon initialization.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorSingleListConfig} for list configuration options.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/AlphaBehavior
  * @example
  * ```ts

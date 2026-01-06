@@ -18,6 +18,8 @@ import {
 
 /**
  * Extra emitter options allowing for custom particles/particle data.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Emitter/
  */
 export type EmitterOptions<
@@ -75,8 +77,8 @@ export type EmitterOptions<
  *
  * emitter.play();
  * ```
- * @template DataType Type describing the data stored on particles.
- * @template ParticleType Type describing the particle class used in emitter.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Emitter
  */
 export class Emitter<

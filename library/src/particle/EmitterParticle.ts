@@ -2,7 +2,7 @@ import { Particle, Texture } from "pixi.js";
 
 /**
  * Base data structure for emitter particles.
- * @group Particle/
+ * @group EmitterParticle/
  */
 export type BaseParticleData = {
     /**
@@ -78,17 +78,17 @@ export type BaseParticleData = {
 
 /**
  * Base interface for particles used by the Emitter.
- * @template Data Type describing the particle data structure.
- * @group Particle/
+ * @template DataType Type describing the data object stored on particles.
+ * @group EmitterParticle/
  */
 export interface IEmitterParticle<
-    Data extends BaseParticleData = BaseParticleData,
+    DataType extends BaseParticleData = BaseParticleData,
 > extends Particle {
     /**
      * Particle data used by emitter behaviors.
      * @see {@link BaseParticleData} for the structure of the data.
      */
-    data: Data;
+    data: DataType;
 
     /**
      * Invoked when particle is fetched from pool.
@@ -104,7 +104,7 @@ export interface IEmitterParticle<
 /**
  * Creates a new instance of BaseParticleData with default values.
  * @returns A new BaseParticleData object with default values.
- * @group Particle/
+ * @group EmitterParticle/
  */
 export function createBaseParticleData(): BaseParticleData {
     return {
@@ -131,7 +131,7 @@ export function createBaseParticleData(): BaseParticleData {
 /**
  * Resets the base particle data.
  * @param data Data to reset.
- * @group Particle/
+ * @group EmitterParticle/
  */
 export function resetBaseParticleData(data: BaseParticleData): void {
     data.age = 0;
@@ -157,21 +157,23 @@ export function resetBaseParticleData(data: BaseParticleData): void {
 
 /**
  * Default implementation of a particle used by the Emitter.
- * @template Data Type describing the particle data structure. Any custom data structure must extend {@link BaseParticleData}.
+ * @template DataType Type describing the particle data structure. Any custom data structure must extend {@link BaseParticleData}.
  * Any custom data will also need to be manually reset, as the default particle will only reset the base data.
- * @group Particle
+ * @group EmitterParticle
  */
-export class EmitterParticle<Data extends BaseParticleData = BaseParticleData>
+export class EmitterParticle<
+    DataType extends BaseParticleData = BaseParticleData,
+>
     extends Particle
-    implements IEmitterParticle
+    implements IEmitterParticle<DataType>
 {
-    public data: Data;
+    public data: DataType;
 
     /**
      * Creates a new EmitterParticle instance.
      * @param data Particle data used by emitter behaviors.
      */
-    constructor(data: Data) {
+    constructor(data: DataType) {
         super(Texture.EMPTY);
 
         this.data = data;

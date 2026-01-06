@@ -14,6 +14,9 @@ import { BehaviorOrder } from "../util/Types";
  * In addition to the core functionality, this class also defines interfaces
  * for behaviors that initialize particles ({@link InitBehavior}) and
  * those that update particles ({@link UpdateBehavior}) during the emitter's update cycle.
+ * @template ConfigType Type describing the configuration object for this behavior.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/EmitterBehavior
  */
 export abstract class EmitterBehavior<
@@ -69,8 +72,8 @@ export abstract class EmitterBehavior<
 
 /**
  * Interface defining behaviors which update particles when they are first created.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/EmitterBehavior/
  */
 export interface InitBehavior<
@@ -87,8 +90,8 @@ export interface InitBehavior<
 
 /**
  * Interface defining behaviors which update particles on each update cycle.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/EmitterBehavior/
  */
 export interface UpdateBehavior<

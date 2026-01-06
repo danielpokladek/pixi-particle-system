@@ -97,8 +97,8 @@ export type SpawnBehaviorConfig = {
  * a `rectangle` shape where particles spawn within a rectangle area,
  * and a `circle` shape where particles spawn within a circular area.
  * @see {@link SpawnBehaviorConfig} for configuration options.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/SpawnBehavior
  * @example
  * ```ts

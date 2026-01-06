@@ -31,8 +31,8 @@ export type ScaleBehaviorConfig =
  * and a `random` mode where random values from the lists are applied to the particle upon initialization.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorXYListConfig} for list configuration options.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/ScaleBehavior
  * @example
  * ```ts

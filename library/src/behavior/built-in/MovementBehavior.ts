@@ -85,8 +85,8 @@ export type MovementBehaviorConfig = MinMaxConfigType | ListConfigType;
  * over the particle's lifetime.
  * @see {@link MinMaxConfigType} for min/max speed configuration options.
  * @see {@link ListConfigType} for list-based configuration options.
- * @template DataType Type of particle data used in the particle system.
- * @template ParticleType Type of particle used in the particle system.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/MovementBehavior
  * @example
  * ```ts
