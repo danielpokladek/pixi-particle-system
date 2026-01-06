@@ -2,7 +2,10 @@ import { PointData } from "pixi.js";
 import { ListData } from "../../data/list/List";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import { BehaviorOrder } from "../../util/Types";
 import {
     EmitterBehavior,
@@ -82,6 +85,8 @@ export type MovementBehaviorConfig = MinMaxConfigType | ListConfigType;
  * over the particle's lifetime.
  * @see {@link MinMaxConfigType} for min/max speed configuration options.
  * @see {@link ListConfigType} for list-based configuration options.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/MovementBehavior
  * @example
  * ```ts
@@ -112,9 +117,15 @@ export type MovementBehaviorConfig = MinMaxConfigType | ListConfigType;
  * });
  * ```
  */
-export class MovementBehavior
-    extends EmitterBehavior<MovementBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class MovementBehavior<
+    DataType extends BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<MovementBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;
@@ -131,7 +142,7 @@ export class MovementBehavior
      * Creates new instance of MovementBehavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         super(emitter);
 
         this._xList = new NumberList();
@@ -277,7 +288,7 @@ export class MovementBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: ParticleType): void {
         const particleData = particle.data;
 
         let xVelocity: number;
@@ -329,7 +340,7 @@ export class MovementBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle, deltaTime: number): void {
+    public update(particle: ParticleType, deltaTime: number): void {
         const particleData = particle.data;
 
         if (this._mode === "acceleration") {

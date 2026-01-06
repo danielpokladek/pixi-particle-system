@@ -9,7 +9,8 @@ You generally only need to create a custom behavior when:
 - The effect can't be expressed using existing built-in behaviors.
 - You want tighter control over per-particle logic.
 
-You might want to see first, if the desired effect can be achieved using existing behaviors.
+> [!WARNING]
+> This page is designed for advanced use, before creating custom behaviors I'd highly recommend getting familiar with the [behavior system](../first-steps/behavior-system) as the guide assumes you are familiar with the behavior architecture.
 
 ## Class Setup
 

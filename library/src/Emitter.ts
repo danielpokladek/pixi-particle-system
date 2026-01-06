@@ -9,7 +9,46 @@ import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { TextureBehavior } from "./behavior/built-in/TextureBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
 import { EmitterConfig } from "./EmitterConfig";
-import { EmitterParticle } from "./particle/EmitterParticle";
+import {
+    BaseParticleData,
+    createBaseParticleData,
+    EmitterParticle,
+    IEmitterParticle,
+} from "./particle/EmitterParticle";
+
+/**
+ * Extra emitter options allowing for custom particles/particle data.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
+ * @group Emitter/
+ */
+export type EmitterOptions<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+> = {
+    /**
+     * Creates and returns object containing particle data. By default,
+     * uses {@link BaseParticleData} object to store particle data.
+     * @returns New particle data object.
+     */
+    dataFactory?: () => DataType;
+
+    /**
+     * Creates and returns new instance of a particle. By default,
+     * uses {@link EmitterParticle} as the base particle class.
+     * @param data Data used by the particle.
+     * @returns New particle instance.
+     */
+    particleFactory?: (data: DataType) => ParticleType;
+
+    /**
+     * Initializes any custom data for the particles. By default,
+     * does nothing, as there is no custom data.
+     * @param data Data used by the particle.
+     */
+    customDataInitializer?: (data: DataType) => void;
+};
 
 /**
  * Class responsible for spawning and managing particles using various behaviors.
@@ -38,28 +77,44 @@ import { EmitterParticle } from "./particle/EmitterParticle";
  *
  * emitter.play();
  * ```
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Emitter
  */
-export class Emitter {
+export class Emitter<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> = EmitterParticle<DataType>,
+> {
     private readonly _version: string = pkg.version;
+
+    private readonly _dataFactory: () => DataType;
+    private readonly _particleFactory: (data: DataType) => ParticleType;
+    private readonly _customDataInitializer: (data: DataType) => void;
 
     private readonly _parent: ParticleContainer;
 
-    private readonly _particles: EmitterParticle[] = [];
-    private readonly _pooledParticles: EmitterParticle[] = [];
+    private readonly _particles: ParticleType[] = [];
+    private readonly _pooledParticles: ParticleType[] = [];
 
-    private readonly _initBehaviors: InitBehavior[] = [];
-    private readonly _updateBehaviors: UpdateBehavior[] = [];
+    // prettier-ignore
+    private readonly _initBehaviors: InitBehavior<DataType, ParticleType>[] = [];
+    // prettier-ignore
+    private readonly _updateBehaviors: UpdateBehavior<DataType, ParticleType>[] = [];
 
-    // *** Built-In Behaviors *** //
-    private readonly _alphaBehavior: AlphaBehavior;
-    private readonly _colorBehavior: ColorBehavior;
-    private readonly _movementBehavior: MovementBehavior;
-    private readonly _rotationBehavior: RotationBehavior;
-    private readonly _scaleBehavior: ScaleBehavior;
-    private readonly _spawnBehavior: SpawnBehavior;
-    private readonly _textureBehavior: TextureBehavior;
-    // *** ---            --- *** //
+    // prettier-ignore
+    private readonly _alphaBehavior: AlphaBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _colorBehavior: ColorBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _movementBehavior: MovementBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _rotationBehavior: RotationBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _scaleBehavior: ScaleBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _spawnBehavior: SpawnBehavior<DataType, ParticleType>;
+    // prettier-ignore
+    private readonly _textureBehavior: TextureBehavior<DataType, ParticleType>;
 
     private _minLifetime: number = 1;
     private _maxLifetime: number = 3;
@@ -87,9 +142,26 @@ export class Emitter {
      * Creates a new Emitter.
      * @param parent Parent ParticleContainer to which particles will be added.
      * @param initialConfig Optional initial configuration for the emitter.
+     * @param options Optional factories and initializers for custom particle data and particles.
      */
-    constructor(parent: ParticleContainer, initialConfig?: EmitterConfig) {
+    constructor(
+        parent: ParticleContainer,
+        initialConfig?: EmitterConfig,
+        options?: EmitterOptions<DataType, ParticleType>,
+    ) {
         this._parent = parent;
+
+        this._dataFactory =
+            options?.dataFactory ??
+            ((): DataType => createBaseParticleData() as DataType);
+
+        this._particleFactory =
+            options?.particleFactory ??
+            ((data: DataType): ParticleType =>
+                new EmitterParticle<DataType>(data) as ParticleType);
+
+        this._customDataInitializer =
+            options?.customDataInitializer ?? ((): void => undefined);
 
         this._alphaBehavior = new AlphaBehavior(this);
         this._colorBehavior = new ColorBehavior(this);
@@ -99,7 +171,7 @@ export class Emitter {
         this._spawnBehavior = new SpawnBehavior(this);
         this._textureBehavior = new TextureBehavior(this);
 
-        // Spawn behavior is always active.
+        // ! These are always active.
         this._initBehaviors.push(this._spawnBehavior, this._textureBehavior);
 
         if (initialConfig != null) {
@@ -216,49 +288,49 @@ export class Emitter {
     /**
      * Alpha behavior of the emitter.
      */
-    public get alphaBehavior(): AlphaBehavior {
+    public get alphaBehavior(): AlphaBehavior<DataType, ParticleType> {
         return this._alphaBehavior;
     }
 
     /**
      * Color behavior of the emitter.
      */
-    public get colorBehavior(): ColorBehavior {
+    public get colorBehavior(): ColorBehavior<DataType, ParticleType> {
         return this._colorBehavior;
     }
 
     /**
      * Movement behavior of the emitter.
      */
-    public get movementBehavior(): MovementBehavior {
+    public get movementBehavior(): MovementBehavior<DataType, ParticleType> {
         return this._movementBehavior;
     }
 
     /**
      * Rotation behavior of the emitter.
      */
-    public get rotationBehavior(): RotationBehavior {
+    public get rotationBehavior(): RotationBehavior<DataType, ParticleType> {
         return this._rotationBehavior;
     }
 
     /**
      * Scale behavior of the emitter.
      */
-    public get scaleBehavior(): ScaleBehavior {
+    public get scaleBehavior(): ScaleBehavior<DataType, ParticleType> {
         return this._scaleBehavior;
     }
 
     /**
      * Spawn behavior of the emitter.
      */
-    public get spawnBehavior(): SpawnBehavior {
+    public get spawnBehavior(): SpawnBehavior<DataType, ParticleType> {
         return this._spawnBehavior;
     }
 
     /**
      * Texture behavior of the emitter.
      */
-    public get textureBehavior(): TextureBehavior {
+    public get textureBehavior(): TextureBehavior<DataType, ParticleType> {
         return this._textureBehavior;
     }
     //#endregion
@@ -429,14 +501,17 @@ export class Emitter {
 
             if (particleAge >= lifetime) continue;
 
-            let particle: EmitterParticle;
+            let particle: ParticleType;
 
             if (this._pooledParticles.length > 0) {
                 particle = this._pooledParticles.pop()!;
-                particle.reset();
+                particle.onFetch();
             } else {
-                particle = new EmitterParticle();
+                const particleData = this._dataFactory();
+                particle = this._particleFactory(particleData);
             }
+
+            this._customDataInitializer(particle.data);
 
             const particleData = particle.data;
             particleData.maxLifetime = lifetime;
@@ -472,7 +547,9 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorInitActive(behavior: InitBehavior): boolean {
+    public isBehaviorInitActive(
+        behavior: InitBehavior<DataType, ParticleType>,
+    ): boolean {
         return this._initBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -481,7 +558,9 @@ export class Emitter {
      * @param behavior Behavior to check.
      * @returns Whether the behavior is active.
      */
-    public isBehaviorUpdateActive(behavior: UpdateBehavior): boolean {
+    public isBehaviorUpdateActive(
+        behavior: UpdateBehavior<DataType, ParticleType>,
+    ): boolean {
         return this._updateBehaviors.indexOf(behavior) !== -1;
     }
 
@@ -489,7 +568,9 @@ export class Emitter {
      * Adds a behavior to the active init behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveInitBehaviors(behavior: InitBehavior): void {
+    public addToActiveInitBehaviors(
+        behavior: InitBehavior<DataType, ParticleType>,
+    ): void {
         this._initBehaviors.push(behavior);
 
         this._initBehaviors.sort((a, b) => {
@@ -510,7 +591,9 @@ export class Emitter {
      * Adds a behavior to the active update behaviors.
      * @param behavior Behavior to add.
      */
-    public addToActiveUpdateBehaviors(behavior: UpdateBehavior): void {
+    public addToActiveUpdateBehaviors(
+        behavior: UpdateBehavior<DataType, ParticleType>,
+    ): void {
         this._updateBehaviors.push(behavior);
 
         this._updateBehaviors.sort((a, b) => {
@@ -531,7 +614,9 @@ export class Emitter {
      * Removes a behavior from the active init behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveInitBehaviors(behavior: InitBehavior): void {
+    public removeFromActiveInitBehaviors(
+        behavior: InitBehavior<DataType, ParticleType>,
+    ): void {
         const index = this._initBehaviors.indexOf(behavior);
 
         if (index !== -1) {
@@ -543,7 +628,9 @@ export class Emitter {
      * Removes a behavior from the active update behaviors.
      * @param behavior Behavior to remove.
      */
-    public removeFromActiveUpdateBehaviors(behavior: UpdateBehavior): void {
+    public removeFromActiveUpdateBehaviors(
+        behavior: UpdateBehavior<DataType, ParticleType>,
+    ): void {
         const index = this._updateBehaviors.indexOf(behavior);
 
         if (index !== -1) {
@@ -607,7 +694,7 @@ export class Emitter {
                     continue;
                 }
 
-                const newParticles: EmitterParticle[] = [];
+                const newParticles: ParticleType[] = [];
 
                 for (let i = 0; i < this._particlesPerWave; i++) {
                     if (Math.random() > this._spawnChance) continue;
@@ -628,14 +715,17 @@ export class Emitter {
                         continue;
                     }
 
-                    let particle: EmitterParticle;
+                    let particle: ParticleType;
 
                     if (this._pooledParticles.length > 0) {
                         particle = this._pooledParticles.pop()!;
-                        particle.reset();
+                        particle.onFetch();
                     } else {
-                        particle = new EmitterParticle();
+                        const particleData = this._dataFactory();
+                        particle = this._particleFactory(particleData);
                     }
+
+                    this._customDataInitializer(particle.data);
 
                     const particleData = particle.data;
                     particleData.maxLifetime = lifetime;
@@ -683,10 +773,10 @@ export class Emitter {
      * Recycles a particle back into the pool.
      * @param particle Particle to recycle.
      */
-    private recycleParticle(particle: EmitterParticle): void {
+    private recycleParticle(particle: ParticleType): void {
         this._parent.removeParticle(particle);
 
-        particle.reset();
+        particle.onRecycle();
 
         this._pooledParticles.push(particle);
     }

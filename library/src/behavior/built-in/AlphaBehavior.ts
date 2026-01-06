@@ -1,6 +1,9 @@
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorSingleListConfig,
@@ -27,6 +30,8 @@ export type AlphaBehaviorConfig =
  * and a `random` mode where a random value from the list is applied to the particle upon initialization.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/AlphaBehavior
  * @example
  * ```ts
@@ -54,9 +59,15 @@ export type AlphaBehaviorConfig =
  * });
  * ```
  */
-export class AlphaBehavior
-    extends EmitterBehavior<AlphaBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class AlphaBehavior<
+    DataType extends BaseParticleData = BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<AlphaBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private readonly _list: NumberList;
 
@@ -67,7 +78,7 @@ export class AlphaBehavior
      * Creates new instance of AlphaBehavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         super(emitter);
 
         this._list = new NumberList();
@@ -170,7 +181,7 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: ParticleType): void {
         if (this._mode === "static") {
             particle.alpha = this._staticValue;
             return;
@@ -187,7 +198,7 @@ export class AlphaBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: ParticleType): void {
         particle.alpha = this._list.interpolate(particle.data.agePercent);
     }
 

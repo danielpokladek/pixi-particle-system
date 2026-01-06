@@ -1,7 +1,10 @@
 import { PointData } from "pixi.js";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorStaticConfig,
@@ -28,6 +31,8 @@ export type ScaleBehaviorConfig =
  * and a `random` mode where random values from the lists are applied to the particle upon initialization.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorXYListConfig} for list configuration options.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/ScaleBehavior
  * @example
  * ```ts
@@ -63,9 +68,15 @@ export type ScaleBehaviorConfig =
  * });
  * ```
  */
-export class ScaleBehavior
-    extends EmitterBehavior<ScaleBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class ScaleBehavior<
+    DataType extends BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<ScaleBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;
@@ -77,7 +88,7 @@ export class ScaleBehavior
      * Creates a new ScaleBehavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         super(emitter);
 
         this._xList = new NumberList();
@@ -193,7 +204,7 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: ParticleType): void {
         if (this._mode === "static") {
             particle.scaleX = this._staticValue.x;
             particle.scaleY = this._staticValue.y;
@@ -211,7 +222,7 @@ export class ScaleBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: ParticleType): void {
         const xScale = this._xList.interpolate(particle.data.agePercent);
         const yScale = this._yList.interpolate(particle.data.agePercent);
 

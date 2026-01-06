@@ -1,6 +1,9 @@
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import {
     BehaviorOrder,
     BehaviorSingleListConfig,
@@ -62,6 +65,8 @@ export type RotationBehaviorConfig =
  * @see {@link AccelerationConfigType} for acceleration configuration options.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/RotationBehavior
  * @example
  * ```ts
@@ -80,9 +85,15 @@ export type RotationBehaviorConfig =
  * });
  * ```
  */
-export class RotationBehavior
-    extends EmitterBehavior<RotationBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class RotationBehavior<
+    DataType extends BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<RotationBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private readonly _list: NumberList;
 
@@ -97,7 +108,7 @@ export class RotationBehavior
      * Creates a new RotationBehavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         super(emitter);
 
         this._list = new NumberList();
@@ -245,7 +256,7 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: ParticleType): void {
         if (this._mode === "list") {
             particle.rotation = this._list.interpolate(0);
             return;
@@ -276,7 +287,7 @@ export class RotationBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle, deltaTime: number): void {
+    public update(particle: ParticleType, deltaTime: number): void {
         if (this._mode === "list") {
             particle.rotation = this._list.interpolate(
                 particle.data.agePercent,

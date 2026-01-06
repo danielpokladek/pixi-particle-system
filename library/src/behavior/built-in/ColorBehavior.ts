@@ -1,6 +1,9 @@
 import { ColorList } from "../../data/list/ColorList";
 import { Emitter } from "../../Emitter";
-import { EmitterParticle } from "../../particle/EmitterParticle";
+import {
+    BaseParticleData,
+    IEmitterParticle,
+} from "../../particle/EmitterParticle";
 import { convertHexToUint, convertUintToHex } from "../../util";
 import {
     BehaviorOrder,
@@ -28,6 +31,8 @@ export type ColorBehaviorConfig =
  * and a `random` mode where a random value from the list is applied to the particle upon initialization.
  * @see {@link BehaviorStaticConfig} for static configuration options.
  * @see {@link BehaviorSingleListConfig} for list configuration options.
+ * @template DataType Type describing the data object stored on particles.
+ * @template ParticleType Type describing the particle used within the emitter.
  * @group Behavior/ColorBehavior
  * @example
  * ```ts
@@ -55,9 +60,15 @@ export type ColorBehaviorConfig =
  * });
  * ```
  */
-export class ColorBehavior
-    extends EmitterBehavior<ColorBehaviorConfig>
-    implements InitBehavior, UpdateBehavior
+export class ColorBehavior<
+    DataType extends BaseParticleData,
+    ParticleType extends IEmitterParticle<DataType> =
+        IEmitterParticle<DataType>,
+>
+    extends EmitterBehavior<ColorBehaviorConfig, DataType, ParticleType>
+    implements
+        InitBehavior<DataType, ParticleType>,
+        UpdateBehavior<DataType, ParticleType>
 {
     private readonly _list: ColorList;
 
@@ -68,7 +79,7 @@ export class ColorBehavior
      * Creates new instance of ColorBehavior.
      * @param emitter Emitter instance this behavior belongs to.
      */
-    constructor(emitter: Emitter) {
+    constructor(emitter: Emitter<DataType, ParticleType>) {
         super(emitter);
 
         this._list = new ColorList();
@@ -171,7 +182,7 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public init(particle: EmitterParticle): void {
+    public init(particle: ParticleType): void {
         if (this._mode === "static") {
             particle.tint = this._staticValue;
             return;
@@ -188,7 +199,7 @@ export class ColorBehavior
     /**
      * @inheritdoc
      */
-    public update(particle: EmitterParticle): void {
+    public update(particle: ParticleType): void {
         particle.tint = this._list.interpolate(particle.data.agePercent);
     }
 

@@ -139,7 +139,15 @@ export default {
                 items: [
                     {
                         text: "Custom Behaviors",
-                        link: "/custom-behavior",
+                        link: "/customization/custom-behavior",
+                    },
+                    {
+                        text: "Custom Data",
+                        link: "/customization/custom-particle-data",
+                    },
+                    {
+                        text: "Custom Particle",
+                        link: "/customization/custom-particle",
                     },
                 ],
             },
@@ -160,6 +168,9 @@ export default {
                 dateStyle: "short",
                 timeStyle: "short",
             },
+        },
+        outline: {
+            level: [2, 4],
         },
     },
 };

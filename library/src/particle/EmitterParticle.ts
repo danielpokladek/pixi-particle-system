@@ -2,7 +2,7 @@ import { Particle, Texture } from "pixi.js";
 
 /**
  * Base data structure for emitter particles.
- * @group Particle/
+ * @group EmitterParticle/
  */
 export type BaseParticleData = {
     /**
@@ -78,73 +78,129 @@ export type BaseParticleData = {
 
 /**
  * Base interface for particles used by the Emitter.
- * @group Particle/
+ * @template DataType Type describing the data object stored on particles.
+ * @group EmitterParticle/
  */
-export interface IEmitterParticle extends Particle {
+export interface IEmitterParticle<
+    DataType extends BaseParticleData = BaseParticleData,
+> extends Particle {
     /**
      * Particle data used by emitter behaviors.
      * @see {@link BaseParticleData} for the structure of the data.
      */
-    data: BaseParticleData;
+    data: DataType;
 
     /**
-     * Resets the particle to its initial state.
+     * Invoked when particle is fetched from pool.
      */
-    reset(): void;
+    onFetch(): void;
+
+    /**
+     * Invoked when particle is returned to pool.
+     */
+    onRecycle(): void;
+}
+
+/**
+ * Creates a new instance of BaseParticleData with default values.
+ * @returns A new BaseParticleData object with default values.
+ * @group EmitterParticle/
+ */
+export function createBaseParticleData(): BaseParticleData {
+    return {
+        age: 0,
+        agePercent: 0,
+        maxLifetime: 0,
+        oneOverLifetime: 0,
+        directionVectorX: 0,
+        directionVectorY: 0,
+        accelerationX: 0,
+        accelerationY: 0,
+        velocityX: 0,
+        velocityY: 0,
+        textureConfig: {
+            textures: [],
+            duration: 0,
+            elapsed: 0,
+            framerate: 0,
+            loop: false,
+        },
+    };
+}
+
+/**
+ * Resets the base particle data.
+ * @param data Data to reset.
+ * @group EmitterParticle/
+ */
+export function resetBaseParticleData(data: BaseParticleData): void {
+    data.age = 0;
+    data.agePercent = 0;
+    data.maxLifetime = 0;
+    data.oneOverLifetime = 0;
+
+    data.directionVectorX = 0;
+    data.directionVectorY = 0;
+
+    data.accelerationX = 0;
+    data.accelerationY = 0;
+
+    data.velocityX = 0;
+    data.velocityY = 0;
+
+    data.textureConfig.textures = [];
+    data.textureConfig.duration = 0;
+    data.textureConfig.elapsed = 0;
+    data.textureConfig.framerate = 0;
+    data.textureConfig.loop = false;
 }
 
 /**
  * Default implementation of a particle used by the Emitter.
- * @group Particle
+ * @template DataType Type describing the particle data structure. Any custom data structure must extend {@link BaseParticleData}.
+ * Any custom data will also need to be manually reset, as the default particle will only reset the base data.
+ * @group EmitterParticle
  */
-export class EmitterParticle extends Particle implements IEmitterParticle {
-    public data: BaseParticleData;
+export class EmitterParticle<
+    DataType extends BaseParticleData = BaseParticleData,
+>
+    extends Particle
+    implements IEmitterParticle<DataType>
+{
+    public data: DataType;
 
     /**
      * Creates a new EmitterParticle instance.
+     * @param data Particle data used by emitter behaviors.
      */
-    constructor() {
+    constructor(data: DataType) {
         super(Texture.EMPTY);
 
-        this.data = {} as BaseParticleData;
-        this.data.textureConfig = {} as BaseParticleData["textureConfig"];
-        this.reset();
+        this.data = data;
+        this.onRecycle();
     }
 
     /**
      * @inheritdoc
      */
-    public reset(): void {
-        this.texture = Texture.EMPTY;
+    public onFetch(): void {
+        this.alpha = 1;
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public onRecycle(): void {
         this.anchorX = 0.5;
         this.anchorY = 0.5;
 
-        this.alpha = 1;
+        this.alpha = 0;
 
         this.scaleX = 1;
         this.scaleY = 1;
 
         this.rotation = 0;
 
-        this.data.age = 0;
-        this.data.agePercent = 0;
-        this.data.maxLifetime = 0;
-        this.data.oneOverLifetime = 0;
-
-        this.data.directionVectorX = 0;
-        this.data.directionVectorY = 0;
-
-        this.data.accelerationX = 0;
-        this.data.accelerationY = 0;
-
-        this.data.velocityX = 0;
-        this.data.velocityY = 0;
-
-        this.data.textureConfig.textures = [];
-        this.data.textureConfig.duration = 0;
-        this.data.textureConfig.elapsed = 0;
-        this.data.textureConfig.framerate = 0;
-        this.data.textureConfig.loop = false;
+        resetBaseParticleData(this.data);
     }
 }
