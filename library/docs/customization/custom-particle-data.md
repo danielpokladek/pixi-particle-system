@@ -1,4 +1,4 @@
-# Creating Custom Particle Data
+# Creating Custom Data
 
 Sometimes, when creating specific visual effects, we need to store additional custom data on the particles. This functionality becomes especially useful, when combined with [Custom Behaviors](./custom-behavior).
 
@@ -9,8 +9,8 @@ You generally only need to create a custom particle data when:
 - You need to store meta data on particles, such as unique ID.
 - You need to store extra data that is used in custom behaviors, such as cached noise values.
 
-> [!NOTE]
-> This page focuses purely on defining and writing custom particle data. Creating custom behaviors that consume data is covered separately.
+> [!WARNING]
+> This page is designed for advanced use, before creating custom particle data I'd highly recommend getting familiar with [creating custom behaviors](./custom-behavior), as the guide assumes you are familiar with creating custom behaviors.
 
 ## Setup
 

@@ -142,7 +142,7 @@ export default {
                         link: "/customization/custom-behavior",
                     },
                     {
-                        text: "Custom Particle Data",
+                        text: "Custom Data",
                         link: "/customization/custom-particle-data",
                     },
                     {
