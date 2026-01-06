@@ -169,5 +169,8 @@ export default {
                 timeStyle: "short",
             },
         },
+        outline: {
+            level: [2, 4],
+        },
     },
 };
