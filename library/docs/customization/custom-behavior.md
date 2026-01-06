@@ -77,7 +77,7 @@ As the name suggests, this is a reset method for the behavior - currently this i
 
 Now we need to define whether our behavior will initialize or update (or both) the particles.
 
-If we want to set something on the particle when its first created, we can do that using the [`InitBehavior`](./api/interfaces/InitBehavior.md) interface. On the other hand, if we want to set something on the particle each frame when the emitter updates, we can do that using the [`UpdateBehavior`](../api/interfaces/UpdateBehavior.md) interface.
+If we want to set something on the particle when its first created, we can do that using the [`InitBehavior`](../api/interfaces/InitBehavior.md) interface. On the other hand, if we want to set something on the particle each frame when the emitter updates, we can do that using the [`UpdateBehavior`](../api/interfaces/UpdateBehavior.md) interface.
 
 In our case, we will both set the scale during initialization and update, so we want to implement both interfaces and their functions.
 
