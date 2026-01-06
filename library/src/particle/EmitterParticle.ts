@@ -91,9 +91,14 @@ export interface IEmitterParticle<
     data: Data;
 
     /**
-     * Resets the particle to its initial state.
+     * Invoked when particle is fetched from pool.
      */
-    reset(): void;
+    onFetch(): void;
+
+    /**
+     * Invoked when particle is returned to pool.
+     */
+    onRecycle(): void;
 }
 
 /**
@@ -124,6 +129,33 @@ export function createBaseParticleData(): BaseParticleData {
 }
 
 /**
+ * Resets the base particle data.
+ * @param data Data to reset.
+ * @group Particle/
+ */
+export function resetBaseParticleData(data: BaseParticleData): void {
+    data.age = 0;
+    data.agePercent = 0;
+    data.maxLifetime = 0;
+    data.oneOverLifetime = 0;
+
+    data.directionVectorX = 0;
+    data.directionVectorY = 0;
+
+    data.accelerationX = 0;
+    data.accelerationY = 0;
+
+    data.velocityX = 0;
+    data.velocityY = 0;
+
+    data.textureConfig.textures = [];
+    data.textureConfig.duration = 0;
+    data.textureConfig.elapsed = 0;
+    data.textureConfig.framerate = 0;
+    data.textureConfig.loop = false;
+}
+
+/**
  * Default implementation of a particle used by the Emitter.
  * @template Data Type describing the particle data structure. Any custom data structure must extend {@link BaseParticleData}.
  * Any custom data will also need to be manually reset, as the default particle will only reset the base data.
@@ -143,43 +175,30 @@ export class EmitterParticle<Data extends BaseParticleData = BaseParticleData>
         super(Texture.EMPTY);
 
         this.data = data;
-        this.reset();
+        this.onRecycle();
     }
 
     /**
      * @inheritdoc
      */
-    public reset(): void {
-        this.texture = Texture.EMPTY;
+    public onFetch(): void {
+        this.alpha = 1;
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public onRecycle(): void {
         this.anchorX = 0.5;
         this.anchorY = 0.5;
 
-        this.alpha = 1;
+        this.alpha = 0;
 
         this.scaleX = 1;
         this.scaleY = 1;
 
         this.rotation = 0;
 
-        this.data.age = 0;
-        this.data.agePercent = 0;
-        this.data.maxLifetime = 0;
-        this.data.oneOverLifetime = 0;
-
-        this.data.directionVectorX = 0;
-        this.data.directionVectorY = 0;
-
-        this.data.accelerationX = 0;
-        this.data.accelerationY = 0;
-
-        this.data.velocityX = 0;
-        this.data.velocityY = 0;
-
-        this.data.textureConfig.textures = [];
-        this.data.textureConfig.duration = 0;
-        this.data.textureConfig.elapsed = 0;
-        this.data.textureConfig.framerate = 0;
-        this.data.textureConfig.loop = false;
+        resetBaseParticleData(this.data);
     }
 }

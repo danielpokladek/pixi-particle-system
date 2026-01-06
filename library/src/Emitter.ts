@@ -503,7 +503,7 @@ export class Emitter<
 
             if (this._pooledParticles.length > 0) {
                 particle = this._pooledParticles.pop()!;
-                particle.reset();
+                particle.onFetch();
             } else {
                 const particleData = this._dataFactory();
                 particle = this._particleFactory(particleData);
@@ -717,7 +717,7 @@ export class Emitter<
 
                     if (this._pooledParticles.length > 0) {
                         particle = this._pooledParticles.pop()!;
-                        particle.reset();
+                        particle.onFetch();
                     } else {
                         const particleData = this._dataFactory();
                         particle = this._particleFactory(particleData);
@@ -774,7 +774,7 @@ export class Emitter<
     private recycleParticle(particle: ParticleType): void {
         this._parent.removeParticle(particle);
 
-        particle.reset();
+        particle.onRecycle();
 
         this._pooledParticles.push(particle);
     }
