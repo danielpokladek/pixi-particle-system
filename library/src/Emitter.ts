@@ -8,6 +8,7 @@ import { ScaleBehavior } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { TextureBehavior } from "./behavior/built-in/TextureBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
+import { Ease, EaseFunction, getEaseFunction } from "./data/easing/Ease";
 import { EmitterConfig } from "./EmitterConfig";
 import {
     BaseParticleData,
@@ -115,6 +116,9 @@ export class Emitter<
     private readonly _spawnBehavior: SpawnBehavior<DataType, ParticleType>;
     // prettier-ignore
     private readonly _textureBehavior: TextureBehavior<DataType, ParticleType>;
+
+    private _ease: Ease = "linear";
+    private _easeFunction: EaseFunction | null = null;
 
     private _minLifetime: number = 1;
     private _maxLifetime: number = 3;
@@ -286,6 +290,17 @@ export class Emitter<
     }
 
     /**
+     * Ease applied to particle lifetime.
+     */
+    public get ease(): Ease {
+        return this._ease;
+    }
+    public set ease(value: Ease) {
+        this._ease = value;
+        this._easeFunction = getEaseFunction(this._ease);
+    }
+
+    /**
      * Alpha behavior of the emitter.
      */
     public get alphaBehavior(): AlphaBehavior<DataType, ParticleType> {
@@ -349,6 +364,14 @@ export class Emitter<
         this._maxParticles = config.maxParticles ?? 500;
         this._addAtBack = config.addAtBack ?? true;
         this._particlesPerWave = config.particlesPerWave ?? 1;
+
+        if (config.ease) {
+            this._ease = config.ease;
+            this._easeFunction = getEaseFunction(config.ease);
+        } else {
+            this._ease = "linear";
+            this._easeFunction = null;
+        }
 
         if (config.alphaBehavior) {
             this._alphaBehavior.applyConfig(config.alphaBehavior);
@@ -664,7 +687,13 @@ export class Emitter<
 
                 this.recycleParticle(particle);
             } else {
-                // TODO: Lifetime ease implementation.
+                let lerp = particle.data.age * particle.data.oneOverLifetime;
+
+                if (this._easeFunction) {
+                    lerp = this._easeFunction(lerp);
+                }
+
+                particle.data.agePercent = lerp;
 
                 for (const behavior of this._updateBehaviors) {
                     behavior.update(particle, deltaTime);
@@ -730,6 +759,13 @@ export class Emitter<
                     const particleData = particle.data;
                     particleData.maxLifetime = lifetime;
                     particleData.oneOverLifetime = 1 / lifetime;
+
+                    let lerp =
+                        particle.data.age * particle.data.oneOverLifetime;
+
+                    if (this._easeFunction) {
+                        lerp = this._easeFunction(lerp);
+                    }
 
                     if (this._addAtBack) {
                         this._parent.addParticleAt(particle, 0);

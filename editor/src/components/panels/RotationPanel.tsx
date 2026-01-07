@@ -129,9 +129,11 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
                             ID: index,
                         }),
                     )}
-                    onChange={(newList) => {
+                    onChange={(list, ease, isStepped) => {
                         rotationBehavior.list.initialize({
-                            list: newList,
+                            list,
+                            ease,
+                            isStepped,
                         });
                     }}
                 />

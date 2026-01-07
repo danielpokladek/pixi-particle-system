@@ -111,9 +111,11 @@ export function MovementPanel({ isOpen }: PanelProps): JSX.Element {
                                 ID: index,
                             }),
                         )}
-                        onChange={(newList) => {
+                        onChange={(list, ease, isStepped) => {
                             movementBehavior.yList.initialize({
-                                list: newList,
+                                list,
+                                ease,
+                                isStepped,
                             });
                         }}
                     />

@@ -56,9 +56,11 @@ export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
                                 ID: index,
                             }),
                         )}
-                        onChange={(newList) => {
+                        onChange={(list, ease, isStepped) => {
                             scaleBehavior.xList.initialize({
-                                list: newList,
+                                list,
+                                ease,
+                                isStepped,
                             });
                         }}
                     />
@@ -71,9 +73,11 @@ export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
                                 ID: index,
                             }),
                         )}
-                        onChange={(newList) => {
+                        onChange={(list, ease, isStepped) => {
                             scaleBehavior.yList.initialize({
-                                list: newList,
+                                list,
+                                ease,
+                                isStepped,
                             });
                         }}
                     />

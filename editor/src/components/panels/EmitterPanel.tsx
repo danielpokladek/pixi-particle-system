@@ -4,6 +4,7 @@ import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/controls/Select";
 import { Toggle } from "../ui/controls/Toggle";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
+import { EaseDropdown } from "../ui/EaseDropdown";
 
 // TODO: Add remaining blend modes.
 
@@ -86,6 +87,14 @@ export function EmitterPanel({ isOpen = true }: PanelProps): JSX.Element {
                     if (selectedOption) {
                         emitter.parent.blendMode = selectedOption.key;
                     }
+                }}
+            />
+
+            <EaseDropdown
+                label="Lifetime Ease"
+                defaultValue={emitter.ease}
+                onChange={(value) => {
+                    emitter.ease = value;
                 }}
             />
 

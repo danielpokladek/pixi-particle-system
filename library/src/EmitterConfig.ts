@@ -5,6 +5,7 @@ import { RotationBehaviorConfig } from "./behavior/built-in/RotationBehavior";
 import { ScaleBehaviorConfig } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehaviorConfig } from "./behavior/built-in/SpawnBehavior";
 import { TextureBehaviorConfig } from "./behavior/built-in/TextureBehavior";
+import { Ease } from "./data/easing/Ease";
 
 /**
  * Type describing the configuration options for an Emitter.
@@ -50,6 +51,11 @@ export type EmitterConfig = {
      * Number of particles to spawn each wave.
      */
     particlesPerWave?: number;
+
+    /**
+     * Easing applied to particle's lifetime.
+     */
+    ease?: Ease;
 
     /**
      * Configuration for the AlphaBehavior.

@@ -1,5 +1,5 @@
 import { EmitterError } from "../../error";
-import { SimpleEase } from "../../util";
+import { Ease, EaseFunction, getEaseFunction } from "../easing/Ease";
 
 /**
  * Default interpolate function that throws an error indicating it has not been set.
@@ -24,7 +24,7 @@ export type ListStep<ValueType> = {
  */
 export type ListData<ValueType> = {
     list: ListStep<ValueType>[];
-    ease?: SimpleEase;
+    ease?: Ease;
     isStepped?: boolean;
 };
 
@@ -50,9 +50,9 @@ export abstract class List<
     ListDataType = OutputValue,
 > {
     protected _first: ListNode<ListDataType> | null = null;
-    protected _ease: SimpleEase | null = null;
-    protected _list: ListStep<InputValue>[] = [];
 
+    protected _list: ListStep<InputValue>[] = [];
+    protected _easeFunction: EaseFunction | null = null;
     protected _isStepped = false;
 
     /**
@@ -84,16 +84,6 @@ export abstract class List<
     }
 
     /**
-     * Ease function applied to the list.
-     */
-    public get ease(): SimpleEase | null {
-        return this._ease;
-    }
-    public set ease(value: SimpleEase | null) {
-        this._ease = value;
-    }
-
-    /**
      * Indicates whether the list uses stepped interpolation.
      */
     public get isStepped(): boolean {
@@ -119,9 +109,13 @@ export abstract class List<
         this.initializeList(data);
 
         this._list = data.list;
-
         this._isStepped = !!data.isStepped;
-        this._ease = data.ease || null;
+
+        if (data.ease) {
+            this._easeFunction = getEaseFunction(data.ease);
+        } else {
+            this._easeFunction = null;
+        }
     }
 
     /**
@@ -130,7 +124,7 @@ export abstract class List<
     public reset(): void {
         this._first = null;
         this._isStepped = false;
-        this._ease = null;
+        this._easeFunction = null;
 
         this.interpolate = (): OutputValue =>
             defaultInterpolateFunction<OutputValue>();
