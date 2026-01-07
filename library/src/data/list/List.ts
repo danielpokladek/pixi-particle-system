@@ -1,5 +1,5 @@
 import { EmitterError } from "../../error";
-import { Ease, EaseFunction, getEaseFunction } from "../Ease";
+import { Ease, EaseFunction, getEaseFunction } from "../easing/Ease";
 
 /**
  * Default interpolate function that throws an error indicating it has not been set.

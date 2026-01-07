@@ -3,14 +3,10 @@
 // Source: https://github.com/Michaelangel007/easing
 // ---
 
-import { backIn, backInOut, backOut } from "./easing/eases/BackEase";
-import { bounceIn, bounceInOut, bounceOut } from "./easing/eases/BounceEase";
-import { circleIn, circleInOut, circleOut } from "./easing/eases/CircleEase";
-import {
-    elasticIn,
-    elasticInOut,
-    elasticOut,
-} from "./easing/eases/ElasticEase";
+import { backIn, backInOut, backOut } from "./eases/BackEase";
+import { bounceIn, bounceInOut, bounceOut } from "./eases/BounceEase";
+import { circleIn, circleInOut, circleOut } from "./eases/CircleEase";
+import { elasticIn, elasticInOut, elasticOut } from "./eases/ElasticEase";
 import {
     power2In,
     power2InOut,
@@ -24,8 +20,8 @@ import {
     power5In,
     power5InOut,
     power5Out,
-} from "./easing/eases/PowerEase";
-import { sineIn, sineInOut, sineOut } from "./easing/eases/SineEase";
+} from "./eases/PowerEase";
+import { sineIn, sineInOut, sineOut } from "./eases/SineEase";
 
 /**
  * Type describing an easing function.

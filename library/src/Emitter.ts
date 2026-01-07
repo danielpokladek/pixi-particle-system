@@ -8,7 +8,7 @@ import { ScaleBehavior } from "./behavior/built-in/ScaleBehavior";
 import { SpawnBehavior } from "./behavior/built-in/SpawnBehavior";
 import { TextureBehavior } from "./behavior/built-in/TextureBehavior";
 import { InitBehavior, UpdateBehavior } from "./behavior/EmitterBehavior";
-import { Ease, EaseFunction, getEaseFunction } from "./data/Ease";
+import { Ease, EaseFunction, getEaseFunction } from "./data/easing/Ease";
 import { EmitterConfig } from "./EmitterConfig";
 import {
     BaseParticleData,
