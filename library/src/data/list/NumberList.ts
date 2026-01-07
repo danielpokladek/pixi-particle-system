@@ -14,7 +14,7 @@ function simpleValue(this: List<number>, lerp: number): number {
         );
     }
 
-    if (this.ease) lerp = this.ease(lerp);
+    if (this._easeFunction) lerp = this._easeFunction(lerp);
 
     if (lerp <= 0) return this.first.value;
     if (lerp >= 1) return this.first.next.value;
@@ -29,7 +29,7 @@ function simpleValue(this: List<number>, lerp: number): number {
  * @returns The interpolated value.
  */
 function complexValue(this: List<number>, lerp: number): number {
-    if (this.ease) lerp = this.ease(lerp);
+    if (this._easeFunction) lerp = this._easeFunction(lerp);
 
     // make sure we are on the right segment
     let current = this.first;
@@ -65,7 +65,7 @@ function complexValue(this: List<number>, lerp: number): number {
  * @returns The interpolated value.
  */
 function steppedValue(this: List<number>, lerp: number): number {
-    if (this.ease) lerp = this.ease(lerp);
+    if (this._easeFunction) lerp = this._easeFunction(lerp);
 
     let current = this.first;
 
