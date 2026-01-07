@@ -64,9 +64,11 @@ export function ColorPanel({ isOpen = true }: PanelProps): JSX.Element {
                         value: Color.shared.setValue(step.value).toHex(),
                         ID: index,
                     }))}
-                    onChange={(newList) => {
+                    onChange={(list, ease, isStepped) => {
                         colorBehavior.list.initialize({
-                            list: newList,
+                            list,
+                            ease,
+                            isStepped,
                         });
                     }}
                 />

@@ -2,6 +2,7 @@ import { Ease, ListStep } from "pixi-particle-system";
 import { useState } from "react";
 import { Input } from "../../base/Input";
 import { EaseDropdown } from "../../EaseDropdown";
+import { Toggle } from "../Toggle";
 
 // ? TODO: Should the list auto sort on change?
 
@@ -12,7 +13,11 @@ type ListStepData = {
 type Props = {
     label: string;
     defaultList: ListStepData[];
-    onChange?: (list: ListStep<string>[], ease: Ease) => void;
+    onChange?: (
+        list: ListStep<string>[],
+        ease: Ease,
+        isStepped: boolean,
+    ) => void;
 };
 
 /**
@@ -26,13 +31,14 @@ export function ColorList({
 }: Props): JSX.Element {
     const [list, setList] = useState<ListStepData[]>(defaultList);
     const [ease, setEase] = useState<Ease>("linear");
+    const [stepped, setStepped] = useState<boolean>(false);
 
     const changeTimeAtIndex = (index: number, value: number): void => {
         const newList = [...list];
         newList[index].time = value;
 
         setList(newList);
-        onChange?.(newList, ease);
+        onChange?.(newList, ease, stepped);
     };
 
     const changeColorAtIndex = (index: number, value: string): void => {
@@ -40,7 +46,7 @@ export function ColorList({
         newList[index].value = value;
 
         setList(newList);
-        onChange?.(newList, ease);
+        onChange?.(newList, ease, stepped);
     };
 
     const addListEntry = (): void => {
@@ -52,7 +58,7 @@ export function ColorList({
 
         const newList = [...list, newStep];
         setList(newList);
-        onChange?.(newList, ease);
+        onChange?.(newList, ease, stepped);
     };
 
     const removeListEntryAtIndex = (index: number): void => {
@@ -60,26 +66,35 @@ export function ColorList({
         newList.splice(index, 1);
 
         setList(newList);
-        onChange?.(newList, ease);
+        onChange?.(newList, ease, stepped);
     };
 
     const sortList = (): void => {
         const newList = [...list].sort((a, b) => a.time - b.time);
 
         setList(newList);
-        onChange?.(newList, ease);
+        onChange?.(newList, ease, stepped);
     };
 
     return (
         <>
             <details open>
                 <summary>{label}</summary>
+                <Toggle
+                    label="Is Stepped"
+                    defaultValue={stepped}
+                    onChange={(value) => {
+                        setStepped(value);
+                        onChange?.(list, ease, value);
+                    }}
+                />
+
                 <EaseDropdown
                     label="Ease"
                     defaultValue={"linear"}
                     onChange={(value) => {
                         setEase(value);
-                        onChange?.(list, value);
+                        onChange?.(list, value, stepped);
                     }}
                 />
                 <div
@@ -125,9 +140,6 @@ export function ColorList({
                     ))}
                     <div role="group">
                         <button onClick={() => addListEntry()}>New</button>
-
-                        {/* <hr /> */}
-
                         <button onClick={() => sortList()}>Sort</button>
                     </div>
                 </div>

@@ -64,9 +64,11 @@ export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
                         value: step.value,
                         ID: idCounter++,
                     }))}
-                    onChange={(newList) => {
+                    onChange={(list, ease, isStepped) => {
                         alphaBehavior.list.initialize({
-                            list: newList,
+                            list,
+                            ease,
+                            isStepped,
                         });
                     }}
                 />
