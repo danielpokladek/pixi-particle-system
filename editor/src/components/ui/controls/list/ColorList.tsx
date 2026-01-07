@@ -1,6 +1,7 @@
-import { ListStep } from "pixi-particle-system";
+import { Ease, ListStep } from "pixi-particle-system";
 import { useState } from "react";
 import { Input } from "../../base/Input";
+import { EaseDropdown } from "../../EaseDropdown";
 
 // ? TODO: Should the list auto sort on change?
 
@@ -11,7 +12,7 @@ type ListStepData = {
 type Props = {
     label: string;
     defaultList: ListStepData[];
-    onChange?: (list: ListStep<string>[]) => void;
+    onChange?: (list: ListStep<string>[], ease: Ease) => void;
 };
 
 /**
@@ -24,13 +25,14 @@ export function ColorList({
     onChange,
 }: Props): JSX.Element {
     const [list, setList] = useState<ListStepData[]>(defaultList);
+    const [ease, setEase] = useState<Ease>("linear");
 
     const changeTimeAtIndex = (index: number, value: number): void => {
         const newList = [...list];
         newList[index].time = value;
 
         setList(newList);
-        onChange?.(newList);
+        onChange?.(newList, ease);
     };
 
     const changeColorAtIndex = (index: number, value: string): void => {
@@ -38,7 +40,7 @@ export function ColorList({
         newList[index].value = value;
 
         setList(newList);
-        onChange?.(newList);
+        onChange?.(newList, ease);
     };
 
     const addListEntry = (): void => {
@@ -50,7 +52,7 @@ export function ColorList({
 
         const newList = [...list, newStep];
         setList(newList);
-        onChange?.(newList);
+        onChange?.(newList, ease);
     };
 
     const removeListEntryAtIndex = (index: number): void => {
@@ -58,20 +60,28 @@ export function ColorList({
         newList.splice(index, 1);
 
         setList(newList);
-        onChange?.(newList);
+        onChange?.(newList, ease);
     };
 
     const sortList = (): void => {
         const newList = [...list].sort((a, b) => a.time - b.time);
 
         setList(newList);
-        onChange?.(newList);
+        onChange?.(newList, ease);
     };
 
     return (
         <>
             <details open>
                 <summary>{label}</summary>
+                <EaseDropdown
+                    label="Ease"
+                    defaultValue={"linear"}
+                    onChange={(value) => {
+                        setEase(value);
+                        onChange?.(list, value);
+                    }}
+                />
                 <div
                     style={{
                         width: "100%",
