@@ -290,6 +290,17 @@ export class Emitter<
     }
 
     /**
+     * Ease applied to particle lifetime.
+     */
+    public get ease(): Ease {
+        return this._ease;
+    }
+    public set ease(value: Ease) {
+        this._ease = value;
+        this._easeFunction = getEaseFunction(this._ease);
+    }
+
+    /**
      * Alpha behavior of the emitter.
      */
     public get alphaBehavior(): AlphaBehavior<DataType, ParticleType> {
