@@ -16,7 +16,6 @@
     "author": "Daniel Pokladek",
     "license": "MIT",
     "type": "module",
-    "private": "false",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -35,7 +34,8 @@
         "build:typedoc": "typedoc",
         "dev:lib": "vite build --watch --mode development",
         "dev:typedoc": "typedoc --watch",
-        "dev:vitepress": "vitepress dev docs"
+        "dev:vitepress": "vitepress dev docs",
+        "release:lib": "semantic-release"
     },
     "peerDependencies": {
         "pixi.js": "^8.0.0"

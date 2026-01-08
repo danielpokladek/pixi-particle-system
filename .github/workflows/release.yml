@@ -41,6 +41,10 @@ jobs:
           pnpm build:editor &
           wait
 
+      - name: Copy Readme
+        run: |
+          cp -r README.md /library/
+
       - name: Combine Artifacts
         run: |
           mkdir -p combined
@@ -52,6 +56,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: combined
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm release:library
 
   deploy:
     needs: build
