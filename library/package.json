@@ -1,6 +1,6 @@
 {
     "name": "pixi-particle-system",
-    "version": "dev",
+    "version": "0.0.0",
     "description": "A modern, flexible particle system for PixiJS.",
     "repository": {
         "type": "git",
