@@ -1,3 +1,4 @@
+import { DEG_TO_RAD, RAD_TO_DEG } from "pixi.js";
 import { NumberList } from "../../data/list/NumberList";
 import { Emitter } from "../../Emitter";
 import {
@@ -14,6 +15,17 @@ import {
     InitBehavior,
     UpdateBehavior,
 } from "../EmitterBehavior";
+
+/**
+ * Type describing the modes in which RotationBehavior can operate.
+ */
+type RotationBehaviorMode =
+    | "static"
+    | "list"
+    | "random"
+    | "random"
+    | "acceleration"
+    | "direction";
 
 /**
  * Type defining the configuration for direction mode.
@@ -48,11 +60,14 @@ export type AccelerationConfigType = {
 /**
  * Type defining the configuration for RotationBehavior.
  */
-export type RotationBehaviorConfig =
+export type RotationBehaviorConfig = {
+    useDegrees?: boolean;
+} & (
     | DirectionConfigType
     | BehaviorStaticConfig<number>
     | BehaviorSingleListConfig<number>
-    | AccelerationConfigType;
+    | AccelerationConfigType
+);
 
 /**
  * Behavior used to control the rotation of particles over their lifetime.
@@ -72,6 +87,7 @@ export type RotationBehaviorConfig =
  * ```ts
  * // Apply a static rotation of 45 degrees to all particles.
  * rotationBehavior.applyConfig({
+ *     mode: "static",
  *     value: Math.PI / 4
  * });
  *
@@ -97,8 +113,9 @@ export class RotationBehavior<
 {
     private readonly _list: NumberList;
 
-    private _mode: "static" | "list" | "random" | "acceleration" | "direction" =
-        "static";
+    private _mode: RotationBehaviorMode = "static";
+
+    private _useDegrees: boolean = false;
 
     private _staticValue: number = 0;
     private _startRotation: number = 0;
@@ -134,15 +151,10 @@ export class RotationBehavior<
     /**
      * Current mode used by the behavior.
      */
-    public get mode():
-        | "static"
-        | "list"
-        | "random"
-        | "acceleration"
-        | "direction" {
+    public get mode(): RotationBehaviorMode {
         return this._mode;
     }
-    public set mode(value: "static" | "list" | "acceleration" | "direction") {
+    public set mode(value: RotationBehaviorMode) {
         this._mode = value;
     }
 
@@ -150,9 +162,18 @@ export class RotationBehavior<
      * Static rotation value applied to all particles.
      */
     public get staticValue(): number {
+        if (this._useDegrees) {
+            return this._staticValue * RAD_TO_DEG;
+        }
+
         return this._staticValue;
     }
     public set staticValue(value: number) {
+        if (this._useDegrees) {
+            this._staticValue = value * DEG_TO_RAD;
+            return;
+        }
+
         this._staticValue = value;
     }
 
@@ -160,9 +181,18 @@ export class RotationBehavior<
      * Rotation acceleration applied over time (used for acceleration mode).
      */
     public get acceleration(): number {
+        if (this._useDegrees) {
+            return this._acceleration * RAD_TO_DEG;
+        }
+
         return this._acceleration;
     }
     public set acceleration(value: number) {
+        if (this._useDegrees) {
+            this._acceleration = value * DEG_TO_RAD;
+            return;
+        }
+
         this._acceleration = value;
     }
 
@@ -170,9 +200,18 @@ export class RotationBehavior<
      * Initial rotation value for the particle (used for acceleration mode).
      */
     public get startRotation(): number {
+        if (this._useDegrees) {
+            return this._startRotation * RAD_TO_DEG;
+        }
+
         return this._startRotation;
     }
     public set startRotation(value: number) {
+        if (this._useDegrees) {
+            this._startRotation = value * DEG_TO_RAD;
+            return;
+        }
+
         this._startRotation = value;
     }
 
@@ -184,6 +223,8 @@ export class RotationBehavior<
 
         this._emitter.addToActiveInitBehaviors(this);
 
+        this._useDegrees = config.useDegrees ?? false;
+
         if (config.mode === "direction") {
             this._mode = "direction";
             return;
@@ -191,15 +232,25 @@ export class RotationBehavior<
 
         if (config.mode === "static") {
             this._mode = "static";
-            this._staticValue = config.value;
+
+            this._staticValue = this._useDegrees
+                ? config.value * DEG_TO_RAD
+                : config.value;
+
             this._list.reset();
             return;
         }
 
         if (config.mode === "acceleration") {
             this._mode = "acceleration";
-            this._startRotation = config.startRotation;
-            this._acceleration = config.acceleration;
+
+            this._startRotation = this._useDegrees
+                ? config.startRotation * DEG_TO_RAD
+                : config.startRotation;
+
+            this._acceleration = this._useDegrees
+                ? config.acceleration * DEG_TO_RAD
+                : config.acceleration;
 
             this._list.reset();
             this._emitter.addToActiveUpdateBehaviors(this);
@@ -207,7 +258,18 @@ export class RotationBehavior<
         }
 
         this._mode = config.mode;
-        this._list.initialize(config.listData);
+        this._list.initialize({
+            ease: config.listData.ease,
+            isStepped: config.listData.isStepped,
+            list: config.listData.list.map((datum) => {
+                return {
+                    time: datum.time,
+                    value: this._useDegrees
+                        ? datum.value * DEG_TO_RAD
+                        : datum.value,
+                };
+            }),
+        });
 
         if (this._mode === "list") {
             this._emitter.addToActiveUpdateBehaviors(this);
@@ -226,13 +288,19 @@ export class RotationBehavior<
         }
 
         if (this._mode === "direction") {
-            return { mode: "direction" };
+            return {
+                mode: "direction",
+                useDegrees: this._useDegrees ? true : undefined,
+            };
         }
 
         if (this._mode === "static") {
             return {
-                value: this._staticValue,
+                value: this._useDegrees
+                    ? this._staticValue * RAD_TO_DEG
+                    : this._staticValue,
                 mode: "static",
+                useDegrees: this._useDegrees ? true : undefined,
             };
         }
 
@@ -240,16 +308,29 @@ export class RotationBehavior<
             return {
                 mode: this._mode,
                 listData: {
-                    list: this._list.list,
+                    list: this._list.list.map((datum) => {
+                        return {
+                            time: datum.time,
+                            value: this._useDegrees
+                                ? datum.value * RAD_TO_DEG
+                                : datum.value,
+                        };
+                    }),
                     isStepped: this._list.isStepped ? true : undefined,
                 },
+                useDegrees: this._useDegrees ? true : undefined,
             };
         }
 
         return {
-            startRotation: this._startRotation,
-            acceleration: this._acceleration,
+            startRotation: this._useDegrees
+                ? this._startRotation * RAD_TO_DEG
+                : this._startRotation,
+            acceleration: this._useDegrees
+                ? this._acceleration * RAD_TO_DEG
+                : this._acceleration,
             mode: "acceleration",
+            useDegrees: this._useDegrees ? true : undefined,
         };
     }
 
@@ -302,6 +383,7 @@ export class RotationBehavior<
      * @inheritdoc
      */
     protected reset(): void {
+        this._useDegrees = false;
         this._staticValue = 0;
         this._mode = "static";
 

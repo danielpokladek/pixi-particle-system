@@ -31,5 +31,5 @@
         "vitepress",
         "webgl"
     ],
-    "conventionalCommits.scopes": ["editor"]
+    "conventionalCommits.scopes": ["editor", "library"]
 }
