@@ -4,7 +4,7 @@
     "description": "A modern, flexible particle system for PixiJS.",
     "repository": {
         "type": "git",
-        "url": "https://github.com/danielpokladek/pixi-particle-system"
+        "url": "https://github.com/danielpokladek/pixi-particle-system.git"
     },
     "keywords": [
         "pixijs",
