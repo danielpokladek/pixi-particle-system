@@ -1,29 +1,35 @@
 {
-    "type": "module",
-    "devDependencies": {
-        "@eslint/js": "^9.39.1",
-        "eslint": "^9.39.1",
-        "eslint-plugin-jsdoc": "^61.5.0",
-        "pixi.js": "^8.14.3",
-        "prettier": "^3.6.2",
-        "typescript": "^5.6.2",
-        "typescript-eslint": "^8.49.0",
-        "vite": "^5.4.11",
-        "vitest": "^4.0.16"
-    },
-    "scripts": {
-        "installDep": "pnpm install && cd library && pnpm install && cd ../editor && pnpm install",
-        "action:installDep": "pnpm install --frozen-lockfile && cd library && pnpm install --frozen-lockfile && cd ../editor && pnpm install --frozen-lockfile",
-        "dev:library": "cd library && pnpm dev:lib",
-        "dev:docs": "cd library && pnpm dev:typedoc & pnpm dev:vitepress",
-        "dev:editor": "cd editor && pnpm dev",
-        "build:library": "cd library && pnpm build:lib",
-        "build:editor": "cd editor && pnpm build",
-        "build:docs": "cd library && pnpm build:docs",
-        "test": "vitest"
-    },
-    "dependencies": {
-        "@picocss/pico": "^2.1.1",
-        "theme-toggles": "^4.10.1"
-    }
+  "type": "module",
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.0",
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-jsdoc": "^61.5.0",
+    "husky": "^9.1.7",
+    "pixi.js": "^8.14.3",
+    "prettier": "^3.6.2",
+    "semantic-release": "25",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.49.0",
+    "vite": "^5.4.11",
+    "vitest": "^4.0.16"
+  },
+  "scripts": {
+    "installDep": "pnpm install && cd library && pnpm install && cd ../editor && pnpm install",
+    "action:installDep": "pnpm install --frozen-lockfile && cd library && pnpm install --frozen-lockfile && cd ../editor && pnpm install --frozen-lockfile",
+    "dev:library": "cd library && pnpm dev:lib",
+    "dev:docs": "cd library && pnpm dev:typedoc & pnpm dev:vitepress",
+    "dev:editor": "cd editor && pnpm dev",
+    "build:library": "cd library && pnpm build:lib",
+    "build:editor": "cd editor && pnpm build",
+    "build:docs": "cd library && pnpm build:docs",
+    "test": "vitest",
+    "release": "semantic-release",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@picocss/pico": "^2.1.1",
+    "theme-toggles": "^4.10.1"
+  }
 }
