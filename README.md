@@ -1,10 +1,16 @@
 # PixiJS Particle System
 
-
 <p align="center">
     <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" />
     <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" />
     <img src="https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220" />
+    <img src="https://img.shields.io/badge/pixijs-%23e72264.svg?style=for-the-badge">
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/github/license/danielpokladek/pixi-particle-system.svg?style=for-the-badge" />
+    <img src="https://img.shields.io/github/actions/workflow/status/danielpokladek/pixi-particle-system/release.yml?style=for-the-badge" />
+    <img src="https://img.shields.io/npm/v/pixi-particle-system?style=for-the-badge">
 </p>
 
 <p align="center">
@@ -13,7 +19,7 @@
     | <a href="https://danielpokladek.github.io/pixi-particle-system/api/classes/Emitter.html">API Reference</a>
 </p>
 
-A modern, flexible particle system for **PixiJS** - inspired by the original [Particle Emitter](https://github.com/pixijs-userland/particle-emitter/tree/master), but rebuilt with a clean TypeScript-first architecture and more expressive API.
+A modern, flexible particle system for **PixiJS** - a spiritual successor to [Particle Emitter](https://github.com/pixijs-userland/particle-emitter/tree/master), but rebuilt with a clean TypeScript-first architecture and more expressive API.
 
 ## Features
 - Built for PixiJS, provides seamless integration with V8's `ParticleContainer` and `Particle` objects.  
@@ -30,24 +36,15 @@ A modern, flexible particle system for **PixiJS** - inspired by the original [Pa
   - `SpawnBehavior`
   - `TextureBehavior`
 
-### Installation
+## Getting Started
 
-> This library is still under active early development and not yet published to NPM.
-
-You can clone the repo and install it locally:
+Add the library to existing PixiJS project:
 
 ```bash
-git clone git@github.com:danielpokladek/pixi-particle-system.git
-cd pixi-particle-system
-pnpm install
-pnpm build
-```
-Or add it directly as a GitHub dependency:
-```bash
-pnpm add github:danielpokladek/pixi-particle-system
+npm i pixi-particle-system
 ```
 
-### Quick Start
+### Usage
 
 Here's the minimum required to get particles on the screen:
 
@@ -66,125 +63,26 @@ const emitter = new Emitter(container);
 emitter.play();
 ```
 
-> Particles default to a 1x1 white texture.
-> If you don't see anything, assign a custom texture using `TextureBehavior` or custom scale using `ScaleBehavior`.
+Emitter automatically attaches itself to the PixiJS shared ticker, so you just need to tell it when to start/stop and everything else is handled for you!
 
-### Configuration Example
+By default particles will spawn in a single point, and they are using a 1x1 white texture (`Texture.WHITE`) - depending on your setup, you might need to either use a custom texture, or increase scale using `ScaleBehavior` to see them better.
 
-```typescript
-const emitter = new Emitter(container, {
-    emitterVersion: 0,
-    minParticleLifetime: 0.4,
-    maxParticleLifetime: 0.4,
-    spawnInterval: 0.01,
-    spawnChance: 1,
-    maxParticles: 50,
-    addAtBack: true,
-    particlesPerWave: 1,
+## Contributing
 
-    alphaBehavior: {
-        listData: {
-            list: [
-                { value: 0.0, time: 0.0 },
-                { value: 1.0, time: 0.5 },
-                { value: 0.0, time: 1.0 }
-            ]
-        },
-        mode: "list"
-    },
+Contributions are what make the open source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-    colorBehavior: {
-        listData: {
-            list: [
-                { value: "#ff0000", time: 0 },
-                { value: "#00ff00", time: 0.5 },
-                { value: "#0000ff", time: 1 },
-            ],
-        },
-        mode: "random",
-    },
+If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can also simply open an issue with the relevant tag. Don't forget to give the project a star! Than you! ❤️
 
-    movementBehavior: {
-        xListData: {
-            list: [
-                { value: 50, time: 0 },
-                { value: 150, time: 1 },
-            ],
-        },
-        yListData: {
-            list: [
-                { value: -100, time: 0 },
-                { value: 450, time: 1 },
-            ],
-        },
-        space: "local",
-        mode: "acceleration",
-    },
+See [CONTRIBUTING](/CONTRIBUTING.md) for more information about contributions.
 
-    scaleBehavior: {
-        mode: "list",
-        listData: {
-            list: [
-                { value: 0, time: 0 },
-                { value: 100, time: 1 },
-            ],
-        },
-    },
+## Releases
 
-    spawnBehavior: {
-        shape: "rectangle",
-        width: 400,
-        height: 400,
-    },
-});
+Visit [RELEASES](https://github.com/danielpokladek/pixi-particle-system/releases) to see previous releases, changelog, and the latest release.
 
-emitter.play();
-```
+## License
 
-### Documentation
+Distributed under the MIT License. See [LICENSE](/LICENSE) for more information.
 
-Full documentation, API reference, and guides: **TBA**
-(Will be linked once GitHub Pages deployment is live.)
+## Acknowledgements
 
-### Development
-
-```bash
-git clone git@github.com:danielpokladek/pixi-particle-system.git
-git cd pixi-particle-system
-pnpm install
-```
-
-Build (production)
-```bash
-pnpm build
-```
-
-Build & Watch (development)
-```bash
-pnpm dev
-```
-
-Generate Documentation
-```bash
-pnpm docs:build
-```
-
-### Contribute
-
-Contributions are welcome!
-
-If you'd like to help:
-
-1. Fork the repo.
-2. Create a feature/bugfix branch.
-3. Submit a PR with your changes.
-
-Contribution guidelines will be added soon.
-
-### Change Log
-
-[Releases](https://github.com/danielpokladek/pixi-particle-system/releases)
-
-### License
-
-This content is released under the [MIT License](https://opensource.org/license/MIT).
+Thank you to the PixiJS team, and it's contributors, for making a great web graphics framework. Thank you to CloudKid, and all of the contributors, for creating the original `particle-emitter` package - this one wouldn't exist without it.
