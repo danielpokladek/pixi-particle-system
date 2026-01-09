@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ExamplesModal } from "./modal/ExamplesModal";
 import { AlphaPanel } from "./panels/AlphaPanel";
 import { ColorPanel } from "./panels/ColorPanel";
 import { EmitterPanel } from "./panels/EmitterPanel";
@@ -14,10 +15,20 @@ export default function Sidebar(): JSX.Element {
     const emitter = window.particleEmitter;
     const [paused, setPaused] = useState(emitter.isPaused);
 
+    const [showExamples, setShowExamples] = useState(false);
+
     return (
         <aside className="sidebar">
             {emitter && (
                 <>
+                    {showExamples && (
+                        <ExamplesModal
+                            onClose={() => {
+                                setShowExamples(false);
+                            }}
+                        />
+                    )}
+
                     <div
                         style={{
                             display: "flex",
@@ -52,7 +63,12 @@ export default function Sidebar(): JSX.Element {
                         <button disabled style={{ flex: 1 }}>
                             Upload Custom Config
                         </button>
-                        <button disabled style={{ flex: 1 }}>
+                        <button
+                            style={{ flex: 1 }}
+                            onClick={() => {
+                                setShowExamples(true);
+                            }}
+                        >
                             Browse Examples
                         </button>
                     </div>

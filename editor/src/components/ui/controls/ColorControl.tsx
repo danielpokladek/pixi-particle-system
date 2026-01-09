@@ -22,7 +22,7 @@ export function ColorControl({
                 // Text input to avoid selection arrows on number input.
                 inputType="color"
                 defaultValue={defaultValue.toString()}
-                onChange={(value) => onChange?.(value)}
+                onUpdate={(value) => onChange?.(value)}
             />
         </div>
     );

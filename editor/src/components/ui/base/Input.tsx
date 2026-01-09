@@ -7,7 +7,9 @@ type Props = {
     min?: number;
     max?: number;
     step?: number;
+
     onChange?: (value: string) => void;
+    onUpdate?: (value: string) => void;
 };
 
 /**
@@ -16,6 +18,7 @@ type Props = {
  */
 export function Input({
     onChange,
+    onUpdate,
     inputType,
     defaultValue,
     disabled,
@@ -47,6 +50,14 @@ export function Input({
                 if (newValue === lastValueRef.current) return;
 
                 onChange?.(newValue);
+                lastValueRef.current = newValue;
+            }}
+            onChange={(e) => {
+                const newValue = e.currentTarget.value;
+
+                if (newValue === lastValueRef.current) return;
+
+                onUpdate?.(newValue);
                 lastValueRef.current = newValue;
             }}
         />
