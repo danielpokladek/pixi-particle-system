@@ -242,8 +242,6 @@ export class MovementBehavior<
             this._maxMoveSpeed.y = config.maxMoveSpeed.y;
 
             this._useList = false;
-
-            console.log(this._minMoveSpeed, this._maxMoveSpeed);
         } else {
             this._xList.initialize(config.xListData);
             this._yList.initialize(config.yListData ?? config.xListData);

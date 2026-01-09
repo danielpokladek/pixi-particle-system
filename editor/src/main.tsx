@@ -25,7 +25,9 @@ async function bootstrap(): Promise<void> {
     const particleContainer = new ParticleContainer();
     app.stage.addChild(particleContainer);
 
-    const particleEmitter = new Emitter(particleContainer, getDefaultConfig());
+    const defaultConfig = await getDefaultConfig();
+
+    const particleEmitter = new Emitter(particleContainer, defaultConfig);
 
     window.application = app;
     window.__PIXI_APP__ = app;

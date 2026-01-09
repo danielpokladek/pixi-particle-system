@@ -92,6 +92,8 @@ export default function App(): JSX.Element {
             window.removeEventListener("focus", handleFocused);
             window.removeEventListener("blur", handleBlurred);
 
+            window.particleEmitter.stop(true);
+
             window.fps = 0;
         };
     }, [particleContainer]);

@@ -29,8 +29,8 @@ const snowConfig: EmitterConfig = {
 
     movementBehavior: {
         space: "local",
-        minMoveSpeed: { x: -50, y: 50 },
-        maxMoveSpeed: { x: 50, y: 100 },
+        minMoveSpeed: { x: -50, y: 150 },
+        maxMoveSpeed: { x: 50, y: 200 },
     },
 
     scaleBehavior: {

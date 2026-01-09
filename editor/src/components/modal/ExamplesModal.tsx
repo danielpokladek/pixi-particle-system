@@ -19,11 +19,19 @@ type Props = {
     onClose: () => void;
 };
 
+let isLoading = false;
+
 /**
  * Loads the example configuration into the emitter.
  * @param preset The example preset to load.
  */
 async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
+    if (isLoading) {
+        return;
+    }
+
+    isLoading = true;
+
     const config = await exampleToConfigs[preset]();
 
     const emitter = window.particleEmitter;
@@ -31,6 +39,8 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
     emitter.stop(true);
     emitter.applyConfig(config);
     emitter.play();
+
+    isLoading = false;
 }
 
 /**
@@ -56,7 +66,18 @@ export function ExamplesModal({ onClose }: Props): JSX.Element {
                             <strong>Particle Presets</strong>
                         </p>
                     </header>
-                    <p>Example configs will go here!</p>
+                    <p>
+                        Presets are ready-made particle configurations that set
+                        up an emitter's behaviors (spawn, movement, color,
+                        alpha, scale, textures, etc.) so you can quickly try a
+                        look without manually tweaking every setting.
+                    </p>
+                    <p>
+                        Select a preset to preview its configuration, then click
+                        <strong> Load</strong> to apply it to the current
+                        emitter. Click <strong>Cancel</strong> (or the close
+                        button) to close this modal without changing anything.
+                    </p>
                     <Select
                         label="Preset"
                         defaultValue={selectedPreset}
@@ -65,6 +86,7 @@ export function ExamplesModal({ onClose }: Props): JSX.Element {
                             setSelectedPreset(value as ExampleConfig);
                         }}
                     />
+
                     <footer>
                         <button
                             className="secondary"

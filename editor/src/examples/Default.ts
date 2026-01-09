@@ -1,7 +1,7 @@
 import { EmitterConfig } from "pixi-particle-system";
 import { Texture } from "pixi.js";
 
-const defaultConfig: EmitterConfig = {
+export const defaultConfig: EmitterConfig = {
     emitterVersion: "dev",
     minParticleLifetime: 2,
     maxParticleLifetime: 2,
@@ -56,21 +56,23 @@ const defaultConfig: EmitterConfig = {
         innerRadius: 50,
         direction: { x: 0, y: 1 },
     },
-
-    textureBehavior: {
-        mode: "static",
-        textureConfigs: [
-            {
-                textures: [Texture.WHITE],
-            },
-        ],
-    },
 };
 
 /**
  * Default config used when app is started.
  * @returns Emitter config.
  */
-export function getDefaultConfig(): EmitterConfig {
-    return { ...defaultConfig };
+export async function getDefaultConfig(): Promise<EmitterConfig> {
+    const config = { ...defaultConfig };
+
+    config.textureBehavior = {
+        mode: "static",
+        textureConfigs: [
+            {
+                textures: [Texture.WHITE],
+            },
+        ],
+    };
+
+    return config;
 }
