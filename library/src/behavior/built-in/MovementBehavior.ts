@@ -130,13 +130,13 @@ export class MovementBehavior<
     private readonly _xList: NumberList;
     private readonly _yList: NumberList;
 
+    private readonly _maxMoveSpeed: PointData = { x: 0, y: 0 };
+    private readonly _minMoveSpeed: PointData = { x: 0, y: 0 };
+
     private _mode: "acceleration" | "linear" = "linear";
     private _space: MovementSpace = "local";
 
     private _useList: boolean = false;
-
-    private _minMoveSpeed: PointData = { x: 0, y: 0 };
-    private _maxMoveSpeed: PointData = { x: 0, y: 0 };
 
     /**
      * Creates new instance of MovementBehavior.
@@ -235,9 +235,15 @@ export class MovementBehavior<
         super.applyConfig(config);
 
         if ("minMoveSpeed" in config && "maxMoveSpeed" in config) {
-            this._minMoveSpeed = config.minMoveSpeed;
-            this._maxMoveSpeed = config.maxMoveSpeed;
+            this._minMoveSpeed.x = config.minMoveSpeed.x;
+            this._minMoveSpeed.y = config.minMoveSpeed.y;
+
+            this._maxMoveSpeed.x = config.maxMoveSpeed.x;
+            this._maxMoveSpeed.y = config.maxMoveSpeed.y;
+
             this._useList = false;
+
+            console.log(this._minMoveSpeed, this._maxMoveSpeed);
         } else {
             this._xList.initialize(config.xListData);
             this._yList.initialize(config.yListData ?? config.xListData);
@@ -392,5 +398,8 @@ export class MovementBehavior<
         this._maxMoveSpeed.y = 0;
 
         this._useList = false;
+
+        this._emitter.removeFromActiveInitBehaviors(this);
+        this._emitter.removeFromActiveUpdateBehaviors(this);
     }
 }
