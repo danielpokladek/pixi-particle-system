@@ -200,6 +200,7 @@ export class EmitterParticle<
         this.scaleY = 1;
 
         this.rotation = 0;
+        this.tint = "#ffffff";
 
         resetBaseParticleData(this.data);
     }
