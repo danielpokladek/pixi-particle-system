@@ -1,14 +1,7 @@
 import "@picocss/pico/css/pico.pink.min.css";
-import { Application, extend } from "@pixi/react";
-import { ParticleContainer } from "pixi.js";
 import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
-import PixiStage from "./components/PixiStage";
 import Sidebar from "./components/Sidebar";
-
-extend({
-    ParticleContainer,
-});
 
 /**
  * Main application component.
@@ -34,6 +27,74 @@ export default function App(): JSX.Element {
             clearInterval(updateIntervalId);
         };
     }, [particleEmitter]);
+
+    useEffect(() => {
+        if (!canvasContainerRef.current) return;
+
+        const app = window.application;
+        const emitter = window.particleEmitter;
+
+        app.resizeTo = canvasContainerRef.current as HTMLElement;
+        canvasContainerRef.current.appendChild(window.application.canvas);
+
+        /**
+         * Repositions the particle container accordingly.
+         */
+        const handleResize = (): void => {
+            particleContainer.position.set(
+                app.renderer.width / 2,
+                app.renderer.height / 2,
+            );
+        };
+
+        /**
+         * Updates the FPS value on the window object.
+         */
+        const updateFPS = (): void => {
+            window.fps = app.ticker.FPS;
+        };
+
+        /**
+         * Handles the window gaining focus.
+         */
+        const handleFocused = (): void => {
+            emitter.resume();
+        };
+
+        /**
+         * Handles the window losing focus.
+         */
+        const handleBlurred = (): void => {
+            emitter.pause();
+        };
+
+        app.stage.addChild(particleContainer);
+        particleContainer.position.set(
+            app.renderer.width / 2,
+            app.renderer.height / 2,
+        );
+
+        app.ticker.add(updateFPS);
+        app.renderer.on("resize", handleResize);
+
+        window.particleEmitter.play();
+
+        window.__PIXI_APP__ = app;
+
+        window.addEventListener("focus", handleFocused);
+        window.addEventListener("blur", handleBlurred);
+
+        return (): void => {
+            app.ticker.remove(updateFPS);
+            app.stage.removeChild(particleContainer);
+            app.renderer.off("resize", handleResize);
+
+            window.removeEventListener("focus", handleFocused);
+            window.removeEventListener("blur", handleBlurred);
+
+            window.fps = 0;
+        };
+    }, [particleContainer]);
 
     return (
         <>
@@ -63,14 +124,7 @@ export default function App(): JSX.Element {
                         <div
                             ref={canvasContainerRef}
                             className="canvas-container"
-                        >
-                            <Application resizeTo={canvasContainerRef}>
-                                <PixiStage
-                                    particleContainer={particleContainer}
-                                    emitter={particleEmitter}
-                                />
-                            </Application>
-                        </div>
+                        />
                     </div>
                 </div>
             )}

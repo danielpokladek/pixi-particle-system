@@ -1,5 +1,6 @@
 import { BLEND_MODES } from "pixi.js";
 import { PanelProps } from "../../Types";
+import { ColorControl } from "../ui/controls/ColorControl";
 import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/controls/Select";
 import { Toggle } from "../ui/controls/Toggle";
@@ -28,6 +29,14 @@ export function EmitterPanel({ isOpen = true }: PanelProps): JSX.Element {
     return (
         <details open={isOpen}>
             <summary>Emitter</summary>
+
+            <ColorControl
+                label="Background"
+                defaultValue="#000000"
+                onChange={(value) => {
+                    window.application.renderer.background.color = value;
+                }}
+            />
 
             <Vector2DControl
                 label="Particle Lifetime"

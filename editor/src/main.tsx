@@ -1,5 +1,5 @@
 import { Emitter, EmitterConfig } from "pixi-particle-system";
-import { ParticleContainer, Texture } from "pixi.js";
+import { Application, Assets, ParticleContainer, Texture } from "pixi.js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -75,20 +75,44 @@ const defaultConfig: EmitterConfig = {
     },
 };
 
-const particleContainer = new ParticleContainer();
-const particleEmitter = new Emitter(particleContainer, defaultConfig);
+/**
+ * Bootstraps the application.
+ */
+async function bootstrap(): Promise<void> {
+    const app = new Application();
+    await app.init({
+        antialias: true,
+        resolution: 1,
+        preference: "webgl",
+    });
 
-window.particleContainer = particleContainer;
-window.particleEmitter = particleEmitter;
+    const snowflake = "./snowflake.png";
 
-const root = document.getElementById("root");
+    Assets.add({ alias: "snowflake", src: snowflake });
 
-if (!root) {
-    throw new EditorError("Root element not found!");
+    const particleContainer = new ParticleContainer();
+    app.stage.addChild(particleContainer);
+
+    const particleEmitter = new Emitter(particleContainer, defaultConfig);
+
+    window.application = app;
+    window.__PIXI_APP__ = app;
+    window.particleContainer = particleContainer;
+    window.particleEmitter = particleEmitter;
+
+    const root = document.getElementById("root");
+
+    if (!root) {
+        throw new EditorError("Root element not found!");
+    }
+
+    createRoot(root).render(
+        <StrictMode>
+            <App />
+        </StrictMode>,
+    );
 }
 
-createRoot(root).render(
-    <StrictMode>
-        <App />
-    </StrictMode>,
-);
+bootstrap().catch((error) => {
+    throw new EditorError(`Failed to bootstrap the application - ${error}`);
+});

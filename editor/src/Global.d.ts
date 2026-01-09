@@ -8,6 +8,7 @@ declare global {
 
         __PIXI_APP__: Application;
 
+        application: Application;
         particleContainer: ParticleContainer;
         particleEmitter: Emitter;
     }
