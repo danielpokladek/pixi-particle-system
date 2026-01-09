@@ -14,6 +14,36 @@ export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
     const alphaBehavior = window.particleEmitter.alphaBehavior;
     const [useList, setUseList] = useState(alphaBehavior.mode !== "static");
 
+    const [behaviorState, setBehaviorState] = useState(() => ({
+        mode: alphaBehavior.mode,
+        staticValue: alphaBehavior.staticValue,
+        list: alphaBehavior.list,
+    }));
+
+    const [refreshKey, setRefreshKey] = useState<number>(0);
+
+    useEffect(() => {
+        const refreshFromEmitter = (): void => {
+            setBehaviorState({
+                mode: alphaBehavior.mode,
+                staticValue: alphaBehavior.staticValue,
+                list: alphaBehavior.list,
+            });
+
+            setUseList(alphaBehavior.mode !== "static");
+            setRefreshKey((key) => key + 1);
+        };
+
+        window.addEventListener("emitterConfigApplied", refreshFromEmitter);
+
+        return (): void => {
+            window.removeEventListener(
+                "emitterConfigApplied",
+                refreshFromEmitter,
+            );
+        };
+    }, [alphaBehavior]);
+
     useEffect(() => {
         if (!alphaBehavior.list.isInitialized) {
             alphaBehavior.list.initialize({
@@ -30,9 +60,14 @@ export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
             <summary>Alpha Behavior</summary>
 
             <Select
+                key={`${refreshKey}-alphaBehaviorMode`}
                 label="Behavior Mode"
-                defaultValue={alphaBehavior.mode}
+                defaultValue={behaviorState.mode}
                 onChange={(value) => {
+                    alphaBehavior.list.initialize({
+                        list: behaviorState.list.list,
+                        isStepped: behaviorState.list.isStepped,
+                    });
                     alphaBehavior.mode = value as "static" | "list" | "random";
                     setUseList(value !== "static");
                 }}
@@ -47,8 +82,9 @@ export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
 
             {!useList && (
                 <NumberControl
+                    key={`${refreshKey}-alphaStaticValue`}
                     label="Static Value"
-                    defaultValue={alphaBehavior.staticValue}
+                    defaultValue={behaviorState.staticValue}
                     onChange={(value) => {
                         window.particleEmitter.alphaBehavior.staticValue =
                             value;
@@ -58,8 +94,9 @@ export function AlphaPanel({ isOpen = true }: PanelProps): JSX.Element {
 
             {useList && (
                 <ValueList
+                    key={`${refreshKey}-alphaValueList`}
                     label="Alpha List"
-                    defaultList={alphaBehavior.list.list.map((step) => ({
+                    defaultList={behaviorState.list.list.map((step) => ({
                         time: step.time,
                         value: step.value,
                         ID: idCounter++,

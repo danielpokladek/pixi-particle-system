@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
 import { ValueList } from "../ui/controls/list/ValueList";
 import { Select } from "../ui/controls/Select";
@@ -11,20 +11,54 @@ import { Vector2DControl } from "../ui/controls/Vector2DControl";
 export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
     const emitter = window.particleEmitter;
     const scaleBehavior = emitter.scaleBehavior;
-    const [showList, setShowList] = useState(scaleBehavior.mode !== "static");
+
+    const [behaviorState, setBehaviorState] = useState(() => ({
+        mode: scaleBehavior.mode,
+        staticValue: scaleBehavior.staticValue,
+        xList: scaleBehavior.xList,
+        yList: scaleBehavior.yList,
+    }));
+
+    const [refreshKey, setRefreshKey] = useState<number>(0);
+
+    useEffect(() => {
+        const refreshFromEmitter = (): void => {
+            setBehaviorState({
+                mode: scaleBehavior.mode,
+                staticValue: scaleBehavior.staticValue,
+                xList: scaleBehavior.xList,
+                yList: scaleBehavior.yList,
+            });
+
+            setRefreshKey((key) => key + 1);
+        };
+
+        window.addEventListener("emitterConfigApplied", refreshFromEmitter);
+
+        return (): void => {
+            window.removeEventListener(
+                "emitterConfigApplied",
+                refreshFromEmitter,
+            );
+        };
+    }, [scaleBehavior, emitter]);
 
     return (
         <details open={isOpen}>
             <summary>Scale Behavior</summary>
 
             <Select
+                key={`${refreshKey}-scaleBehaviorMode`}
                 label="Mode"
-                defaultValue={emitter.scaleBehavior.mode}
+                defaultValue={behaviorState.mode}
                 onChange={(value) => {
                     const newMode = value as "static" | "list" | "random";
                     emitter.scaleBehavior.mode = newMode;
 
-                    setShowList(newMode !== "static");
+                    setBehaviorState({
+                        ...behaviorState,
+                        mode: newMode,
+                    });
                 }}
                 options={[
                     { label: "Static", key: "static" },
@@ -33,23 +67,30 @@ export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
                 ]}
             />
 
-            {!showList && (
+            {behaviorState.mode === "static" && (
                 <Vector2DControl
+                    key={`${refreshKey}-scaleBehaviorStaticValue`}
                     label="Static Value"
-                    xDefault={scaleBehavior.staticValue.x}
-                    yDefault={scaleBehavior.staticValue.y}
+                    xDefault={behaviorState.staticValue.x}
+                    yDefault={behaviorState.staticValue.y}
                     onChange={(x, y) => {
                         scaleBehavior.staticValue.x = x;
                         scaleBehavior.staticValue.y = y;
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            staticValue: { x, y },
+                        });
                     }}
                 />
             )}
 
-            {showList && (
+            {behaviorState.mode !== "static" && (
                 <>
                     <ValueList
+                        key={`${refreshKey}-scaleBehaviorXList`}
                         label="X List"
-                        defaultList={scaleBehavior.xList.list.map(
+                        defaultList={behaviorState.xList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -62,11 +103,17 @@ export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
                                 ease,
                                 isStepped,
                             });
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                xList: scaleBehavior.xList,
+                            });
                         }}
                     />
                     <ValueList
+                        key={`${refreshKey}-scaleBehaviorYList`}
                         label="Y List"
-                        defaultList={scaleBehavior.yList.list.map(
+                        defaultList={behaviorState.yList.list.map(
                             (step, index) => ({
                                 time: step.time,
                                 value: step.value,
@@ -78,6 +125,11 @@ export function ScalePanel({ isOpen }: PanelProps): JSX.Element {
                                 list,
                                 ease,
                                 isStepped,
+                            });
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                yList: scaleBehavior.yList,
                             });
                         }}
                     />

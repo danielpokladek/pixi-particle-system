@@ -40,6 +40,8 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
     emitter.applyConfig(config);
     emitter.play();
 
+    window.dispatchEvent(new Event("emitterConfigApplied"));
+
     isLoading = false;
 }
 

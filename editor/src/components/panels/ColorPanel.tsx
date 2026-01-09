@@ -13,6 +13,36 @@ export function ColorPanel({ isOpen = true }: PanelProps): JSX.Element {
     const colorBehavior = window.particleEmitter.colorBehavior;
     const [useList, setUseList] = useState(colorBehavior.mode !== "static");
 
+    const [behaviorState, setBehaviorState] = useState(() => ({
+        mode: colorBehavior.mode,
+        staticValue: colorBehavior.staticValue,
+        list: colorBehavior.list,
+    }));
+
+    const [refreshKey, setRefreshKey] = useState<number>(0);
+
+    useEffect(() => {
+        const refreshFromEmitter = (): void => {
+            setBehaviorState({
+                mode: colorBehavior.mode,
+                staticValue: colorBehavior.staticValue,
+                list: colorBehavior.list,
+            });
+
+            setUseList(colorBehavior.mode !== "static");
+            setRefreshKey((key) => key + 1);
+        };
+
+        window.addEventListener("emitterConfigApplied", refreshFromEmitter);
+
+        return (): void => {
+            window.removeEventListener(
+                "emitterConfigApplied",
+                refreshFromEmitter,
+            );
+        };
+    }, [colorBehavior]);
+
     useEffect(() => {
         if (!colorBehavior.list.isInitialized) {
             colorBehavior.list.initialize({
@@ -29,10 +59,21 @@ export function ColorPanel({ isOpen = true }: PanelProps): JSX.Element {
             <summary>Color Behavior</summary>
 
             <Select
+                key={`${refreshKey}-colorBehaviorMode}`}
                 label="Mode"
-                defaultValue={colorBehavior.mode}
+                defaultValue={behaviorState.mode}
                 onChange={(value) => {
+                    colorBehavior.list.initialize({
+                        list: behaviorState.list.list,
+                        isStepped: behaviorState.list.isStepped,
+                    });
                     colorBehavior.mode = value as "static" | "list" | "random";
+
+                    setBehaviorState({
+                        ...behaviorState,
+                        mode: value as "static" | "list" | "random",
+                    });
+
                     setUseList(value !== "static");
                 }}
                 options={[
@@ -46,20 +87,27 @@ export function ColorPanel({ isOpen = true }: PanelProps): JSX.Element {
 
             {!useList && (
                 <ColorControl
+                    key={`${refreshKey}-colorBehaviorStaticValue`}
                     label="Static Value"
                     defaultValue={Color.shared
-                        .setValue(colorBehavior.staticValue)
+                        .setValue(behaviorState.staticValue)
                         .toHex()}
                     onChange={(value) => {
                         colorBehavior.staticValue = value;
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            staticValue: value,
+                        });
                     }}
                 />
             )}
 
             {useList && (
                 <ColorList
+                    key={`${refreshKey}-colorBehaviorList`}
                     label="List"
-                    defaultList={colorBehavior.list.list.map((step, index) => ({
+                    defaultList={behaviorState.list.list.map((step, index) => ({
                         time: step.time,
                         value: Color.shared.setValue(step.value).toHex(),
                         ID: index,
@@ -69,6 +117,11 @@ export function ColorPanel({ isOpen = true }: PanelProps): JSX.Element {
                             list,
                             ease,
                             isStepped,
+                        });
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            list: colorBehavior.list,
                         });
                     }}
                 />
