@@ -86,7 +86,20 @@ export type CircleConfig = {
  * Type defining the configuration for SpawnBehavior.
  */
 export type SpawnBehaviorConfig = {
+    /**
+     * Direction in which the particles will be moving.
+     */
     direction?: PointData;
+
+    /**
+     * Origin (parent-local) position used as the center/offset for particle spawning.
+     *
+     * This value is added to the shape-generated spawn coordinates in {@link init}.
+     * For the `point` shape, particles spawn exactly at this position.
+     *
+     * This is relative to the parent transform (not a world-space position).
+     */
+    origin?: PointData;
 } & (PointConfig | LineConfig | RectangleConfig | CircleConfig);
 
 /**
@@ -149,6 +162,9 @@ export class SpawnBehavior<
     extends EmitterBehavior<SpawnBehaviorConfig, DataType, ParticleType>
     implements InitBehavior<DataType, ParticleType>
 {
+    private readonly _origin: PointData = { x: 0, y: 0 };
+    private readonly _directionVector: PointData = { x: 0, y: 0 };
+
     private _shape: "point" | "line" | "rectangle" | "circle" = "point";
 
     private _width: number = 0;
@@ -156,8 +172,6 @@ export class SpawnBehavior<
 
     private _innerRadius: number = 0;
     private _outerRadius: number = 0;
-
-    private _directionVector: PointData = { x: 0, y: 0 };
 
     /**
      * @inheritdoc
@@ -175,6 +189,22 @@ export class SpawnBehavior<
     public set direction(value: PointData) {
         this._directionVector.x = value.x;
         this._directionVector.y = value.y;
+    }
+
+    /**
+     * Origin (parent-local) position used as the center/offset for particle spawning.
+     *
+     * This value is added to the shape-generated spawn coordinates in {@link init}.
+     * For the `point` shape, particles spawn exactly at this position.
+     *
+     * This is relative to the parent transform (not a world-space position).
+     */
+    public get origin(): PointData {
+        return this._origin;
+    }
+    public set origin(value: PointData) {
+        this._origin.x = value.x;
+        this._origin.y = value.y;
     }
 
     /**
@@ -233,7 +263,11 @@ export class SpawnBehavior<
     public applyConfig(config: SpawnBehaviorConfig): void {
         super.applyConfig(config);
 
-        this._directionVector = config.direction ?? { x: 0, y: 0 };
+        this._directionVector.x = config.direction?.x ?? 0;
+        this._directionVector.y = config.direction?.y ?? 1;
+
+        this._origin.x = config.origin?.x ?? 0;
+        this._origin.y = config.origin?.y ?? 0;
 
         if (config.shape === "point") {
             this._shape = "point";
@@ -265,8 +299,15 @@ export class SpawnBehavior<
      * @inheritdoc
      */
     public getConfig(): SpawnBehaviorConfig {
+        let origin: PointData | undefined = undefined;
+
+        if (this._origin.x !== 0 || this._origin.y !== 0) {
+            origin = { x: this._origin.x, y: this._origin.y };
+        }
+
         if (this._shape === "point") {
             return {
+                origin,
                 shape: "point",
                 direction: this._directionVector,
             };
@@ -274,6 +315,7 @@ export class SpawnBehavior<
 
         if (this._shape === "line") {
             return {
+                origin,
                 shape: "line",
                 length: this._width,
                 direction: this._directionVector,
@@ -282,6 +324,7 @@ export class SpawnBehavior<
 
         if (this._shape === "rectangle") {
             return {
+                origin,
                 shape: "rectangle",
                 width: this._width,
                 height: this._height === this._width ? undefined : this._height,
@@ -291,6 +334,7 @@ export class SpawnBehavior<
 
         if (this._shape === "circle") {
             return {
+                origin,
                 shape: "circle",
                 outerRadius: this._outerRadius,
                 innerRadius:
@@ -314,8 +358,8 @@ export class SpawnBehavior<
         particleData.directionVectorY = this._directionVector.y;
 
         if (this._shape === "point") {
-            particle.x = 0;
-            particle.y = 0;
+            particle.x = this._origin.x;
+            particle.y = this._origin.y;
             return;
         }
 
@@ -346,8 +390,8 @@ export class SpawnBehavior<
             y = 0;
         }
 
-        particle.x = x;
-        particle.y = y;
+        particle.x = x + this._origin.x;
+        particle.y = y + this._origin.y;
     }
 
     /**
