@@ -10,7 +10,9 @@
 <p align="center">
     <img src="https://img.shields.io/github/license/danielpokladek/pixi-particle-system.svg?style=for-the-badge" />
     <img src="https://img.shields.io/github/actions/workflow/status/danielpokladek/pixi-particle-system/release.yml?style=for-the-badge" />
-    <img src="https://img.shields.io/npm/v/pixi-particle-system?style=for-the-badge">
+    <a href="https://www.npmjs.com/package/pixi-particle-system">
+      <img src="https://img.shields.io/npm/v/pixi-particle-system?style=for-the-badge">
+    </a>
 </p>
 
 <p align="center">
@@ -71,7 +73,7 @@ By default particles will spawn in a single point, and they are using a 1x1 whit
 
 Contributions are what make the open source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can also simply open an issue with the relevant tag. Don't forget to give the project a star! Than you! ❤️
+If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can also simply open an issue with the relevant tag. Don't forget to give the project a star! Thank you! ❤️
 
 See [CONTRIBUTING](/CONTRIBUTING.md) for more information about contributions.
 
