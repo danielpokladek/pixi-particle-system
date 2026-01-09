@@ -1,8 +1,9 @@
 import { SpawnShape } from "pixi-particle-system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PanelProps } from "../../Types";
 import { NumberControl } from "../ui/controls/NumberControl";
 import { Select } from "../ui/controls/Select";
+import { Toggle } from "../ui/controls/Toggle";
 import { Vector2DControl } from "../ui/controls/Vector2DControl";
 
 /**
@@ -15,9 +16,79 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
         spawnBehavior.shape,
     );
 
+    const [followMouse, setFollowMouse] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!followMouse) return;
+
+        // Try to find the PIXI canvas/view first; fall back to the first <canvas>.
+        // const app = w.pixiApp ?? w.app;
+        const canvas: HTMLCanvasElement | null =
+            document.querySelector("canvas");
+
+        if (!canvas) return;
+
+        // Best-effort "parent-local" space:
+        // Prefer emitter container's parent (origin is described as parent-local),
+        // then container, then stage; otherwise fall back to canvas coordinates.
+        const emitter = window.particleEmitter;
+        const parent = emitter.parent;
+
+        const onPointerMove = (e: PointerEvent): void => {
+            const rect = canvas.getBoundingClientRect();
+
+            // Convert from CSS pixels -> canvas pixels
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const globalX = (e.clientX - rect.left) * scaleX;
+            const globalY = (e.clientY - rect.top) * scaleY;
+
+            if (parent?.toLocal) {
+                const local = parent.toLocal({ x: globalX, y: globalY });
+                spawnBehavior.origin = local;
+            } else {
+                spawnBehavior.origin = { x: globalX, y: globalY };
+            }
+        };
+
+        canvas.addEventListener("pointermove", onPointerMove, {
+            passive: true,
+        });
+
+        return (): void => {
+            canvas.removeEventListener("pointermove", onPointerMove);
+        };
+    }, [followMouse, spawnBehavior]);
+
     return (
         <details open={isOpen}>
             <summary>Spawn Behavior</summary>
+
+            <Toggle
+                label="Follow Mouse"
+                defaultValue={followMouse}
+                onChange={(value) => {
+                    if (!value) {
+                        spawnBehavior.origin = { x: 0, y: 0 };
+                    }
+
+                    setFollowMouse(value);
+                }}
+            />
+
+            {!followMouse && (
+                <Vector2DControl
+                    label="Origin"
+                    xDefault={0}
+                    yDefault={0}
+                    onChange={(x, y) => {
+                        spawnBehavior.origin = { x, y };
+                    }}
+                />
+            )}
+
+            <hr />
 
             <Vector2DControl
                 label="Direction"
