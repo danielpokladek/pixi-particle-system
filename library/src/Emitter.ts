@@ -375,22 +375,37 @@ export class Emitter<
 
         if (config.alphaBehavior) {
             this._alphaBehavior.applyConfig(config.alphaBehavior);
+        } else {
+            this.removeFromActiveInitBehaviors(this._alphaBehavior);
+            this.removeFromActiveUpdateBehaviors(this._alphaBehavior);
         }
 
         if (config.colorBehavior) {
             this._colorBehavior.applyConfig(config.colorBehavior);
+        } else {
+            this.removeFromActiveInitBehaviors(this._colorBehavior);
+            this.removeFromActiveUpdateBehaviors(this._colorBehavior);
         }
 
         if (config.movementBehavior) {
             this._movementBehavior.applyConfig(config.movementBehavior);
+        } else {
+            this.removeFromActiveInitBehaviors(this._movementBehavior);
+            this.removeFromActiveUpdateBehaviors(this._movementBehavior);
         }
 
         if (config.rotationBehavior) {
             this._rotationBehavior.applyConfig(config.rotationBehavior);
+        } else {
+            this.removeFromActiveInitBehaviors(this._rotationBehavior);
+            this.removeFromActiveUpdateBehaviors(this._rotationBehavior);
         }
 
         if (config.scaleBehavior) {
             this._scaleBehavior.applyConfig(config.scaleBehavior);
+        } else {
+            this.removeFromActiveInitBehaviors(this._scaleBehavior);
+            this.removeFromActiveUpdateBehaviors(this._scaleBehavior);
         }
 
         if (config.spawnBehavior) {
