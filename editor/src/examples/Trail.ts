@@ -51,6 +51,7 @@ export async function getTrailConfig(): Promise<EmitterConfig> {
     const circleTexture = await Assets.load<Texture>("circle");
 
     window.particleContainer.blendMode = "screen";
+    window.particleContainer.texture = circleTexture;
 
     config.textureBehavior = {
         mode: "static",

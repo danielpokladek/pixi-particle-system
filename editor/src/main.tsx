@@ -18,12 +18,30 @@ async function bootstrap(): Promise<void> {
         preference: "webgl",
     });
 
-    const snowflake = "./snowflake.png";
-
-    Assets.add({ alias: "snowflake", src: snowflake });
+    Assets.add({ alias: "snowflake", src: "./snowflake.png" });
+    Assets.add({ alias: "circle", src: "./circle_05.png" });
+    Assets.add({ alias: "circle4", src: "./circle_04.png" });
+    Assets.add({ alias: "twirl", src: "./twirl_03.png" });
+    Assets.add({ alias: "smoke", src: "./smoke_04.png" });
+    Assets.add({ alias: "window4", src: "./window_04.png" });
+    Assets.add({
+        alias: "coin",
+        src: "./spritesheet/coin.json",
+        data: {
+            imageFilename: "coin.png",
+        },
+    });
+    Assets.add({
+        alias: "confetti",
+        src: "./spritesheet/confetti.json",
+        data: {
+            imageFilename: "confetti.png",
+        },
+    });
 
     const particleContainer = new ParticleContainer();
     app.stage.addChild(particleContainer);
+    window.particleContainer = particleContainer;
 
     const defaultConfig = await getDefaultConfig();
 
@@ -31,7 +49,6 @@ async function bootstrap(): Promise<void> {
 
     window.application = app;
     window.__PIXI_APP__ = app;
-    window.particleContainer = particleContainer;
     window.particleEmitter = particleEmitter;
 
     const root = document.getElementById("root");

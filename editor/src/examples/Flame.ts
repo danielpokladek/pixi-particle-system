@@ -68,7 +68,6 @@ export async function getFlameConfig(): Promise<EmitterConfig> {
     const config = { ...flameConfig };
 
     const texture = await Assets.load<Texture>("smoke");
-
     window.particleContainer.texture = texture;
     window.particleContainer.blendMode = "screen";
 

@@ -69,6 +69,8 @@ const rainConfig: EmitterConfig = {
 export async function getRainConfig(): Promise<EmitterConfig> {
     const config = { ...rainConfig };
 
+    window.particleContainer.texture = Texture.WHITE;
+
     config.textureBehavior = {
         mode: "static",
         textureConfigs: [

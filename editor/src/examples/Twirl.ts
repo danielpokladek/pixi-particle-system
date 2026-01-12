@@ -66,6 +66,7 @@ export async function getPortalConfig(): Promise<EmitterConfig> {
     const texture = await Assets.load<Texture>("twirl");
 
     window.particleContainer.blendMode = "screen";
+    window.particleContainer.texture = texture;
 
     config.textureBehavior = {
         mode: "static",

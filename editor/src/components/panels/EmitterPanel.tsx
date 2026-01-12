@@ -141,11 +141,7 @@ export function EmitterPanel({ isOpen = true }: PanelProps): JSX.Element {
             <Select
                 key={`${refreshKey}-blendMode`}
                 label="Blend Mode"
-                defaultValue={
-                    blendModeOptions.find(
-                        (option) => option.key === emitter.parent.blendMode,
-                    )?.label || "Normal"
-                }
+                defaultValue={emitterState.blendMode}
                 options={blendModeOptions}
                 onChange={(value) => {
                     const selectedOption = blendModeOptions.find(
@@ -154,6 +150,10 @@ export function EmitterPanel({ isOpen = true }: PanelProps): JSX.Element {
 
                     if (selectedOption) {
                         emitter.parent.blendMode = selectedOption.key;
+                        setEmitterState({
+                            ...emitterState,
+                            blendMode: selectedOption.key,
+                        });
                     }
                 }}
             />
