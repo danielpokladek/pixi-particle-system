@@ -6,6 +6,7 @@ import { getDefaultConfig } from "../../examples/Default";
 import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
 import { getTrailConfig } from "../../examples/Trail";
+import { getPortalConfig } from "../../examples/Twirl";
 import { Select } from "../ui/controls/Select";
 
 type ExampleConfigEntry = {
@@ -48,6 +49,10 @@ const exampleToConfigs: Record<string, ExampleConfigEntry> = {
         description: `A colorful particle trail effect with particles changing color over their lifetime.
             Best used with the 'follow mouse' enabled in the Spawn Panel.`,
     },
+    portal: {
+        getConfig: getPortalConfig,
+        description: `A swirling effect that could be used to represent a portal or vortex.`,
+    },
 };
 
 /**
@@ -66,6 +71,7 @@ const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Coins", key: "coin" },
     { label: "Confetti", key: "confetti" },
     { label: "Mouse Trail", key: "mouse_trail" },
+    { label: "Portal", key: "portal" },
 ];
 
 type Props = {
