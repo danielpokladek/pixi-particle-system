@@ -22,7 +22,7 @@ type TextureBehaviorMode = Extract<
  * Type defining the texture animation configuration for particles.
  * @group Behavior/TextureBehavior/
  */
-type TextureConfig = {
+export type TextureConfig = {
     textures: Texture[];
     duration?: number;
     framerate?: number;
