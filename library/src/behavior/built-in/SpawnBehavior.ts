@@ -405,5 +405,11 @@ export class SpawnBehavior<
 
         this._innerRadius = 0;
         this._outerRadius = 0;
+
+        this._origin.x = 0;
+        this._origin.y = 0;
+
+        this._directionVector.x = 0;
+        this._directionVector.y = 1;
     }
 }
