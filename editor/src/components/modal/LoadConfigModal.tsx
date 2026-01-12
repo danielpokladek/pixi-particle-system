@@ -5,6 +5,7 @@ import { getConfettiConfig } from "../../examples/Confetti";
 import { getDefaultConfig } from "../../examples/Default";
 import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
+import { getTrailConfig } from "../../examples/Trail";
 import { Select } from "../ui/controls/Select";
 
 type ExampleConfigEntry = {
@@ -42,6 +43,11 @@ const exampleToConfigs: Record<string, ExampleConfigEntry> = {
         description: `A colorful confetti effect with particles falling from the top of the screen.
             Effect uses multiple shape animations to create more variety, and showcase the texture behavior.`,
     },
+    mouse_trail: {
+        getConfig: getTrailConfig,
+        description: `A colorful particle trail effect with particles changing color over their lifetime.
+            Best used with the 'follow mouse' enabled in the Spawn Panel.`,
+    },
 };
 
 /**
@@ -59,6 +65,7 @@ const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Rain", key: "rain" },
     { label: "Coins", key: "coin" },
     { label: "Confetti", key: "confetti" },
+    { label: "Mouse Trail", key: "mouse_trail" },
 ];
 
 type Props = {
@@ -77,6 +84,8 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
     }
 
     isLoading = true;
+
+    window.particleContainer.blendMode = "normal";
 
     const config = await exampleToConfigs[preset].getConfig();
 
