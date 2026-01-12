@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import "theme-toggles/css/inner-moon.css";
 
 /**
  * Header social links component.
@@ -6,6 +7,20 @@ import { useRef } from "react";
  */
 export function SocialLinks(): JSX.Element {
     const toggleRef = useRef<HTMLDivElement>(null);
+    const [userTheme] = useState(() => {
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+            return savedTheme;
+        }
+
+        if (typeof window === "undefined") return "light";
+
+        return window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+    });
 
     const toggleTheme = (): void => {
         if (!toggleRef.current) return;
@@ -20,7 +35,23 @@ export function SocialLinks(): JSX.Element {
             div.classList.add("theme-toggle--toggled");
             document.documentElement.setAttribute("data-theme", "dark");
         }
+
+        localStorage.setItem("theme", isDark ? "light" : "dark");
     };
+
+    useEffect(() => {
+        if (!toggleRef.current) return;
+
+        const div = toggleRef.current;
+
+        if (userTheme === "dark") {
+            div.classList.add("theme-toggle--toggled");
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            div.classList.remove("theme-toggle--toggled");
+            document.documentElement.setAttribute("data-theme", "light");
+        }
+    }, [userTheme]);
 
     return (
         <>
@@ -49,19 +80,18 @@ export function SocialLinks(): JSX.Element {
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true"
-                            width="1.5em"
-                            height="1.5em"
+                            width="1em"
+                            height="1em"
                             fill="currentColor"
-                            className="theme-toggle__expand"
+                            className="theme-toggle__inner-moon"
                             viewBox="0 0 32 32"
+                            style={{
+                                height: "1.5rem",
+                                width: "1.5rem",
+                            }}
                         >
-                            <clipPath id="theme-toggle__expand__cutout">
-                                <path d="M0-11h25a1 1 0 0017 13v30H0Z" />
-                            </clipPath>
-                            <g clip-path="url(#theme-toggle__expand__cutout)">
-                                <circle cx="16" cy="16" r="8.4" />
-                                <path d="M18.3 3.2c0 1.3-1 2.3-2.3 2.3s-2.3-1-2.3-2.3S14.7.9 16 .9s2.3 1 2.3 2.3zm-4.6 25.6c0-1.3 1-2.3 2.3-2.3s2.3 1 2.3 2.3-1 2.3-2.3 2.3-2.3-1-2.3-2.3zm15.1-10.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zM3.2 13.7c1.3 0 2.3 1 2.3 2.3s-1 2.3-2.3 2.3S.9 17.3.9 16s1-2.3 2.3-2.3zm5.8-7C9 7.9 7.9 9 6.7 9S4.4 8 4.4 6.7s1-2.3 2.3-2.3S9 5.4 9 6.7zm16.3 21c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zm2.4-21c0 1.3-1 2.3-2.3 2.3S23 7.9 23 6.7s1-2.3 2.3-2.3 2.4 1 2.4 2.3zM6.7 23C8 23 9 24 9 25.3s-1 2.3-2.3 2.3-2.3-1-2.3-2.3 1-2.3 2.3-2.3z" />
-                            </g>
+                            <path d="M27.5 11.5v-7h-7L16 0l-4.5 4.5h-7v7L0 16l4.5 4.5v7h7L16 32l4.5-4.5h7v-7L32 16l-4.5-4.5zM16 25.4a9.39 9.39 0 1 1 0-18.8 9.39 9.39 0 1 1 0 18.8z" />
+                            <circle cx="16" cy="16" r="8.1" />
                         </svg>
                     </div>
                 </li>
