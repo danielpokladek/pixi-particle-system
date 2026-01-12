@@ -1,7 +1,7 @@
 import { EmitterConfig } from "pixi-particle-system";
 import { Assets, Spritesheet, Texture } from "pixi.js";
 
-const confettiConfig: EmitterConfig = {
+const coinsConfig: EmitterConfig = {
     emitterVersion: "0.0.0",
 
     spawnInterval: 0.05,
@@ -55,18 +55,16 @@ const confettiConfig: EmitterConfig = {
 };
 
 /**
- * Loads the confetti textures and config.
+ * Loads the coins textures and config.
  * @returns Emitter config.
  */
 export async function getCoinConfig(): Promise<EmitterConfig> {
-    const config = { ...confettiConfig };
+    const config = { ...coinsConfig };
 
-    const confettiTexture = await Assets.load("./spritesheet/coin.png");
+    const coinsTexture = await Assets.load("./spritesheet/coin.png");
+    window.particleContainer.texture = coinsTexture;
 
-    window.particleContainer.texture = confettiTexture;
-
-    const confettiSpritesheet = await Assets.load<Spritesheet>("coin");
-
+    const spritesheet = await Assets.load<Spritesheet>("coin");
     const textures: Texture[] = [];
 
     const frameNames = [
@@ -79,7 +77,7 @@ export async function getCoinConfig(): Promise<EmitterConfig> {
     ];
 
     for (const name of frameNames) {
-        const texture = confettiSpritesheet.textures[name];
+        const texture = spritesheet.textures[name];
         if (texture) textures.push(texture);
     }
 

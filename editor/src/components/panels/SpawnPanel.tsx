@@ -116,8 +116,8 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
                 <Vector2DControl
                     key={`${refreshKey}-spawnBehaviorOrigin`}
                     label="Origin"
-                    xDefault={0}
-                    yDefault={0}
+                    xDefault={behaviorState.origin.x}
+                    yDefault={behaviorState.origin.y}
                     onChange={(x, y) => {
                         spawnBehavior.origin = { x, y };
 
