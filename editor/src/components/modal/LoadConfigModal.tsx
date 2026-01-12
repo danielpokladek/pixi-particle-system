@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getCoinConfig } from "../../examples/Coins";
 import { getConfettiConfig } from "../../examples/Confetti";
 import { getDefaultConfig } from "../../examples/Default";
+import { getFlameConfig } from "../../examples/Flame";
 import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
 import { getTrailConfig } from "../../examples/Trail";
@@ -53,6 +54,11 @@ const exampleToConfigs: Record<string, ExampleConfigEntry> = {
         getConfig: getPortalConfig,
         description: `A swirling effect that could be used to represent a portal or vortex.`,
     },
+    flame: {
+        getConfig: getFlameConfig,
+        description: `A flame effect where particles rise and fade out, simulating fire or smoke.
+            Particles start with a bright yellow color and transition to red and gray as they age.`,
+    },
 };
 
 /**
@@ -72,6 +78,7 @@ const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Confetti", key: "confetti" },
     { label: "Mouse Trail", key: "mouse_trail" },
     { label: "Portal", key: "portal" },
+    { label: "Flame", key: "flame" },
 ];
 
 type Props = {
