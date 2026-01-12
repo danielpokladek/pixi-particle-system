@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getDefaultConfig } from "../../examples/Default";
+import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
 import { Select } from "../ui/controls/Select";
 
@@ -7,6 +8,7 @@ const exampleToConfigs = {
     default: getDefaultConfig,
     // custom: getConfigFromFile,
     snow: getSnowConfig,
+    rain: getRainConfig,
 };
 
 type ExampleConfig = keyof typeof exampleToConfigs;
@@ -15,6 +17,7 @@ const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Default", key: "default" },
     // { label: "Custom", key: "custom" },
     { label: "Snow", key: "snow" },
+    { label: "Rain", key: "rain" },
 ];
 
 type Props = {
