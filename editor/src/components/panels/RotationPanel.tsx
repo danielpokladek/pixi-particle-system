@@ -13,9 +13,42 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
     const emitter = window.particleEmitter;
     const rotationBehavior = emitter.rotationBehavior;
 
-    const [mode, setMode] = useState(rotationBehavior.mode);
-    const [initializeEnabled, setInitializeEnabled] = useState(false);
-    const [updateEnabled, setUpdateEnabled] = useState(false);
+    const [behaviorState, setBehaviorState] = useState(() => ({
+        initEnabled: emitter.isBehaviorInitActive(rotationBehavior),
+        updateEnabled: emitter.isBehaviorUpdateActive(rotationBehavior),
+        mode: rotationBehavior.mode,
+        staticValue: rotationBehavior.staticValue,
+        startRotation: rotationBehavior.startRotation,
+        acceleration: rotationBehavior.acceleration,
+        list: rotationBehavior.list,
+    }));
+
+    const [refreshKey, setRefreshKey] = useState<number>(0);
+
+    useEffect(() => {
+        const refreshFromEmitter = (): void => {
+            setBehaviorState({
+                initEnabled: emitter.isBehaviorInitActive(rotationBehavior),
+                updateEnabled: emitter.isBehaviorUpdateActive(rotationBehavior),
+                mode: rotationBehavior.mode,
+                staticValue: rotationBehavior.staticValue,
+                startRotation: rotationBehavior.startRotation,
+                acceleration: rotationBehavior.acceleration,
+                list: rotationBehavior.list,
+            });
+
+            setRefreshKey((key) => key + 1);
+        };
+
+        window.addEventListener("emitterConfigApplied", refreshFromEmitter);
+
+        return (): void => {
+            window.removeEventListener(
+                "emitterConfigApplied",
+                refreshFromEmitter,
+            );
+        };
+    }, [rotationBehavior, emitter]);
 
     useEffect(() => {
         if (!rotationBehavior.list.isInitialized) {
@@ -33,10 +66,14 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
             <summary>Rotation Behavior</summary>
 
             <Toggle
+                key={`${refreshKey}-rotationInitializeEnabled`}
                 label="Initialize Particles"
-                defaultValue={initializeEnabled}
+                defaultValue={behaviorState.initEnabled}
                 onChange={(value) => {
-                    setInitializeEnabled(value);
+                    setBehaviorState({
+                        ...behaviorState,
+                        initEnabled: value,
+                    });
 
                     if (value) {
                         emitter.addToActiveInitBehaviors(rotationBehavior);
@@ -47,10 +84,14 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
             />
 
             <Toggle
+                key={`${refreshKey}-rotationUpdateEnabled`}
                 label="Update Particles"
-                defaultValue={updateEnabled}
+                defaultValue={behaviorState.updateEnabled}
                 onChange={(value) => {
-                    setUpdateEnabled(value);
+                    setBehaviorState({
+                        ...behaviorState,
+                        updateEnabled: value,
+                    });
 
                     if (value) {
                         emitter.addToActiveUpdateBehaviors(rotationBehavior);
@@ -65,8 +106,9 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
             <hr />
 
             <Select
+                key={`${refreshKey}-rotationBehaviorMode`}
                 label="Mode"
-                defaultValue={rotationBehavior.mode}
+                defaultValue={behaviorState.mode}
                 options={[
                     { label: "List", key: "list" },
                     { label: "Static", key: "static" },
@@ -80,60 +122,86 @@ export function RotationPanel({ isOpen }: PanelProps): JSX.Element {
                         | "acceleration"
                         | "direction";
 
-                    setMode(newMode);
                     rotationBehavior.mode = newMode;
+
+                    setBehaviorState({
+                        ...behaviorState,
+                        mode: newMode,
+                    });
                 }}
             />
 
             <hr />
 
-            {mode === "static" && (
+            {behaviorState.mode === "static" && (
                 <NumberControl
+                    key={`${refreshKey}-rotationBehaviorStaticValue`}
                     label="Static Value"
-                    disabled={!initializeEnabled}
-                    defaultValue={rotationBehavior.staticValue}
+                    disabled={!behaviorState.initEnabled}
+                    defaultValue={behaviorState.staticValue}
                     onChange={(value) => {
                         rotationBehavior.staticValue = value;
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            staticValue: value,
+                        });
                     }}
                 />
             )}
 
-            {mode === "acceleration" && (
+            {behaviorState.mode === "acceleration" && (
                 <>
                     <NumberControl
+                        key={`${refreshKey}-rotationBehaviorStartRotation`}
                         label="Start Rotation"
-                        disabled={!initializeEnabled}
-                        defaultValue={rotationBehavior.startRotation}
+                        disabled={!behaviorState.initEnabled}
+                        defaultValue={behaviorState.startRotation}
                         onChange={(value) => {
                             rotationBehavior.startRotation = value;
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                startRotation: value,
+                            });
                         }}
                     />
                     <NumberControl
+                        key={`${refreshKey}-rotationBehaviorAcceleration`}
                         label="Acceleration"
-                        disabled={!updateEnabled}
-                        defaultValue={rotationBehavior.acceleration}
+                        disabled={!behaviorState.updateEnabled}
+                        defaultValue={behaviorState.acceleration}
                         onChange={(value) => {
                             rotationBehavior.acceleration = value;
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                acceleration: value,
+                            });
                         }}
                     />
                 </>
             )}
 
-            {mode === "list" && (
+            {behaviorState.mode === "list" && (
                 <ValueList
+                    key={`${refreshKey}-rotationBehaviorList`}
                     label="Rotation List"
-                    defaultList={rotationBehavior.list.list.map(
-                        (step, index) => ({
-                            time: step.time,
-                            value: step.value,
-                            ID: index,
-                        }),
-                    )}
+                    defaultList={behaviorState.list.list.map((step, index) => ({
+                        time: step.time,
+                        value: step.value,
+                        ID: index,
+                    }))}
                     onChange={(list, ease, isStepped) => {
                         rotationBehavior.list.initialize({
                             list,
                             ease,
                             isStepped,
+                        });
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            list: rotationBehavior.list,
                         });
                     }}
                 />

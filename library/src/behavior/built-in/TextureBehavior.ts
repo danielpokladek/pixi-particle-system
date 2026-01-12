@@ -1,5 +1,4 @@
 import { Texture } from "pixi.js";
-import { EmitterError } from "../../error";
 import {
     BaseParticleData,
     IEmitterParticle,
@@ -23,10 +22,10 @@ type TextureBehaviorMode = Extract<
  * Type defining the texture animation configuration for particles.
  * @group Behavior/TextureBehavior/
  */
-export type TextureConfig = {
+type TextureConfig = {
     textures: Texture[];
-    framerate?: number;
     duration?: number;
+    framerate?: number;
     loop?: boolean;
 };
 
@@ -135,16 +134,13 @@ export class TextureBehavior<
         const particleData = particle.data;
 
         particleData.textureConfig.textures = config.textures;
+        particleData.textureConfig.loop = config.loop ?? false;
         particleData.textureConfig.elapsed = 0;
 
-        if (!config.framerate || !config.duration) {
-            particleData.textureConfig.duration = particle.data.maxLifetime;
-            particleData.textureConfig.framerate =
-                config.textures.length / particle.data.maxLifetime;
-        } else {
-            particleData.textureConfig.framerate = config.framerate;
-            particleData.textureConfig.duration = config.duration;
-        }
+        particleData.textureConfig.duration =
+            config.duration ?? particle.data.maxLifetime;
+        particleData.textureConfig.framerate =
+            config.framerate ?? config.textures.length;
 
         const texture = config.textures[0];
         particle.texture = texture;
@@ -161,18 +157,18 @@ export class TextureBehavior<
             if (config.loop) {
                 config.elapsed = config.elapsed % config.duration;
             } else {
-                config.elapsed = config.duration - 0.000001;
+                config.elapsed = config.duration;
             }
         }
 
-        const frameIndex = (config.elapsed * config.framerate + 0.0000001) | 0;
-        particle.texture = config.textures[frameIndex];
+        const len = config.textures.length;
 
-        if (particle.texture === undefined) {
-            throw new EmitterError(
-                `Texture undefined in TextureBehavior update ${frameIndex}`,
-            );
-        }
+        const frame = Math.floor(config.elapsed * config.framerate);
+        const frameIndex = config.loop
+            ? ((frame % len) + len) % len
+            : Math.min(Math.max(frame, 0), len - 1);
+
+        particle.texture = config.textures[frameIndex];
     }
 
     /**

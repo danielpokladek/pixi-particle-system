@@ -11,33 +11,61 @@ import { Vector2DControl } from "../ui/controls/Vector2DControl";
  * @param props Component props.
  */
 export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
-    const spawnBehavior = window.particleEmitter.spawnBehavior;
-    const [spawnShape, setSpawnShape] = useState<SpawnShape>(
-        spawnBehavior.shape,
-    );
+    const emitter = window.particleEmitter;
+    const spawnBehavior = emitter.spawnBehavior;
+    const [refreshKey, setRefreshKey] = useState<number>(0);
 
-    const [followMouse, setFollowMouse] = useState<boolean>(false);
+    const [behaviorState, setBehaviorState] = useState(() => ({
+        shape: spawnBehavior.shape,
+        origin: spawnBehavior.origin,
+        direction: spawnBehavior.direction,
+        width: spawnBehavior.width,
+        height: spawnBehavior.height,
+        outerRadius: spawnBehavior.outerRadius,
+        innerRadius: spawnBehavior.innerRadius,
+        followMouse: false,
+    }));
 
     useEffect(() => {
-        if (!followMouse) return;
+        const refreshFromEmitter = (): void => {
+            setBehaviorState({
+                shape: spawnBehavior.shape,
+                origin: spawnBehavior.origin,
+                direction: spawnBehavior.direction,
+                width: spawnBehavior.width,
+                height: spawnBehavior.height,
+                outerRadius: spawnBehavior.outerRadius,
+                innerRadius: spawnBehavior.innerRadius,
+                followMouse: false,
+            });
 
-        // Try to find the PIXI canvas/view first; fall back to the first <canvas>.
-        // const app = w.pixiApp ?? w.app;
+            setRefreshKey((key) => key + 1);
+        };
+
+        window.addEventListener("emitterConfigApplied", refreshFromEmitter);
+
+        return (): void => {
+            window.removeEventListener(
+                "emitterConfigApplied",
+                refreshFromEmitter,
+            );
+        };
+    }, [spawnBehavior, emitter]);
+
+    useEffect(() => {
+        if (!behaviorState.followMouse) return;
+
         const canvas: HTMLCanvasElement | null =
             document.querySelector("canvas");
 
         if (!canvas) return;
 
-        // Best-effort "parent-local" space:
-        // Prefer emitter container's parent (origin is described as parent-local),
-        // then container, then stage; otherwise fall back to canvas coordinates.
         const emitter = window.particleEmitter;
         const parent = emitter.parent;
 
         const onPointerMove = (e: PointerEvent): void => {
             const rect = canvas.getBoundingClientRect();
 
-            // Convert from CSS pixels -> canvas pixels
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
 
@@ -46,9 +74,12 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
 
             if (parent?.toLocal) {
                 const local = parent.toLocal({ x: globalX, y: globalY });
+
                 spawnBehavior.origin = local;
+                behaviorState.origin = local;
             } else {
                 spawnBehavior.origin = { x: globalX, y: globalY };
+                behaviorState.origin = { x: globalX, y: globalY };
             }
         };
 
@@ -59,31 +90,41 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
         return (): void => {
             canvas.removeEventListener("pointermove", onPointerMove);
         };
-    }, [followMouse, spawnBehavior]);
+    }, [spawnBehavior, behaviorState]);
 
     return (
         <details open={isOpen}>
             <summary>Spawn Behavior</summary>
 
             <Toggle
+                key={`${refreshKey}-spawnBehaviorFollowMouse`}
                 label="Follow Mouse"
-                defaultValue={followMouse}
+                defaultValue={behaviorState.followMouse}
                 onChange={(value) => {
                     if (!value) {
                         spawnBehavior.origin = { x: 0, y: 0 };
                     }
 
-                    setFollowMouse(value);
+                    setBehaviorState({
+                        ...behaviorState,
+                        followMouse: value,
+                    });
                 }}
             />
 
-            {!followMouse && (
+            {!behaviorState.followMouse && (
                 <Vector2DControl
+                    key={`${refreshKey}-spawnBehaviorOrigin`}
                     label="Origin"
-                    xDefault={0}
-                    yDefault={0}
+                    xDefault={behaviorState.origin.x}
+                    yDefault={behaviorState.origin.y}
                     onChange={(x, y) => {
                         spawnBehavior.origin = { x, y };
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            origin: { x, y },
+                        });
                     }}
                 />
             )}
@@ -91,18 +132,25 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
             <hr />
 
             <Vector2DControl
+                key={`${refreshKey}-spawnBehaviorDirection`}
                 label="Direction"
-                xDefault={spawnBehavior.direction.x}
-                yDefault={spawnBehavior.direction.y}
+                xDefault={behaviorState.direction.x}
+                yDefault={behaviorState.direction.y}
                 onChange={(x, y) => {
                     spawnBehavior.direction.x = x;
                     spawnBehavior.direction.y = y;
+
+                    setBehaviorState({
+                        ...behaviorState,
+                        direction: { x, y },
+                    });
                 }}
             />
 
             <Select
+                key={`${refreshKey}-spawnBehaviorShape`}
                 label="Shape"
-                defaultValue={spawnBehavior.shape}
+                defaultValue={behaviorState.shape}
                 // prettier-ignore
                 options={[
                     { label: "Point"    , key: "point"     },
@@ -114,44 +162,67 @@ export function SpawnPanel({ isOpen = true }: PanelProps): JSX.Element {
                     const newShape = shape as SpawnShape;
 
                     spawnBehavior.shape = newShape;
-                    setSpawnShape(newShape);
+                    setBehaviorState({
+                        ...behaviorState,
+                        shape: newShape,
+                    });
                 }}
             />
 
-            {spawnShape === "rectangle" && (
+            {behaviorState.shape === "rectangle" && (
                 <>
                     <Vector2DControl
+                        key={`${refreshKey}-spawnBehaviorSize`}
                         label="Size"
-                        xDefault={spawnBehavior.width}
-                        yDefault={spawnBehavior.height}
+                        xDefault={behaviorState.width}
+                        yDefault={behaviorState.height}
                         onChange={(width, height) => {
                             spawnBehavior.width = width;
                             spawnBehavior.height = height;
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                width,
+                                height,
+                            });
                         }}
                     />
                 </>
             )}
 
-            {spawnShape === "circle" && (
+            {behaviorState.shape === "circle" && (
                 <>
                     <Vector2DControl
+                        key={`${refreshKey}-spawnBehaviorRadius`}
                         label="Radius"
-                        xDefault={spawnBehavior.outerRadius}
-                        yDefault={spawnBehavior.innerRadius}
+                        xDefault={behaviorState.outerRadius}
+                        yDefault={behaviorState.innerRadius}
                         onChange={(outer, inner) => {
                             spawnBehavior.outerRadius = outer;
                             spawnBehavior.innerRadius = inner;
+
+                            setBehaviorState({
+                                ...behaviorState,
+                                outerRadius: outer,
+                                innerRadius: inner,
+                            });
                         }}
                     />
                 </>
             )}
 
-            {spawnShape === "line" && (
+            {behaviorState.shape === "line" && (
                 <NumberControl
+                    key={`${refreshKey}-spawnBehaviorWidth`}
                     label="Width"
-                    defaultValue={spawnBehavior.width}
+                    defaultValue={behaviorState.width}
                     onChange={(value) => {
                         spawnBehavior.width = value;
+
+                        setBehaviorState({
+                            ...behaviorState,
+                            width: value,
+                        });
                     }}
                 />
             )}

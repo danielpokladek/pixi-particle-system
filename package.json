@@ -28,7 +28,6 @@
         "release:library": "cd library && pnpm release:lib"
     },
     "dependencies": {
-        "@picocss/pico": "^2.1.1",
-        "theme-toggles": "^4.10.1"
+        "@picocss/pico": "^2.1.1"
     }
 }

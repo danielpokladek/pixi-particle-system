@@ -1,18 +1,84 @@
+import { EmitterConfig } from "pixi-particle-system";
 import { useState } from "react";
+import { getCoinConfig } from "../../examples/Coins";
+import { getConfettiConfig } from "../../examples/Confetti";
 import { getDefaultConfig } from "../../examples/Default";
+import { getFlameConfig } from "../../examples/Flame";
+import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
+import { getTrailConfig } from "../../examples/Trail";
+import { getPortalConfig } from "../../examples/Twirl";
 import { Select } from "../ui/controls/Select";
 
-const exampleToConfigs = {
-    default: getDefaultConfig,
-    snow: getSnowConfig,
+type ExampleConfigEntry = {
+    getConfig: () => Promise<EmitterConfig>;
+    description: string;
 };
 
+/**
+ * Mapping of example names to their configuration loaders and descriptions.
+ */
+const exampleToConfigs: Record<string, ExampleConfigEntry> = {
+    default: {
+        getConfig: getDefaultConfig,
+        description:
+            "Default particle effect showing a gentle movement of particles in upward and circular motion.",
+    },
+    // custom: getConfigFromFile,
+    snow: {
+        getConfig: getSnowConfig,
+        description:
+            "A gentle snowfall effect of particles moving downward from the top of the screen.",
+    },
+    rain: {
+        getConfig: getRainConfig,
+        description:
+            "A heavy rain effect with fast-moving particles falling from the top of the screen at angled direction.",
+    },
+    coin: {
+        getConfig: getCoinConfig,
+        description:
+            "A waterfall coin effect showing spinning animated coins raising upward and falling down.",
+    },
+    confetti: {
+        getConfig: getConfettiConfig,
+        description: `A colorful confetti effect with particles falling from the top of the screen.
+            Effect uses multiple shape animations to create more variety, and showcase the texture behavior.`,
+    },
+    mouse_trail: {
+        getConfig: getTrailConfig,
+        description: `A colorful particle trail effect with particles changing color over their lifetime.
+            Best used with the 'follow mouse' enabled in the Spawn Panel.`,
+    },
+    portal: {
+        getConfig: getPortalConfig,
+        description: `A swirling effect that could be used to represent a portal or vortex.`,
+    },
+    flame: {
+        getConfig: getFlameConfig,
+        description: `A flame effect where particles rise and fade out, simulating fire or smoke.
+            Particles start with a bright yellow color and transition to red and gray as they age.`,
+    },
+};
+
+/**
+ * Type describing the available example configurations.
+ */
 type ExampleConfig = keyof typeof exampleToConfigs;
 
+/**
+ * Dropdown options for selecting example configurations.
+ */
 const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Default", key: "default" },
+    // { label: "Custom", key: "custom" },
     { label: "Snow", key: "snow" },
+    { label: "Rain", key: "rain" },
+    { label: "Coins", key: "coin" },
+    { label: "Confetti", key: "confetti" },
+    { label: "Mouse Trail", key: "mouse_trail" },
+    { label: "Portal", key: "portal" },
+    { label: "Flame", key: "flame" },
 ];
 
 type Props = {
@@ -32,13 +98,24 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
 
     isLoading = true;
 
-    const config = await exampleToConfigs[preset]();
+    window.particleContainer.blendMode = "normal";
+
+    const config = await exampleToConfigs[preset].getConfig();
+
+    if (!config) {
+        // eslint-disable-next-line no-console
+        console.error("Failed to load configuration.");
+        isLoading = false;
+        return;
+    }
 
     const emitter = window.particleEmitter;
 
     emitter.stop(true);
     emitter.applyConfig(config);
     emitter.play();
+
+    window.dispatchEvent(new Event("emitterConfigApplied"));
 
     isLoading = false;
 }
@@ -48,7 +125,7 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
  * @param params Component props.
  * @returns JSX.Element.
  */
-export function ExamplesModal({ onClose }: Props): JSX.Element {
+export function LoadConfigModal({ onClose }: Props): JSX.Element {
     const [selectedPreset, setSelectedPreset] =
         useState<ExampleConfig>("default");
 
@@ -78,14 +155,19 @@ export function ExamplesModal({ onClose }: Props): JSX.Element {
                         emitter. Click <strong>Cancel</strong> (or the close
                         button) to close this modal without changing anything.
                     </p>
+
+                    <hr />
+
                     <Select
-                        label="Preset"
+                        label="Config To Load"
                         defaultValue={selectedPreset}
                         options={dropdownOptions}
                         onChange={(value) => {
                             setSelectedPreset(value as ExampleConfig);
                         }}
                     />
+
+                    <p>{exampleToConfigs[selectedPreset].description}</p>
 
                     <footer>
                         <button

@@ -57,6 +57,7 @@ export function Input({
 
                 if (newValue === lastValueRef.current) return;
 
+                onChange?.(newValue);
                 onUpdate?.(newValue);
                 lastValueRef.current = newValue;
             }}

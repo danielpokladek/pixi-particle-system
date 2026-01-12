@@ -25,7 +25,7 @@ export function NumberControl({
                 disabled={disabled}
                 inputType="text"
                 defaultValue={defaultValue.toString()}
-                onChange={(value) => onChange?.(Number(value))}
+                onUpdate={(value) => onChange?.(Number(value))}
             />
         </div>
     );

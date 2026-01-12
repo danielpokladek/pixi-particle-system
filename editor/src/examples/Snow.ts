@@ -65,7 +65,7 @@ export async function getSnowConfig(): Promise<EmitterConfig> {
     const config: EmitterConfig = { ...snowConfig };
 
     const snowflakeTexture = await Assets.load<Texture>("snowflake");
-    window.particleEmitter.parent.texture = snowflakeTexture;
+    window.particleContainer.texture = snowflakeTexture;
 
     config.textureBehavior = {
         mode: "static",

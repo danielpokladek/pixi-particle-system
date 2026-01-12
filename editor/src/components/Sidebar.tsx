@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { ExamplesModal } from "./modal/ExamplesModal";
 import { AlphaPanel } from "./panels/AlphaPanel";
 import { ColorPanel } from "./panels/ColorPanel";
 import { EmitterPanel } from "./panels/EmitterPanel";
@@ -13,117 +11,10 @@ import { SpawnPanel } from "./panels/SpawnPanel";
  */
 export default function Sidebar(): JSX.Element {
     const emitter = window.particleEmitter;
-    const [paused, setPaused] = useState(emitter.isPaused);
-
-    const [showExamples, setShowExamples] = useState(false);
 
     return (
         <aside className="sidebar">
-            {emitter && (
-                <>
-                    {showExamples && (
-                        <ExamplesModal
-                            onClose={() => {
-                                setShowExamples(false);
-                            }}
-                        />
-                    )}
-
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            paddingBottom: "1em",
-                            gap: "10px",
-                        }}
-                    >
-                        <button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                                const configObject = emitter.getConfig();
-                                const jsonConfig = JSON.stringify(
-                                    configObject,
-                                    null,
-                                    4,
-                                );
-                                const blob = new Blob([jsonConfig], {
-                                    type: "application/json",
-                                });
-                                const url = URL.createObjectURL(blob);
-
-                                const a = document.createElement("a");
-                                a.href = url;
-                                a.download = "emitter-config.json";
-                                a.click();
-                            }}
-                        >
-                            Download Current Config
-                        </button>
-                        <button disabled style={{ flex: 1 }}>
-                            Upload Custom Config
-                        </button>
-                        <button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                                setShowExamples(true);
-                            }}
-                        >
-                            Browse Examples
-                        </button>
-                    </div>
-
-                    <hr />
-
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            paddingBottom: "1em",
-                            gap: "10px",
-                        }}
-                    >
-                        <button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                                emitter.play();
-                            }}
-                        >
-                            Play
-                        </button>
-                        {!paused && (
-                            <button
-                                style={{ flex: 1 }}
-                                onClick={() => {
-                                    emitter.pause();
-                                    setPaused(true);
-                                }}
-                            >
-                                Pause
-                            </button>
-                        )}
-                        {paused && (
-                            <button
-                                style={{ flex: 1 }}
-                                onClick={() => {
-                                    emitter.resume();
-                                    setPaused(false);
-                                }}
-                            >
-                                Resume
-                            </button>
-                        )}
-                        <button
-                            style={{ flex: 1 }}
-                            onClick={() => {
-                                emitter.stop(!emitter.isEmitting);
-                            }}
-                        >
-                            Stop
-                        </button>
-                    </div>
-                </>
-            )}
+            <h3>Behavior Controls</h3>
 
             {emitter && (
                 <>

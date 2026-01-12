@@ -44,7 +44,7 @@ export const defaultConfig: EmitterConfig = {
         xListData: {
             list: [
                 { value: 0.5, time: 0.0 },
-                { value: 3.0, time: 0.5 },
+                { value: 5.0, time: 0.5 },
                 { value: 0.5, time: 1.0 },
             ],
         },

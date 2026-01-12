@@ -11,9 +11,6 @@ importers:
       '@picocss/pico':
         specifier: ^2.1.1
         version: 2.1.1
-      theme-toggles:
-        specifier: ^4.10.1
-        version: 4.10.1
     devDependencies:
       '@commitlint/cli':
         specifier: ^20.3.0
@@ -2214,9 +2211,6 @@ packages:
   text-extensions@2.4.0:
     resolution: {integrity: sha512-te/NtwBwfiNRLf9Ijqx3T0nlqZiQ2XrrtBvu+cLL8ZRrGkO0NHTug8MYFKyoSrv/sHTaSKfilUkizV6XhxMJ3g==}
     engines: {node: '>=8'}
-
-  theme-toggles@4.10.1:
-    resolution: {integrity: sha512-PCvj0cB+3JOv8gUXjvp+/7Nu7hSLAYCwmxsAjltIhUUpF6NPn3jDMo64KCu2S2HQe+lGAEM01f2hDzqlPg3bsQ==}
 
   thenify-all@1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
@@ -4593,8 +4587,6 @@ snapshots:
       unique-string: 3.0.0
 
   text-extensions@2.4.0: {}
-
-  theme-toggles@4.10.1: {}
 
   thenify-all@1.6.0:
     dependencies:
