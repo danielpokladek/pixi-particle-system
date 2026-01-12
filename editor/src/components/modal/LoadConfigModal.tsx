@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getCoinConfig } from "../../examples/Coins";
 import { getDefaultConfig } from "../../examples/Default";
 import { getRainConfig } from "../../examples/Rain";
 import { getSnowConfig } from "../../examples/Snow";
@@ -9,6 +10,7 @@ const exampleToConfigs = {
     // custom: getConfigFromFile,
     snow: getSnowConfig,
     rain: getRainConfig,
+    coin: getCoinConfig,
 };
 
 type ExampleConfig = keyof typeof exampleToConfigs;
@@ -18,6 +20,7 @@ const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     // { label: "Custom", key: "custom" },
     { label: "Snow", key: "snow" },
     { label: "Rain", key: "rain" },
+    { label: "Coins", key: "coin" },
 ];
 
 type Props = {
