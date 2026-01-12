@@ -5,6 +5,7 @@ import { Select } from "../ui/controls/Select";
 
 const exampleToConfigs = {
     default: getDefaultConfig,
+    // custom: getConfigFromFile,
     snow: getSnowConfig,
 };
 
@@ -12,6 +13,7 @@ type ExampleConfig = keyof typeof exampleToConfigs;
 
 const dropdownOptions: { label: string; key: ExampleConfig }[] = [
     { label: "Default", key: "default" },
+    // { label: "Custom", key: "custom" },
     { label: "Snow", key: "snow" },
 ];
 
@@ -34,6 +36,13 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
 
     const config = await exampleToConfigs[preset]();
 
+    if (!config) {
+        // eslint-disable-next-line no-console
+        console.error("Failed to load configuration.");
+        isLoading = false;
+        return;
+    }
+
     const emitter = window.particleEmitter;
 
     emitter.stop(true);
@@ -50,7 +59,7 @@ async function loadExampleConfig(preset: ExampleConfig): Promise<void> {
  * @param params Component props.
  * @returns JSX.Element.
  */
-export function ExamplesModal({ onClose }: Props): JSX.Element {
+export function LoadConfigModal({ onClose }: Props): JSX.Element {
     const [selectedPreset, setSelectedPreset] =
         useState<ExampleConfig>("default");
 
