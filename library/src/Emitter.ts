@@ -609,6 +609,8 @@ export class Emitter<
     public addToActiveInitBehaviors(
         behavior: InitBehavior<DataType, ParticleType>,
     ): void {
+        if (this.isBehaviorInitActive(behavior)) return;
+
         this._initBehaviors.push(behavior);
 
         this._initBehaviors.sort((a, b) => {
@@ -632,6 +634,8 @@ export class Emitter<
     public addToActiveUpdateBehaviors(
         behavior: UpdateBehavior<DataType, ParticleType>,
     ): void {
+        if (this.isBehaviorUpdateActive(behavior)) return;
+
         this._updateBehaviors.push(behavior);
 
         this._updateBehaviors.sort((a, b) => {
