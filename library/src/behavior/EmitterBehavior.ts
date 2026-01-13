@@ -67,7 +67,7 @@ export abstract class EmitterBehavior<
     /**
      * Reset the behavior to its default state.
      */
-    protected abstract reset(): void;
+    public abstract reset(): void;
 }
 
 /**

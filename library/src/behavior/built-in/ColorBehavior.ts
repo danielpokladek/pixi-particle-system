@@ -206,7 +206,7 @@ export class ColorBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._staticValue = 0xffffff;
         this._mode = "static";
 

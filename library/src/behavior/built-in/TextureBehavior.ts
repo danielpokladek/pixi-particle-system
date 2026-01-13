@@ -174,7 +174,7 @@ export class TextureBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._textureConfigs.length = 0;
         this._mode = "static";
 

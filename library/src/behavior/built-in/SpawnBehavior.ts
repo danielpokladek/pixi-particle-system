@@ -397,7 +397,7 @@ export class SpawnBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._shape = "point";
 
         this._width = 0;

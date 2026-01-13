@@ -386,7 +386,7 @@ export class MovementBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._mode = "linear";
         this._space = "global";
 

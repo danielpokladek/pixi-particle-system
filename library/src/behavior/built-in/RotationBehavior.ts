@@ -382,7 +382,7 @@ export class RotationBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._useDegrees = false;
         this._staticValue = 0;
         this._mode = "static";

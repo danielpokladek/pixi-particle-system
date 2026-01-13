@@ -205,7 +205,7 @@ export class AlphaBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._staticValue = 1.0;
         this._mode = "static";
 

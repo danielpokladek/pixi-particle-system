@@ -233,7 +233,7 @@ export class ScaleBehavior<
     /**
      * @inheritdoc
      */
-    protected reset(): void {
+    public reset(): void {
         this._mode = "static";
         this._staticValue.x = 1;
         this._staticValue.y = 1;
